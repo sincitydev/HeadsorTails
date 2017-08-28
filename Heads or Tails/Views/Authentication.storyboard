@@ -64,6 +64,9 @@
                                                 <real key="value" value="3"/>
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="login" destination="yoP-5R-39B" eventType="touchUpInside" id="DbE-aN-3bm"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                             </stackView>
@@ -182,6 +185,9 @@
                                                 <real key="value" value="3"/>
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="signup" destination="lG3-eg-kIj" eventType="touchUpInside" id="pai-5j-7Cj"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                             </stackView>

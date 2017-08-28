@@ -7,6 +7,16 @@
 //
 
 import UIKit
+import Firebase
+import FirebaseAuth
+
+protocol AuthenticationDelegate
+{
+    func authenticationDidLogin()
+}
+
+// TODO: Create a AuthenticationVC that contains similar code that is being
+//       used for both the LoginVC and SignupVC
 
 class LoginVC: UIViewController
 {
@@ -14,7 +24,22 @@ class LoginVC: UIViewController
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
     
-    var userLoggingIn = false
+    var delegate: AuthenticationDelegate?
+    
+    var validInput: Bool
+    {
+        let email = emailTextField.text ?? ""
+        let password = passwordTextField.text ?? ""
+        
+        if email.isEmpty || password.isEmpty
+        {
+            return false
+        }
+        else
+        {
+            return true
+        }
+    }
     
     override func viewDidLoad()
     {
@@ -29,6 +54,48 @@ class LoginVC: UIViewController
         navigationController?.navigationBar.barTintColor = UIColor(red:0.29, green:0.56, blue:0.89, alpha:1.0)
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "Back", style: .plain, target: nil, action: nil)
         
-        errorMessageLabel.isHidden = true
+        errorMessageLabel.alpha = 0
+    }
+    
+    @IBAction func login()
+    {
+        let email = emailTextField.text ?? ""
+        let password = passwordTextField.text ?? ""
+        
+        
+        if validInput
+        {
+            Auth.auth().signIn(withEmail: email, password: password) { [weak self] (user, error) in
+                if let error = error, let authError = AuthErrorCode(rawValue: error._code)
+                {
+                    self?.showLoginError(authError.description)
+                }
+                else
+                {
+                    self?.delegate?.authenticationDidLogin()
+                }
+            }
+        }
+        else
+        {
+            showLoginError("Invalid input")
+        }
+    }
+    
+    private func showLoginError(_ message: String)
+    {
+        errorMessageLabel.text = message
+        
+        UIView.animate(withDuration: 0.2, animations: { [weak self] in
+            self?.errorMessageLabel.alpha = 1
+        })
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?)
+    {
+        if let signupVC = segue.destination as? SignupVC
+        {
+            signupVC.delegate = delegate
+        }
     }
 }

@@ -11,7 +11,7 @@ import Firebase
 import FirebaseAuth
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate
+class AppDelegate: UIResponder, UIApplicationDelegate, AuthenticationDelegate
 {   
     var window: UIWindow?
 
@@ -27,18 +27,27 @@ class AppDelegate: UIResponder, UIApplicationDelegate
     {
         var rootVC: UIViewController!
         
-        if let user = Auth.auth().currentUser
+        if let _ = Auth.auth().currentUser
         {
-            // Nothing yet
+            let main = UIStoryboard.init(name: "Main", bundle: nil).instantiateInitialViewController()
+            
+            rootVC = main
         }
         else
         {
             let navVC = UIStoryboard.init(name: "Authentication", bundle: nil).instantiateInitialViewController() as! UINavigationController
+            let loginVC = navVC.viewControllers.first as! LoginVC
             
+            loginVC.delegate = self
             rootVC = navVC
         }
         
         window?.rootViewController = rootVC
+    }
+    
+    func authenticationDidLogin()
+    {
+        setupRootVC()
     }
 }
 
