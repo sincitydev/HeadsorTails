@@ -16,8 +16,9 @@ class SignupVC: UIViewController {
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
     
-    var delegate: AuthenticationDelegate?
     private let firebaseManager = FirebaseManager.shared
+    
+    var delegate: AuthenticationDelegate?
     
     var validInput: Bool
     {
@@ -62,6 +63,11 @@ class SignupVC: UIViewController {
                 }
                 else
                 {
+                    guard let user = user else { return }
+                    
+                    let player = Player(uid: user.uid, coins: 100)
+                    
+                    self?.firebaseManager.saveNewPlayer(player)
                     self?.delegate?.authenticationDidLogin()
                 }
             }

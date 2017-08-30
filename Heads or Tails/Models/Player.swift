@@ -10,12 +10,12 @@ import Foundation
 
 class Player
 {
-    var name: String
+    var uid: String
     var coins: Int
     
-    init(name: String, coins: Int)
+    init(uid: String, coins: Int)
     {
-        self.name = name
+        self.uid = uid
         self.coins = coins
     }
 }

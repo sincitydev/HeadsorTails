@@ -19,7 +19,14 @@ class FirebaseManager
     // Firebase complains that configure() hasn't been
     // called when it acutally is being called in the
     // AppDelegate
-    lazy var ref = {
+    lazy var ref: DatabaseReference = {
         return Database.database().reference()
+    }()
+    
+    func saveNewPlayer(_ player: Player)
+    {
+        let playerData = ["coins": player.coins] as [String : Any]
+        
+        ref.child("players").child(player.uid).setValue(playerData)
     }
 }
