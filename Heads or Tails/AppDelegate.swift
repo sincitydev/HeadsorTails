@@ -58,7 +58,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AuthenticationDelegate
         }
         catch
         {
-            print("\n\n\nSomething went wrong when logging out.\n\n\n")
+            print("\n\n\nSomething went wrong when logging out\n\n\n")
         }
     }
 }
