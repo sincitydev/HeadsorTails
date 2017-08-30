@@ -29,13 +29,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AuthenticationDelegate
         
         if let _ = Auth.auth().currentUser
         {
-            let main = UIStoryboard.init(name: "Main", bundle: nil).instantiateInitialViewController()
+            let main = UIStoryboard.main.instantiateInitialViewController()
             
             rootVC = main
         }
         else
         {
-            let navVC = UIStoryboard.init(name: "Authentication", bundle: nil).instantiateInitialViewController() as! UINavigationController
+            let navVC = UIStoryboard.auth.instantiateInitialViewController() as! UINavigationController
             let loginVC = navVC.viewControllers.first as! LoginVC
             
             loginVC.delegate = self
@@ -48,6 +48,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AuthenticationDelegate
     func authenticationDidLogin()
     {
         setupRootVC()
+    }
+    
+    private func logout()
+    {
+        do
+        {
+            try Auth.auth().signOut()
+        }
+        catch
+        {
+            print("\n\n\nSomething went wrong when logging out.\n\n\n")
+        }
     }
 }
 
