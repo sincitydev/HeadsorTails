@@ -15,8 +15,8 @@ protocol AuthenticationDelegate
     func authenticationDidLogin()
 }
 
-// TODO: Create a AuthenticationVC that contains similar code that is being
-//       used for both the LoginVC and SignupVC
+// TODO: Looks like theres a similar code between the loginVC and signupVC
+//       Is there anyway can not repeat that same code in both VCs?
 
 class LoginVC: UIViewController
 {
