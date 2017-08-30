@@ -148,9 +148,9 @@
 		CADF9AD11F56541B00FEB4E6 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				CADF9AD41F56541B00FEB4E6 /* UIView+Extension.swift */,
 				CADF9AD21F56541B00FEB4E6 /* AuthErrorCode+Extension.swift */,
 				CADF9AD31F56541B00FEB4E6 /* UIStoryboard+Extension.swift */,
-				CADF9AD41F56541B00FEB4E6 /* UIView+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";

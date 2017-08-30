@@ -17,6 +17,7 @@ class SignupVC: UIViewController {
     @IBOutlet weak var passwordTextField: UITextField!
     
     var delegate: AuthenticationDelegate?
+    private let firebaseManager = FirebaseManager.shared
     
     var validInput: Bool
     {
@@ -54,6 +55,7 @@ class SignupVC: UIViewController {
         if validInput
         {
             Auth.auth().createUser(withEmail: email, password: password) { [weak self] (user, error) in
+                
                 if let error = error, let authError = AuthErrorCode(rawValue: error._code)
                 {
                     self?.showLoginError(authError.description)

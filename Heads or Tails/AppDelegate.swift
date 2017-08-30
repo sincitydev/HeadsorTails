@@ -45,11 +45,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AuthenticationDelegate
         window?.rootViewController = rootVC
     }
     
-    func authenticationDidLogin()
-    {
-        setupRootVC()
-    }
-    
     private func logout()
     {
         do
@@ -58,8 +53,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AuthenticationDelegate
         }
         catch
         {
-            print("\n\n\nSomething went wrong when logging out\n\n\n")
+            print("\n\n\nSomething went wrong when logging out.\n\n\n")
         }
+    }
+    
+    // AuthenticationDelegate functions
+    func authenticationDidLogin()
+    {
+        setupRootVC()
     }
 }
 

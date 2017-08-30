@@ -9,21 +9,17 @@
 import Foundation
 import Firebase
 import FirebaseDatabase
+import FirebaseAuth
 
 class FirebaseManager
 {
-    var ref: DatabaseReference!
+    static let shared = FirebaseManager()
     
-    func fetchPlayers(completion: (([Player], Error) -> Void)?)
-    {
-        ref = Database.database().reference()
-        
-        ref.child("players").observeSingleEvent(of: .value, with: { (snapshot) in
-            // Some code to get that snapshot
-        }) { (error) in
-            guard let completion = completion else { return }
-            
-            completion([], error)
-        }
+    // needs to be a lazy var because when initializing
+    // Firebase complains that configure() hasn't been
+    // called when it acutally is being called in the
+    // AppDelegate
+    lazy var ref = {
+        return Database.database().reference()
     }
 }

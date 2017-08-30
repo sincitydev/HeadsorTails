@@ -8,13 +8,10 @@
 
 import UIKit
 
-class PlayersVC: UIViewController {
-
-    private var firebaseManager = FirebaseManager()
-    
+class PlayersVC: UIViewController
+{    
     override func viewDidLoad()
     {
         super.viewDidLoad()
-        firebaseManager.fetchPlayers(completion: nil)
     }
 }
