@@ -13,6 +13,7 @@ import FirebaseAuth
 protocol AuthenticationDelegate
 {
     func authenticationDidLogin()
+    func authenticationDidLogout()
 }
 
 // TODO: Looks like theres a similar code between the loginVC and signupVC

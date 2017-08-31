@@ -29,9 +29,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AuthenticationDelegate
         
         if let _ = Auth.auth().currentUser
         {
-            let main = UIStoryboard.main.instantiateInitialViewController()
+            let navVC = UIStoryboard.main.instantiateInitialViewController() as! UINavigationController
+            let playerVC = navVC.viewControllers.first as! PlayersVC
             
-            rootVC = main
+            playerVC.delegate = self
+            rootVC = navVC
         }
         else
         {
@@ -59,6 +61,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AuthenticationDelegate
     
     // AuthenticationDelegate functions
     func authenticationDidLogin()
+    {
+        setupRootVC()
+    }
+    
+    func authenticationDidLogout()
     {
         setupRootVC()
     }

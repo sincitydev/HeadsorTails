@@ -7,13 +7,17 @@
 //
 
 import UIKit
+import FirebaseAuth
 
 class PlayersVC: UIViewController
-{    
+{
+    var delegate: AuthenticationDelegate?
+    
     override func viewDidLoad()
     {
         super.viewDidLoad()
         setupViews()
+        createAuthListener()
     }
     
     private func setupViews()
@@ -25,8 +29,25 @@ class PlayersVC: UIViewController
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "logout"), style: .plain, target: self, action: #selector(logout))
     }
     
+    private func createAuthListener()
+    {
+        Auth.auth().addStateDidChangeListener { [weak self] (auth, user) in
+            if user == nil
+            {
+                self?.delegate?.authenticationDidLogout()
+            }
+        }
+    }
+    
     @objc private func logout()
     {
-        print("YOOOO\n\n\n\n")
+        do
+        {
+            try Auth.auth().signOut()
+        }
+        catch
+        {
+            print("\n\n\nSomething went wrong when logging out.\n\n\n")
+        }
     }
 }
