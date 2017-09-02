@@ -47,19 +47,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AuthenticationDelegate
         window?.rootViewController = rootVC
     }
     
-    private func logout()
-    {
-        do
-        {
-            try Auth.auth().signOut()
-        }
-        catch
-        {
-            print("\n\n\nSomething went wrong when logging out.\n\n\n")
-        }
-    }
-    
-    // AuthenticationDelegate functions
+    // AuthenticationDelegate methods
     func authenticationDidLogin()
     {
         setupRootVC()

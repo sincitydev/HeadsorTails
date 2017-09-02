@@ -8,17 +8,17 @@
 
 import Foundation
 import Firebase
-import FirebaseDatabase
 import FirebaseAuth
+import FirebaseDatabase
 
 class FirebaseManager
 {
     static let shared = FirebaseManager()
     
-    // needs to be a lazy var because when initializing
-    // Firebase complains that configure() hasn't been
-    // called when it acutally is being called in the
-    // AppDelegate
+    // ref property needs to be a lazy var because when initializing
+    // Firebase complains that configure() hasn't been called when it
+    // acutally is being called in the AppDelegate
+    
     lazy var ref: DatabaseReference = {
         return Database.database().reference()
     }()
@@ -28,5 +28,17 @@ class FirebaseManager
         let playerData = ["coins": player.coins] as [String : Any]
         
         ref.child("players").child(player.uid).setValue(playerData)
+    }
+    
+    func logout()
+    {
+        do
+        {
+            try Auth.auth().signOut()
+        }
+        catch
+        {
+            print("\n\n\nSomething went wrong when logging out\n\n\n")
+        }
     }
 }

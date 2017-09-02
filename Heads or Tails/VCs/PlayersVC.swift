@@ -11,6 +11,7 @@ import FirebaseAuth
 
 class PlayersVC: UIViewController
 {
+    private var firebaseManager = FirebaseManager()
     var delegate: AuthenticationDelegate?
     
     override func viewDidLoad()
@@ -26,7 +27,7 @@ class PlayersVC: UIViewController
         navigationController?.navigationBar.tintColor = .white
         navigationController?.navigationBar.barTintColor = UIColor(red:0.29, green:0.56, blue:0.89, alpha:1.0)
         
-        navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "logout"), style: .plain, target: self, action: #selector(logout))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "logout"), style: .plain, target: self, action: #selector(tappedLogout))
     }
     
     private func createAuthListener()
@@ -39,15 +40,15 @@ class PlayersVC: UIViewController
         }
     }
     
-    @objc private func logout()
+    @objc private func tappedLogout()
     {
-        do
-        {
-            try Auth.auth().signOut()
-        }
-        catch
-        {
-            print("\n\n\nSomething went wrong when logging out.\n\n\n")
-        }
+        let logoutVC = LogoutVC()
+        
+        present(logoutVC, animated: true, completion: nil)
+    }
+    
+    private func logout()
+    {
+        firebaseManager.logout()
     }
 }
