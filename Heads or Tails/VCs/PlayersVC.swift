@@ -35,7 +35,7 @@ class PlayersVC: UIViewController
         Auth.auth().addStateDidChangeListener { [weak self] (auth, user) in
             if user == nil
             {
-                self?.delegate?.authenticationDidLogout()
+                self?.delegate?.authenticationDidChange()
             }
         }
     }

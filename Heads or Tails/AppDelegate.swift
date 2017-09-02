@@ -48,12 +48,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AuthenticationDelegate
     }
     
     // AuthenticationDelegate methods
-    func authenticationDidLogin()
-    {
-        setupRootVC()
-    }
-    
-    func authenticationDidLogout()
+    func authenticationDidChange()
     {
         setupRootVC()
     }

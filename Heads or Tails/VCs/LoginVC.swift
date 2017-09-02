@@ -12,8 +12,7 @@ import FirebaseAuth
 
 protocol AuthenticationDelegate
 {
-    func authenticationDidLogin()
-    func authenticationDidLogout()
+    func authenticationDidChange()
 }
 
 // TODO: Looks like theres a similar code between the loginVC and signupVC
@@ -73,7 +72,7 @@ class LoginVC: UIViewController
                 }
                 else
                 {
-                    self?.delegate?.authenticationDidLogin()
+                    self?.delegate?.authenticationDidChange()
                 }
             }
         }

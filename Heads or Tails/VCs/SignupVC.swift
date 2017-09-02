@@ -68,7 +68,7 @@ class SignupVC: UIViewController {
                     let player = Player(uid: user.uid, coins: 100)
                     
                     self?.firebaseManager.saveNewPlayer(player)
-                    self?.delegate?.authenticationDidLogin()
+                    self?.delegate?.authenticationDidChange()
                 }
             }
         }
