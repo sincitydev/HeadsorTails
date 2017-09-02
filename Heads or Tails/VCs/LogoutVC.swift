@@ -15,6 +15,7 @@ class LogoutVC: UIViewController
     init()
     {
         super.init(nibName: nil, bundle: nil)
+        
         modalTransitionStyle = .crossDissolve
         modalPresentationStyle = .overFullScreen
     }

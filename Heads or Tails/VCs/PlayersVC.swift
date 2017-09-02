@@ -43,7 +43,6 @@ class PlayersVC: UIViewController
     @objc private func tappedLogout()
     {
         let logoutVC = LogoutVC()
-        
         present(logoutVC, animated: true, completion: nil)
     }
     

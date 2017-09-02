@@ -80,9 +80,6 @@ class SignupVC: UIViewController {
     private func showLoginError(_ message: String)
     {
         errorMessageLabel.text = message
-        
-        UIView.animate(withDuration: 0.2, animations: { [weak self] in
-            self?.errorMessageLabel.alpha = 1
-        })
+        errorMessageLabel.fadeIn(duration: 0.2)
     }
 }
