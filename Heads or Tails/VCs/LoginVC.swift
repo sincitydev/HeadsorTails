@@ -16,7 +16,7 @@ protocol AuthenticationDelegate
 }
 
 // TODO: Looks like theres a similar code between the loginVC and signupVC
-//       Is there anyway can not repeat that same code in both VCs?
+//       Is there anyway I can not repeat that same code in both VCs?
 
 class LoginVC: UIViewController
 {
@@ -25,6 +25,7 @@ class LoginVC: UIViewController
     @IBOutlet weak var passwordTextField: UITextField!
     
     var delegate: AuthenticationDelegate?
+    private var firebaseManager = FirebaseManager()
     
     var validInput: Bool
     {
@@ -65,7 +66,7 @@ class LoginVC: UIViewController
         
         if validInput
         {
-            Auth.auth().signIn(withEmail: email, password: password) { [weak self] (user, error) in
+            firebaseManager.login(email: email, password: password) { [weak self] (user, error) in
                 if let error = error, let authError = AuthErrorCode(rawValue: error._code)
                 {
                     self?.showLoginError(authError.description)
@@ -85,10 +86,7 @@ class LoginVC: UIViewController
     private func showLoginError(_ message: String)
     {
         errorMessageLabel.text = message
-        
-        UIView.animate(withDuration: 0.2, animations: { [weak self] in
-            self?.errorMessageLabel.alpha = 1
-        })
+        errorMessageLabel.fadeIn(duration: 0.2)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?)

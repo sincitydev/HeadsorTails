@@ -13,6 +13,7 @@
 		CA5D302A1F51079800430515 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CA5D30291F51079800430515 /* GoogleService-Info.plist */; };
 		CA6169FD1F5A88A8004FE5E7 /* LogoutVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA6169FC1F5A88A8004FE5E7 /* LogoutVC.swift */; };
 		CA6169FF1F5A8E3D004FE5E7 /* RoundedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA6169FE1F5A8E3D004FE5E7 /* RoundedButton.swift */; };
+		CA616A011F5A9411004FE5E7 /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA616A001F5A9411004FE5E7 /* UIView+Extension.swift */; };
 		CA6CAFE31F4FF8670004022F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA6CAFE21F4FF8670004022F /* AppDelegate.swift */; };
 		CA6CAFE81F4FF8670004022F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CA6CAFE61F4FF8670004022F /* Main.storyboard */; };
 		CA6CAFED1F4FF8670004022F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CA6CAFEB1F4FF8670004022F /* LaunchScreen.storyboard */; };
@@ -36,6 +37,7 @@
 		CA5D30291F51079800430515 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		CA6169FC1F5A88A8004FE5E7 /* LogoutVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogoutVC.swift; sourceTree = "<group>"; };
 		CA6169FE1F5A8E3D004FE5E7 /* RoundedButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoundedButton.swift; sourceTree = "<group>"; };
+		CA616A001F5A9411004FE5E7 /* UIView+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Extension.swift"; sourceTree = "<group>"; };
 		CA6CAFDF1F4FF8670004022F /* Heads or Tails.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Heads or Tails.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CA6CAFE21F4FF8670004022F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CA6CAFE71F4FF8670004022F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -157,6 +159,7 @@
 			children = (
 				CADF9AD21F56541B00FEB4E6 /* AuthErrorCode+Extension.swift */,
 				CADF9AD31F56541B00FEB4E6 /* UIStoryboard+Extension.swift */,
+				CA616A001F5A9411004FE5E7 /* UIView+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -288,6 +291,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CA616A011F5A9411004FE5E7 /* UIView+Extension.swift in Sources */,
 				CADF9AD51F56541B00FEB4E6 /* AuthErrorCode+Extension.swift in Sources */,
 				CA5A81E11F537908009957FF /* SignupVC.swift in Sources */,
 				CAF42B5C1F5644EF0070F447 /* PlayersVC.swift in Sources */,

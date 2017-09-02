@@ -23,6 +23,11 @@ class FirebaseManager
         return Database.database().reference()
     }()
     
+    func login(email: String, password: String, authCallback: AuthResultCallback?)
+    {
+        Auth.auth().signIn(withEmail: email, password: password, completion: authCallback)
+    }
+    
     func saveNewPlayer(_ player: Player)
     {
         let playerData = ["coins": player.coins] as [String : Any]
