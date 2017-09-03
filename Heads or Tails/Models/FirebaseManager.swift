@@ -11,9 +11,22 @@ import Firebase
 import FirebaseAuth
 import FirebaseDatabase
 
+enum AuthUsernameError
+{
+    case alreadyInUse
+    case invalidFirebaseData
+}
+
+struct FirebasePath
+{
+    static let players = "players"
+}
+
 class FirebaseManager
 {
     static let shared = FirebaseManager()
+    
+    typealias AuthUsernameCallback = (AuthUsernameError) -> Void
     
     // ref property needs to be a lazy var because when initializing
     // Firebase complains that configure() hasn't been called when it
@@ -22,6 +35,27 @@ class FirebaseManager
     lazy var ref: DatabaseReference = {
         return Database.database().reference()
     }()
+    
+    func checkUsername(_ newPlayerUsername: String, completion: @escaping (AuthUsernameError?) -> Void)
+    {
+        ref.child(FirebasePath.players).observeSingleEvent(of: .value, with: { (snapshot) in
+            guard let playerInfos = snapshot.value as? [String: Any] else {
+                completion(.invalidFirebaseData)
+                return
+            }
+            
+            if playerInfos.contains(where: { (playerInfo: (takenUsername: String, value: Any)) -> Bool in
+                return playerInfo.takenUsername == newPlayerUsername
+            })
+            {
+                completion(.alreadyInUse)
+            }
+            else
+            {
+                completion(nil)
+            }
+        })
+    }
     
     func login(email: String, password: String, authCallback: AuthResultCallback?)
     {
@@ -32,7 +66,7 @@ class FirebaseManager
     {
         let playerData = ["coins": player.coins] as [String : Any]
         
-        ref.child("players").child(player.uid).setValue(playerData)
+        ref.child(FirebasePath.players).child(player.username).setValue(playerData)
     }
     
     func logout()

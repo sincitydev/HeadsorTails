@@ -75,6 +75,7 @@
                         <constraint firstAttribute="trailing" secondItem="Eet-7k-Fk2" secondAttribute="trailing" id="007-hB-aO8"/>
                         <constraint firstItem="Eet-7k-Fk2" firstAttribute="top" secondItem="46u-ZI-cNc" secondAttribute="bottom" id="08i-U7-340"/>
                         <constraint firstAttribute="trailing" secondItem="46u-ZI-cNc" secondAttribute="trailing" id="1vZ-5p-4gk"/>
+                        <constraint firstAttribute="height" constant="219" id="2CV-iN-ZCc"/>
                         <constraint firstItem="46u-ZI-cNc" firstAttribute="leading" secondItem="4El-4E-IwL" secondAttribute="leading" id="9CI-jH-6sE"/>
                         <constraint firstItem="ixh-dS-jVZ" firstAttribute="centerX" secondItem="4El-4E-IwL" secondAttribute="centerX" id="9Ws-LN-EJC"/>
                         <constraint firstAttribute="bottom" secondItem="Eet-7k-Fk2" secondAttribute="bottom" id="CUw-ah-Srr"/>
@@ -85,6 +86,7 @@
                         <constraint firstItem="I6L-5Z-ahO" firstAttribute="top" secondItem="46u-ZI-cNc" secondAttribute="bottom" id="NgW-Xe-uNg"/>
                         <constraint firstItem="46u-ZI-cNc" firstAttribute="top" secondItem="A4G-Sk-gzG" secondAttribute="bottom" constant="20" id="PIG-qh-Kih"/>
                         <constraint firstItem="ixh-dS-jVZ" firstAttribute="top" secondItem="4El-4E-IwL" secondAttribute="top" constant="28" id="Ske-FY-jT0"/>
+                        <constraint firstAttribute="width" constant="301" id="abP-FP-uyN"/>
                         <constraint firstItem="A4G-Sk-gzG" firstAttribute="top" secondItem="ixh-dS-jVZ" secondAttribute="bottom" constant="25" id="akV-ER-xJN"/>
                         <constraint firstItem="Eet-7k-Fk2" firstAttribute="leading" secondItem="I6L-5Z-ahO" secondAttribute="trailing" id="gAO-LG-Nj0"/>
                         <constraint firstItem="I6L-5Z-ahO" firstAttribute="centerX" secondItem="4El-4E-IwL" secondAttribute="centerX" id="men-la-9M4"/>
@@ -100,10 +102,8 @@
             </subviews>
             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.5" colorSpace="calibratedRGB"/>
             <constraints>
-                <constraint firstItem="4El-4E-IwL" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="37" id="EUt-Wg-E7U"/>
-                <constraint firstItem="4El-4E-IwL" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="224" id="JjD-Yc-9X2"/>
-                <constraint firstAttribute="trailing" secondItem="4El-4E-IwL" secondAttribute="trailing" constant="37" id="Kel-F4-O2p"/>
-                <constraint firstAttribute="bottom" secondItem="4El-4E-IwL" secondAttribute="bottom" constant="224" id="jkf-KA-fsN"/>
+                <constraint firstItem="4El-4E-IwL" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="82m-a4-goj"/>
+                <constraint firstItem="4El-4E-IwL" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="v3Q-Eo-eZi"/>
             </constraints>
         </view>
     </objects>

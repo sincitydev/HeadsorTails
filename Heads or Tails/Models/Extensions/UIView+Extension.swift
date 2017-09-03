@@ -19,4 +19,11 @@ extension UIView
             self.alpha = 1
         }
     }
+    
+    func fadeOut(duration: TimeInterval)
+    {
+        UIView.animate(withDuration: duration) { 
+            self.alpha = 0
+        }
+    }
 }

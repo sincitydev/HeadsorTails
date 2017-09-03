@@ -10,9 +10,10 @@ import UIKit
 import Firebase
 import FirebaseAuth
 
-class SignupVC: UIViewController {
+class SignupVC: UIViewController, UITextFieldDelegate {
 
     @IBOutlet weak var errorMessageLabel: UILabel!
+    @IBOutlet weak var usernameTextField: UITextField!
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
     
@@ -22,10 +23,11 @@ class SignupVC: UIViewController {
     
     var validInput: Bool
     {
+        let username = usernameTextField.text ?? ""
         let email = emailTextField.text ?? ""
         let password = passwordTextField.text ?? ""
         
-        if email.isEmpty || password.isEmpty
+        if email.isEmpty || password.isEmpty || username.isEmpty
         {
             return false
         }
@@ -39,6 +41,7 @@ class SignupVC: UIViewController {
     {
         super.viewDidLoad()
         setupViews()
+        usernameTextField.delegate = self
     }
     
     private func setupViews()
@@ -50,6 +53,7 @@ class SignupVC: UIViewController {
     
     @IBAction func signup()
     {
+        let username = usernameTextField.text ?? ""
         let email = emailTextField.text ?? ""
         let password = passwordTextField.text ?? ""
         
@@ -65,7 +69,7 @@ class SignupVC: UIViewController {
                 {
                     guard let user = user else { return }
                     
-                    let player = Player(uid: user.uid, coins: 100)
+                    let player = Player(uid: user.uid, username: username, coins: 100)
                     
                     self?.firebaseManager.saveNewPlayer(player)
                     self?.delegate?.authenticationDidChange()
@@ -77,9 +81,34 @@ class SignupVC: UIViewController {
             showLoginError("Invalid input")
         }
     }
+    
     private func showLoginError(_ message: String)
     {
         errorMessageLabel.text = message
         errorMessageLabel.fadeIn(duration: 0.2)
+    }
+    
+    private func hideLoginError()
+    {
+        errorMessageLabel.text = ""
+        errorMessageLabel.fadeOut(duration: 0.2)
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField, reason: UITextFieldDidEndEditingReason)
+    {
+        firebaseManager.checkUsername(usernameTextField.text ?? "") { [weak self] (authUsernameError) in
+            if let authUsernameError = authUsernameError
+            {
+                switch authUsernameError
+                {
+                case .alreadyInUse: self?.showLoginError("Username already in use")
+                case .invalidFirebaseData: self?.showLoginError("Something went wrong with firebase")
+                }
+            }
+            else
+            {
+                self?.hideLoginError()
+            }
+        }
     }
 }

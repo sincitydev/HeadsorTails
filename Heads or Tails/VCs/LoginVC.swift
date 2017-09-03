@@ -89,6 +89,12 @@ class LoginVC: UIViewController
         errorMessageLabel.fadeIn(duration: 0.2)
     }
     
+    private func hideLoginError()
+    {
+        errorMessageLabel.text = ""
+        errorMessageLabel.fadeOut(duration: 0.2)
+    }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?)
     {
         if let signupVC = segue.destination as? SignupVC
