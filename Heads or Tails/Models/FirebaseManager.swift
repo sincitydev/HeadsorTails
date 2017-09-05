@@ -11,20 +11,25 @@ import Firebase
 import FirebaseAuth
 import FirebaseDatabase
 
-extension Notification.Name
-{
-    static let authenticationDidChange = Notification.Name.init("authenticationDidChange")
-}
-
 enum AuthUsernameError
 {
     case alreadyInUse
     case invalidFirebaseData
+    
+    var description: String
+    {
+        switch self
+        {
+        case .alreadyInUse: return "Username already in use"
+        case .invalidFirebaseData: return "Invalid Firebase data returned"
+        }
+    }
 }
 
-struct FirebasePath
+struct FirebaseLiterals
 {
     static let players = "players"
+    static let coins = "coins"
 }
 
 class FirebaseManager
@@ -42,9 +47,29 @@ class FirebaseManager
         return Database.database().reference()
     }()
     
+    // MARK: - Login and logout methods
+    
+    func login(email: String, password: String, authCallback: AuthResultCallback?)
+    {
+        Auth.auth().signIn(withEmail: email, password: password, completion: authCallback)
+    }
+    
+    func logout()
+    {
+        do
+        {
+            try Auth.auth().signOut()
+            notificationCenter.post(name: .authenticationDidChange, object: nil)
+        }
+        catch
+        {
+            print("\n\n\nSomething went wrong when logging out\n\n\n")
+        }
+    }
+    
     func checkUsername(_ newPlayerUsername: String, completion: @escaping (AuthUsernameError?) -> Void)
     {
-        ref.child(FirebasePath.players).observeSingleEvent(of: .value, with: { (snapshot) in
+        ref.child(FirebaseLiterals.players).observeSingleEvent(of: .value, with: { (snapshot) in
             guard let playerInfos = snapshot.value as? [String: Any] else {
                 completion(.invalidFirebaseData)
                 return
@@ -63,28 +88,12 @@ class FirebaseManager
         })
     }
     
-    func login(email: String, password: String, authCallback: AuthResultCallback?)
-    {
-        Auth.auth().signIn(withEmail: email, password: password, completion: authCallback)
-    }
+    // MARK: - Saving and fetching data methods
     
     func saveNewPlayer(_ player: Player)
     {
-        let playerData = ["coins": player.coins] as [String : Any]
+        let playerData = [FirebaseLiterals.coins: player.coins] as [String : Any]
         
-        ref.child(FirebasePath.players).child(player.username).setValue(playerData)
-    }
-    
-    func logout()
-    {
-        do
-        {
-            try Auth.auth().signOut()
-            notificationCenter.post(name: .authenticationDidChange, object: nil)
-        }
-        catch
-        {
-            print("\n\n\nSomething went wrong when logging out\n\n\n")
-        }
+        ref.child(FirebaseLiterals.players).child(player.username).setValue(playerData)
     }
 }

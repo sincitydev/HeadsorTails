@@ -23,6 +23,7 @@
 		CAF42B581F56433C0070F447 /* FirebaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAF42B571F56433C0070F447 /* FirebaseManager.swift */; };
 		CAF42B5A1F5643820070F447 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAF42B591F5643820070F447 /* Player.swift */; };
 		CAF42B5C1F5644EF0070F447 /* PlayersVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAF42B5B1F5644EF0070F447 /* PlayersVC.swift */; };
+		CAF4CAD51F5E535800BCD410 /* NotificationName+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAF4CAD41F5E535800BCD410 /* NotificationName+Extension.swift */; };
 		CAF5E9831F5265E400725B04 /* Authentication.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CAF5E9821F5265E400725B04 /* Authentication.storyboard */; };
 		CC8FBD99B214440EB16A326C /* Pods_Heads_or_Tails.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69834EBE1B33168DDA8242AB /* Pods_Heads_or_Tails.framework */; };
 /* End PBXBuildFile section */
@@ -48,6 +49,7 @@
 		CAF42B571F56433C0070F447 /* FirebaseManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirebaseManager.swift; sourceTree = "<group>"; };
 		CAF42B591F5643820070F447 /* Player.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		CAF42B5B1F5644EF0070F447 /* PlayersVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayersVC.swift; sourceTree = "<group>"; };
+		CAF4CAD41F5E535800BCD410 /* NotificationName+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NotificationName+Extension.swift"; sourceTree = "<group>"; };
 		CAF5E9821F5265E400725B04 /* Authentication.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Authentication.storyboard; sourceTree = "<group>"; };
 		DA14FA313507141B3563585E /* Pods-Heads or Tails.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Heads or Tails.release.xcconfig"; path = "Pods/Target Support Files/Pods-Heads or Tails/Pods-Heads or Tails.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -157,9 +159,10 @@
 		CADF9AD11F56541B00FEB4E6 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				CADF9AD21F56541B00FEB4E6 /* AuthErrorCode+Extension.swift */,
+				CAF4CAD41F5E535800BCD410 /* NotificationName+Extension.swift */,
 				CADF9AD31F56541B00FEB4E6 /* UIStoryboard+Extension.swift */,
 				CA616A001F5A9411004FE5E7 /* UIView+Extension.swift */,
+				CADF9AD21F56541B00FEB4E6 /* AuthErrorCode+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -293,6 +296,7 @@
 			files = (
 				CA616A011F5A9411004FE5E7 /* UIView+Extension.swift in Sources */,
 				CADF9AD51F56541B00FEB4E6 /* AuthErrorCode+Extension.swift in Sources */,
+				CAF4CAD51F5E535800BCD410 /* NotificationName+Extension.swift in Sources */,
 				CA5A81E11F537908009957FF /* SignupVC.swift in Sources */,
 				CAF42B5C1F5644EF0070F447 /* PlayersVC.swift in Sources */,
 				CA6169FD1F5A88A8004FE5E7 /* LogoutVC.swift in Sources */,

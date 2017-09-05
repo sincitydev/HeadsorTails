@@ -99,11 +99,7 @@ class SignupVC: UIViewController, UITextFieldDelegate {
         firebaseManager.checkUsername(usernameTextField.text ?? "") { [weak self] (authUsernameError) in
             if let authUsernameError = authUsernameError
             {
-                switch authUsernameError
-                {
-                case .alreadyInUse: self?.showLoginError("Username already in use")
-                case .invalidFirebaseData: self?.showLoginError("Something went wrong with firebase")
-                }
+                self?.showLoginError(authUsernameError.description)
             }
             else
             {

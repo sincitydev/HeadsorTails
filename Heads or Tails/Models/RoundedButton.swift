@@ -14,7 +14,13 @@ class RoundedButton: UIButton
     @IBInspectable
     var cornerRadius: CGFloat
     {
-        get { return self.layer.cornerRadius }
-        set { self.layer.cornerRadius = newValue }
+        get
+        {
+            return self.layer.cornerRadius
+        }
+        set
+        {
+            self.layer.cornerRadius = newValue
+        }
     }
 }
