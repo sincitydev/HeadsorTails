@@ -42,7 +42,7 @@
 		CA6CAFE71F4FF8670004022F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		CA6CAFEC1F4FF8670004022F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		CA8EC3ED1F5A2ACA00C1F6BD /* LogoutVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LogoutVC.xib; sourceTree = "<group>"; };
-		CA99889C1F5BD14800848DEF /* RoundedButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RoundedButton.swift; path = Models/RoundedButton.swift; sourceTree = "<group>"; };
+		CA99889C1F5BD14800848DEF /* RoundedButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoundedButton.swift; sourceTree = "<group>"; };
 		CADF9AD21F56541B00FEB4E6 /* AuthErrorCode+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AuthErrorCode+Extension.swift"; sourceTree = "<group>"; };
 		CADF9AD31F56541B00FEB4E6 /* UIStoryboard+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIStoryboard+Extension.swift"; sourceTree = "<group>"; };
 		CAF42B571F56433C0070F447 /* FirebaseManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirebaseManager.swift; sourceTree = "<group>"; };
@@ -86,6 +86,7 @@
 			children = (
 				CAF42B591F5643820070F447 /* Player.swift */,
 				CAF42B571F56433C0070F447 /* FirebaseManager.swift */,
+				CA99889C1F5BD14800848DEF /* RoundedButton.swift */,
 				CADF9AD11F56541B00FEB4E6 /* Extensions */,
 			);
 			path = Models;
@@ -146,7 +147,6 @@
 			children = (
 				CA6CAFE21F4FF8670004022F /* AppDelegate.swift */,
 				CA5D30211F508FA600430515 /* Models */,
-				CA99889C1F5BD14800848DEF /* RoundedButton.swift */,
 				CA5D30251F508FA600430515 /* VCs */,
 				CA5D30261F508FA600430515 /* Views */,
 				CA5D30221F508FA600430515 /* Supporting Files */,

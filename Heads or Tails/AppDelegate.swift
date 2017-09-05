@@ -18,6 +18,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AuthenticationDelegate
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool
     {
         FirebaseApp.configure()
+        setAppearance()
         setupRootVC()
         
         return true
@@ -45,6 +46,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AuthenticationDelegate
         }
         
         window?.rootViewController = rootVC
+    }
+    
+    private func setAppearance()
+    {
+        let appNavigationBar = UINavigationBar.appearance()
+        
+        appNavigationBar.barStyle = .black
+        appNavigationBar.tintColor = .white
+        appNavigationBar.barTintColor = UIColor(red:0.29, green:0.56, blue:0.89, alpha:1.0)
     }
     
     // AuthenticationDelegate methods
