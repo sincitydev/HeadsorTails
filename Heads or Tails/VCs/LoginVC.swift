@@ -10,11 +10,6 @@ import UIKit
 import Firebase
 import FirebaseAuth
 
-protocol AuthenticationDelegate
-{
-    func authenticationDidChange()
-}
-
 // TODO: Looks like theres a similar code between the loginVC and signupVC
 //       Is there anyway I can not repeat that same code in both VCs?
 
@@ -24,8 +19,8 @@ class LoginVC: UIViewController
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
     
-    var delegate: AuthenticationDelegate?
     private var firebaseManager = FirebaseManager()
+    private let notificationCenter = NotificationCenter.default
     
     var validInput: Bool
     {
@@ -49,12 +44,7 @@ class LoginVC: UIViewController
     }
     
     private func setupViews()
-    {
-        navigationController?.navigationBar.barStyle = .black
-        navigationController?.navigationBar.tintColor = .white
-        navigationController?.navigationBar.barTintColor = UIColor(red:0.29, green:0.56, blue:0.89, alpha:1.0)
-        navigationItem.backBarButtonItem = UIBarButtonItem(title: "Back", style: .plain, target: nil, action: nil)
-        
+    {        
         errorMessageLabel.alpha = 0
     }
     
@@ -73,7 +63,7 @@ class LoginVC: UIViewController
                 }
                 else
                 {
-                    self?.delegate?.authenticationDidChange()
+                    self?.notificationCenter.post(name: .authenticationDidChange, object: nil)
                 }
             }
         }
@@ -93,13 +83,5 @@ class LoginVC: UIViewController
     {
         errorMessageLabel.text = ""
         errorMessageLabel.fadeOut(duration: 0.2)
-    }
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?)
-    {
-        if let signupVC = segue.destination as? SignupVC
-        {
-            signupVC.delegate = delegate
-        }
     }
 }

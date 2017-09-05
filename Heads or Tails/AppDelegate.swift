@@ -11,41 +11,24 @@ import Firebase
 import FirebaseAuth
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate, AuthenticationDelegate
+class AppDelegate: UIResponder, UIApplicationDelegate
 {   
     var window: UIWindow?
+    let notificationCenter = NotificationCenter.default
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool
     {
         FirebaseApp.configure()
+        addNotificationObservers()
         setAppearance()
         setupRootVC()
         
         return true
     }
     
-    private func setupRootVC()
+    private func addNotificationObservers()
     {
-        var rootVC: UIViewController!
-        
-        if let _ = Auth.auth().currentUser
-        {
-            let navVC = UIStoryboard.main.instantiateInitialViewController() as! UINavigationController
-            let playerVC = navVC.viewControllers.first as! PlayersVC
-            
-            playerVC.delegate = self
-            rootVC = navVC
-        }
-        else
-        {
-            let navVC = UIStoryboard.auth.instantiateInitialViewController() as! UINavigationController
-            let loginVC = navVC.viewControllers.first as! LoginVC
-            
-            loginVC.delegate = self
-            rootVC = navVC
-        }
-        
-        window?.rootViewController = rootVC
+        notificationCenter.addObserver(self, selector: #selector(setupRootVC), name: .authenticationDidChange, object: nil)
     }
     
     private func setAppearance()
@@ -57,10 +40,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate, AuthenticationDelegate
         appNavigationBar.barTintColor = UIColor(red:0.29, green:0.56, blue:0.89, alpha:1.0)
     }
     
-    // AuthenticationDelegate methods
-    func authenticationDidChange()
+    @objc private func setupRootVC()
     {
-        setupRootVC()
+        var rootVC: UIViewController!
+        
+        if let _ = Auth.auth().currentUser
+        {
+            let navVC = UIStoryboard.main.instantiateInitialViewController() as! UINavigationController
+
+            rootVC = navVC
+        }
+        else
+        {
+            let navVC = UIStoryboard.auth.instantiateInitialViewController() as! UINavigationController
+            
+            rootVC = navVC
+        }
+        
+        window?.rootViewController = rootVC
     }
 }
 

@@ -18,8 +18,7 @@ class SignupVC: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var passwordTextField: UITextField!
     
     private let firebaseManager = FirebaseManager.shared
-    
-    var delegate: AuthenticationDelegate?
+    private let notificationCenter = NotificationCenter.default
     
     var validInput: Bool
     {
@@ -72,7 +71,8 @@ class SignupVC: UIViewController, UITextFieldDelegate {
                     let player = Player(uid: user.uid, username: username, coins: 100)
                     
                     self?.firebaseManager.saveNewPlayer(player)
-                    self?.delegate?.authenticationDidChange()
+                    self?.notificationCenter.post(name: .authenticationDidChange, object: nil)
+                    
                 }
             }
         }

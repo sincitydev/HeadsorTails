@@ -11,6 +11,11 @@ import Firebase
 import FirebaseAuth
 import FirebaseDatabase
 
+extension Notification.Name
+{
+    static let authenticationDidChange = Notification.Name.init("authenticationDidChange")
+}
+
 enum AuthUsernameError
 {
     case alreadyInUse
@@ -25,6 +30,7 @@ struct FirebasePath
 class FirebaseManager
 {
     static let shared = FirebaseManager()
+    let notificationCenter = NotificationCenter.default
     
     typealias AuthUsernameCallback = (AuthUsernameError) -> Void
     
@@ -74,6 +80,7 @@ class FirebaseManager
         do
         {
             try Auth.auth().signOut()
+            notificationCenter.post(name: .authenticationDidChange, object: nil)
         }
         catch
         {
