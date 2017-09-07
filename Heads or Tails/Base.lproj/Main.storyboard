@@ -6,6 +6,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -37,17 +38,50 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="UMN-Y4-9rm">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="72" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="UMN-Y4-9rm">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="playerCell" id="vSR-FE-SSt">
-                                        <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="playerCell" rowHeight="72" id="vSR-FE-SSt" customClass="PlayerCell" customModule="Heads_or_Tails" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="375" height="72"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="vSR-FE-SSt" id="0FD-Ng-DTj">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="71.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="username" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="W5C-lN-uO2">
+                                                    <rect key="frame" x="16" y="23.5" width="96.5" height="24"/>
+                                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="300" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="A9A-Hw-eYQ">
+                                                    <rect key="frame" x="297" y="23" width="40" height="24"/>
+                                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="coin" translatesAutoresizingMaskIntoConstraints="NO" id="XnG-zL-GsW">
+                                                    <rect key="frame" x="342" y="26" width="20" height="20"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="20" id="MPv-ri-DQ9"/>
+                                                        <constraint firstAttribute="height" constant="20" id="NMY-Zp-Ct0"/>
+                                                    </constraints>
+                                                </imageView>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="XnG-zL-GsW" firstAttribute="centerY" secondItem="0FD-Ng-DTj" secondAttribute="centerY" id="3Ue-qc-bTx"/>
+                                                <constraint firstItem="A9A-Hw-eYQ" firstAttribute="centerY" secondItem="0FD-Ng-DTj" secondAttribute="centerY" id="FrY-FQ-tG0"/>
+                                                <constraint firstItem="XnG-zL-GsW" firstAttribute="leading" secondItem="A9A-Hw-eYQ" secondAttribute="trailing" constant="5" id="PFJ-dP-jrI"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="XnG-zL-GsW" secondAttribute="trailing" constant="5" id="REh-F0-esi"/>
+                                                <constraint firstItem="W5C-lN-uO2" firstAttribute="leading" secondItem="0FD-Ng-DTj" secondAttribute="leadingMargin" constant="8" id="ceI-Wf-16C"/>
+                                                <constraint firstItem="W5C-lN-uO2" firstAttribute="centerY" secondItem="0FD-Ng-DTj" secondAttribute="centerY" id="gdt-Dl-ky7"/>
+                                            </constraints>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="coins" destination="A9A-Hw-eYQ" id="d8P-Rp-Mdu"/>
+                                            <outlet property="usernameLabel" destination="W5C-lN-uO2" id="Vnp-9N-IOV"/>
+                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
@@ -77,6 +111,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="coin" width="256" height="256"/>
         <image name="logout" width="13" height="20"/>
     </resources>
 </document>

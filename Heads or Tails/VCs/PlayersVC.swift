@@ -59,9 +59,12 @@ extension PlayersVC: UITableViewDataSource
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
     {
-        let cell = tableView.dequeueReusableCell(withIdentifier: UIStoryboard.playerCell, for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: UIStoryboard.playerCell, for: indexPath) as! PlayerCell
+        let player = players[indexPath.row]
         
-        cell.textLabel?.text = players[indexPath.row].username
+        cell.usernameLabel.text = player.username
+        cell.coins.text = "\(player.coins)" 
+        
         
         return cell
     }
