@@ -11,7 +11,6 @@
 		CA5243D61F60FCEE001BC63A /* PlayerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA5243D51F60FCEE001BC63A /* PlayerCell.swift */; };
 		CA5A81E11F537908009957FF /* SignupVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA5A81E01F537908009957FF /* SignupVC.swift */; };
 		CA5D30271F508FA600430515 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CA5D30231F508FA600430515 /* Assets.xcassets */; };
-		CA5D302A1F51079800430515 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CA5D30291F51079800430515 /* GoogleService-Info.plist */; };
 		CA6169FD1F5A88A8004FE5E7 /* LogoutVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA6169FC1F5A88A8004FE5E7 /* LogoutVC.swift */; };
 		CA616A011F5A9411004FE5E7 /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA616A001F5A9411004FE5E7 /* UIView+Extension.swift */; };
 		CA6CAFE31F4FF8670004022F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA6CAFE21F4FF8670004022F /* AppDelegate.swift */; };
@@ -37,7 +36,6 @@
 		CA5A81E01F537908009957FF /* SignupVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignupVC.swift; sourceTree = "<group>"; };
 		CA5D30231F508FA600430515 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		CA5D30241F508FA600430515 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		CA5D30291F51079800430515 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		CA6169FC1F5A88A8004FE5E7 /* LogoutVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogoutVC.swift; sourceTree = "<group>"; };
 		CA616A001F5A9411004FE5E7 /* UIView+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Extension.swift"; sourceTree = "<group>"; };
 		CA6CAFDF1F4FF8670004022F /* Heads or Tails.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Heads or Tails.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -102,7 +100,6 @@
 			children = (
 				CA5D30231F508FA600430515 /* Assets.xcassets */,
 				CA5D30241F508FA600430515 /* Info.plist */,
-				CA5D30291F51079800430515 /* GoogleService-Info.plist */,
 			);
 			path = "Supporting Files";
 			sourceTree = "<group>";
@@ -236,7 +233,6 @@
 				CAF5E9831F5265E400725B04 /* Authentication.storyboard in Resources */,
 				CA6CAFED1F4FF8670004022F /* LaunchScreen.storyboard in Resources */,
 				CA8EC3EE1F5A2ACA00C1F6BD /* LogoutVC.xib in Resources */,
-				CA5D302A1F51079800430515 /* GoogleService-Info.plist in Resources */,
 				CA5D30271F508FA600430515 /* Assets.xcassets in Resources */,
 				CA6CAFE81F4FF8670004022F /* Main.storyboard in Resources */,
 			);
