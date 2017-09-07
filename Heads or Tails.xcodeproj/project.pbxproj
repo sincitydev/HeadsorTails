@@ -18,6 +18,7 @@
 		CA6CAFED1F4FF8670004022F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CA6CAFEB1F4FF8670004022F /* LaunchScreen.storyboard */; };
 		CA8EC3EE1F5A2ACA00C1F6BD /* LogoutVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = CA8EC3ED1F5A2ACA00C1F6BD /* LogoutVC.xib */; };
 		CA99889D1F5BD14800848DEF /* RoundedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA99889C1F5BD14800848DEF /* RoundedButton.swift */; };
+		CA9CDFFA1F61D44E00A6006D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CA9CDFF91F61D44E00A6006D /* GoogleService-Info.plist */; };
 		CADF9AD51F56541B00FEB4E6 /* AuthErrorCode+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CADF9AD21F56541B00FEB4E6 /* AuthErrorCode+Extension.swift */; };
 		CADF9AD61F56541B00FEB4E6 /* UIStoryboard+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CADF9AD31F56541B00FEB4E6 /* UIStoryboard+Extension.swift */; };
 		CAF42B581F56433C0070F447 /* FirebaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAF42B571F56433C0070F447 /* FirebaseManager.swift */; };
@@ -44,6 +45,7 @@
 		CA6CAFEC1F4FF8670004022F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		CA8EC3ED1F5A2ACA00C1F6BD /* LogoutVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LogoutVC.xib; sourceTree = "<group>"; };
 		CA99889C1F5BD14800848DEF /* RoundedButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoundedButton.swift; sourceTree = "<group>"; };
+		CA9CDFF91F61D44E00A6006D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		CADF9AD21F56541B00FEB4E6 /* AuthErrorCode+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AuthErrorCode+Extension.swift"; sourceTree = "<group>"; };
 		CADF9AD31F56541B00FEB4E6 /* UIStoryboard+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIStoryboard+Extension.swift"; sourceTree = "<group>"; };
 		CAF42B571F56433C0070F447 /* FirebaseManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirebaseManager.swift; sourceTree = "<group>"; };
@@ -100,6 +102,7 @@
 			children = (
 				CA5D30231F508FA600430515 /* Assets.xcassets */,
 				CA5D30241F508FA600430515 /* Info.plist */,
+				CA9CDFF91F61D44E00A6006D /* GoogleService-Info.plist */,
 			);
 			path = "Supporting Files";
 			sourceTree = "<group>";
@@ -235,6 +238,7 @@
 				CA8EC3EE1F5A2ACA00C1F6BD /* LogoutVC.xib in Resources */,
 				CA5D30271F508FA600430515 /* Assets.xcassets in Resources */,
 				CA6CAFE81F4FF8670004022F /* Main.storyboard in Resources */,
+				CA9CDFFA1F61D44E00A6006D /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
