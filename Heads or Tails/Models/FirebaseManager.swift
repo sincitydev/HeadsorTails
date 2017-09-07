@@ -29,6 +29,8 @@ enum AuthUsernameError
 struct FirebaseLiterals
 {
     static let players = "players"
+    static let uid = "uid"
+    static let username = "username"
     static let coins = "coins"
 }
 
@@ -71,7 +73,7 @@ class FirebaseManager
     {
         ref.child(FirebaseLiterals.players).observeSingleEvent(of: .value, with: { (snapshot) in
             guard let playerInfos = snapshot.value as? [String: Any] else {
-                completion(.invalidFirebaseData)
+                completion(nil)
                 return
             }
             
@@ -92,8 +94,32 @@ class FirebaseManager
     
     func saveNewPlayer(_ player: Player)
     {
-        let playerData = [FirebaseLiterals.coins: player.coins] as [String : Any]
+        let playerData = [FirebaseLiterals.uid: player.uid,
+                          FirebaseLiterals.username: player.username,
+                          FirebaseLiterals.coins: player.coins] as [String : Any]
         
         ref.child(FirebaseLiterals.players).child(player.username).setValue(playerData)
+    }
+    
+    func fetchPlayers(completion: @escaping ([Player]?, Error?) -> Void)
+    {
+        ref.child(FirebaseLiterals.players).observeSingleEvent(of: .value, with: { (snapshot) in
+            if let firebasePlayers = snapshot.value as? [String: Any]
+            {
+                var players: [Player] = []
+                
+                firebasePlayers.forEach({ (username: String, player: Any) in
+                    guard let playerInfo = player as? [String: Any] else { return }
+                    if let player = Player(playerInfo)
+                    {
+                        players.append(player)
+                    }
+                })
+                
+                completion(players, nil)
+            }
+        }) { (error) in
+            completion(nil, error)
+        }
     }
 }

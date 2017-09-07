@@ -13,4 +13,5 @@ extension UIStoryboard
 {
     static let main = UIStoryboard.init(name: "Main", bundle: nil)
     static let auth = UIStoryboard.init(name: "Authentication", bundle: nil)
+    static let playerCell = "playerCell"
 }

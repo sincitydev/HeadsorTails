@@ -36,7 +36,29 @@
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="UMN-Y4-9rm">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="playerCell" id="vSR-FE-SSt">
+                                        <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="vSR-FE-SSt" id="0FD-Ng-DTj">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                            </tableView>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="UMN-Y4-9rm" secondAttribute="bottom" id="CxS-cN-SKZ"/>
+                            <constraint firstAttribute="trailing" secondItem="UMN-Y4-9rm" secondAttribute="trailing" id="Fxo-We-JDM"/>
+                            <constraint firstItem="UMN-Y4-9rm" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="uxG-nf-b8m"/>
+                            <constraint firstItem="UMN-Y4-9rm" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="yv2-Pb-oAL"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Players" id="Agr-9r-Nx8">
                         <barButtonItem key="leftBarButtonItem" image="logout" id="FZL-gh-V2H">
@@ -45,10 +67,13 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <outlet property="playersTableView" destination="UMN-Y4-9rm" id="uGI-KP-lHa"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-12" y="123"/>
+            <point key="canvasLocation" x="-12" y="122.78860569715144"/>
         </scene>
     </scenes>
     <resources>
