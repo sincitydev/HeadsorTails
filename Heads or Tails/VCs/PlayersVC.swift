@@ -20,6 +20,7 @@ class PlayersVC: UIViewController
     {
         super.viewDidLoad()
         playersTableView.dataSource = self
+        playersTableView.delegate = self
         fetchPlayers()
     }
     
@@ -49,23 +50,57 @@ extension PlayersVC: UITableViewDataSource
 {
     func numberOfSections(in tableView: UITableView) -> Int
     {
-        return 1
+        return 2
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
     {
-        return players.count
+        if players.count == 0 && section == 1
+        {
+            return 1
+        }
+        else if section == 0
+        {
+            return players.count
+        }
+        
+        return 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
     {
-        let cell = tableView.dequeueReusableCell(withIdentifier: UIStoryboard.playerCell, for: indexPath) as! PlayerCell
-        let player = players[indexPath.row]
+        if indexPath.section == 0
+        {
+            let cell = tableView.dequeueReusableCell(withIdentifier: UIStoryboard.playerCell, for: indexPath) as! PlayerCell
+            let player = players[indexPath.row]
+            
+            cell.usernameLabel.text = player.username
+            cell.coins.text = "\(player.coins)"
+            
+            return cell
+        }
+        else
+        {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "emptyCell", for: indexPath) as! EmptyPlayerCell
         
-        cell.usernameLabel.text = player.username
-        cell.coins.text = "\(player.coins)" 
+            return cell
+        }
+    }
+}
+
+extension PlayersVC: UITableViewDelegate
+{
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat
+    {
+        if indexPath.section == 0
+        {
+            return 72
+        }
+        else if indexPath.section == 1
+        {
+            return 380
+        }
         
-        
-        return cell
+        return 380
     }
 }
