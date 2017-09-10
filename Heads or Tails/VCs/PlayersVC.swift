@@ -21,12 +21,23 @@ class PlayersVC: UIViewController
         super.viewDidLoad()
         playersTableView.dataSource = self
         playersTableView.delegate = self
+        setupViews()
         fetchPlayers()
+    }
+    
+    private func setupViews()
+    {
+        let refreshControl = UIRefreshControl()
+        
+        refreshControl.addTarget(self, action: #selector(refreshPlayers), for: .valueChanged)
+        playersTableView.refreshControl = refreshControl
     }
     
     private func fetchPlayers()
     {
+        playersTableView.refreshControl?.beginRefreshing()
         firebaseManager.fetchPlayers { [weak self] (players, error) in
+            self?.playersTableView.refreshControl?.endRefreshing()
             if let error = error {
                 print(error.localizedDescription)
             }
@@ -36,6 +47,11 @@ class PlayersVC: UIViewController
                 self?.playersTableView.reloadData()
             }
         }
+    }
+    
+    @objc private func refreshPlayers()
+    {
+        fetchPlayers()
     }
     
     @IBAction func touchedLogout(_ sender: UIBarButtonItem)
