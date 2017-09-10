@@ -32,7 +32,7 @@ class LogoutVC: UIViewController
     
     @IBAction func logout()
     {
-        firebaseManager.logout()
+        firebaseManager.logout {_ in }
     }
     
     @IBAction func cancel()

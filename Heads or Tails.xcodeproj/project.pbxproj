@@ -168,9 +168,9 @@
 		CADF9AD11F56541B00FEB4E6 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				CAF4CAD41F5E535800BCD410 /* NotificationName+Extension.swift */,
 				CADF9AD31F56541B00FEB4E6 /* UIStoryboard+Extension.swift */,
 				CA616A001F5A9411004FE5E7 /* UIView+Extension.swift */,
+				CAF4CAD41F5E535800BCD410 /* NotificationName+Extension.swift */,
 				CADF9AD21F56541B00FEB4E6 /* AuthErrorCode+Extension.swift */,
 			);
 			path = Extensions;

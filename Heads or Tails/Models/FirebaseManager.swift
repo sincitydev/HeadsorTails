@@ -11,17 +11,19 @@ import Firebase
 import FirebaseAuth
 import FirebaseDatabase
 
-enum AuthUsernameError
+enum AuthError
 {
-    case alreadyInUse
+    case usernameAlreadyInUse
+    case couldntLogout
     case invalidFirebaseData
     
     var description: String
     {
         switch self
         {
-        case .alreadyInUse: return "Username already in use"
-        case .invalidFirebaseData: return "Invalid Firebase data returned"
+        case .usernameAlreadyInUse: return "Username already in use"
+        case .couldntLogout: return "Couldn't log out"
+        case .invalidFirebaseData: return "Invalid Firebase data"
         }
     }
 }
@@ -39,7 +41,7 @@ class FirebaseManager
     static let shared = FirebaseManager()
     let notificationCenter = NotificationCenter.default
     
-    typealias AuthUsernameCallback = (AuthUsernameError) -> Void
+    typealias AuthErrorCallback = (AuthError) -> Void
     
     // ref property needs to be a lazy var because when initializing
     // Firebase complains that configure() hasn't been called when it
@@ -56,20 +58,21 @@ class FirebaseManager
         Auth.auth().signIn(withEmail: email, password: password, completion: authCallback)
     }
     
-    func logout()
+    func logout(completion: (AuthError?) -> Void)
     {
         do
         {
             try Auth.auth().signOut()
             notificationCenter.post(name: .authenticationDidChange, object: nil)
+            completion(nil)
         }
         catch
         {
-            print("\n\n\nSomething went wrong when logging out\n\n\n")
+            completion(.couldntLogout)
         }
     }
     
-    func checkUsername(_ newPlayerUsername: String, completion: @escaping (AuthUsernameError?) -> Void)
+    func checkUsername(_ newPlayerUsername: String, completion: @escaping (AuthError?) -> Void)
     {
         ref.child(FirebaseLiterals.players).observeSingleEvent(of: .value, with: { (snapshot) in
             guard let playerInfos = snapshot.value as? [String: Any] else {
@@ -81,7 +84,7 @@ class FirebaseManager
                 return playerInfo.takenUsername == newPlayerUsername
             })
             {
-                completion(.alreadyInUse)
+                completion(.usernameAlreadyInUse)
             }
             else
             {
