@@ -10,6 +10,8 @@ import UIKit
 
 class EmptyPlayerCell: UITableViewCell
 {
+    static let identifier = "emptyPlayerCell"
+    
     override func awakeFromNib()
     {
         super.awakeFromNib()

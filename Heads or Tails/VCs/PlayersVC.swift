@@ -14,6 +14,8 @@ class PlayersVC: UIViewController
     @IBOutlet weak var playersTableView: UITableView!
     
     fileprivate var players: [Player] = []
+    fileprivate var playerCellHeight: CGFloat = 75
+    fileprivate var emptyPlayerCellHeight: CGFloat = 380
     private var firebaseManager = FirebaseManager()
     
     override func viewDidLoad()
@@ -87,17 +89,17 @@ extension PlayersVC: UITableViewDataSource
     {
         if indexPath.section == 0
         {
-            let cell = tableView.dequeueReusableCell(withIdentifier: UIStoryboard.playerCell, for: indexPath) as! PlayerCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: PlayerCell.identifier, for: indexPath) as! PlayerCell
             let player = players[indexPath.row]
             
             cell.usernameLabel.text = player.username
-            cell.coins.text = "\(player.coins)"
+            cell.coins.text = String(player.coins)
             
             return cell
         }
         else
         {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "emptyCell", for: indexPath) as! EmptyPlayerCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: EmptyPlayerCell.identifier, for: indexPath) as! EmptyPlayerCell
         
             return cell
         }
@@ -110,13 +112,11 @@ extension PlayersVC: UITableViewDelegate
     {
         if indexPath.section == 0
         {
-            return 72
+            return playerCellHeight
         }
-        else if indexPath.section == 1
+        else
         {
-            return 380
+            return emptyPlayerCellHeight
         }
-        
-        return 380
     }
 }
