@@ -36,8 +36,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate
         let appNavigationBar = UINavigationBar.appearance()
         
         appNavigationBar.barStyle = .black
-        appNavigationBar.tintColor = .white
-        appNavigationBar.barTintColor = UIColor(red:0.29, green:0.56, blue:0.89, alpha:1.0)
+        appNavigationBar.tintColor = Palette.white
+        appNavigationBar.barTintColor = Palette.blue
     }
     
     @objc private func setupRootVC()
