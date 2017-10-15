@@ -58,9 +58,14 @@ class PlayersVC: UIViewController
     
     @IBAction func touchedLogout(_ sender: UIBarButtonItem)
     {
-        let logoutVC = LogoutVC()
+        let message = "Are you sure \n you want to logout?"
+        let leftButtonData = ButtonData(title: "Yes", color: .red) { [weak self] in
+            self?.firebaseManager.logout { _ in }
+        }
+        let rightButtonData = ButtonData(title: "Cancel", color: .black, action: nil)
+        let informationVC = InformationVC(message: message, image: UIImage(named: "bye"), leftButtonData: leftButtonData, rightButtonData: rightButtonData)
         
-        present(logoutVC, animated: true, completion: nil)
+        present(informationVC, animated: true, completion: nil)
     }
 }
 
