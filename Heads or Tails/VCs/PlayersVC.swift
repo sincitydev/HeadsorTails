@@ -56,10 +56,8 @@ class PlayersVC: UIViewController
     {
         FBmanager.getPlayers { (returnedPlayers) in
             self.players = returnedPlayers
-            print(self.players)
-            DispatchQueue.main.async {
-                self.playersTableView.reloadData()
-            }
+            self.playersTableView.reloadData()
+            self.playersTableView.refreshControl?.endRefreshing()
         }
     }
     

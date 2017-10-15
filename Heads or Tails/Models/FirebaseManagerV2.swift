@@ -42,7 +42,9 @@ class FirebaseManagerV2 {
                     playerArray.append(player)
                 }
             }
-            completion(playerArray)
+            DispatchQueue.main.async {
+                completion(playerArray)
+            }
         })
     }
 
