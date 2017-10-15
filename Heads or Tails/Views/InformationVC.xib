@@ -79,7 +79,7 @@
                             </userDefinedRuntimeAttributes>
                         </view>
                     </subviews>
-                    <color key="backgroundColor" white="0.0" alpha="0.80000000000000004" colorSpace="calibratedWhite"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.65000000000000002" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstItem="cqs-8H-c7j" firstAttribute="centerX" secondItem="OMc-Ae-v4n" secondAttribute="centerX" id="OkL-4p-yc3"/>
                         <constraint firstAttribute="trailing" secondItem="cqs-8H-c7j" secondAttribute="trailing" constant="15" id="V0R-4G-UbH"/>
@@ -88,7 +88,6 @@
                     </constraints>
                 </view>
             </subviews>
-            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstItem="OMc-Ae-v4n" firstAttribute="leading" secondItem="pAk-qN-B0r" secondAttribute="leading" id="5Ug-hL-M03"/>
                 <constraint firstItem="OMc-Ae-v4n" firstAttribute="trailing" secondItem="pAk-qN-B0r" secondAttribute="trailing" id="9o7-nV-hWT"/>
