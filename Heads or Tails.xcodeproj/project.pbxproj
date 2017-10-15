@@ -29,6 +29,7 @@
 		CAF4CAD51F5E535800BCD410 /* NotificationName+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAF4CAD41F5E535800BCD410 /* NotificationName+Extension.swift */; };
 		CAF5E9831F5265E400725B04 /* Authentication.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CAF5E9821F5265E400725B04 /* Authentication.storyboard */; };
 		CC8FBD99B214440EB16A326C /* Pods_Heads_or_Tails.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69834EBE1B33168DDA8242AB /* Pods_Heads_or_Tails.framework */; };
+		E2ECFA651F9415E400442FE9 /* FirebaseManagerV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2ECFA641F9415E400442FE9 /* FirebaseManagerV2.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -58,6 +59,7 @@
 		CAF4CAD41F5E535800BCD410 /* NotificationName+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NotificationName+Extension.swift"; sourceTree = "<group>"; };
 		CAF5E9821F5265E400725B04 /* Authentication.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Authentication.storyboard; sourceTree = "<group>"; };
 		DA14FA313507141B3563585E /* Pods-Heads or Tails.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Heads or Tails.release.xcconfig"; path = "Pods/Target Support Files/Pods-Heads or Tails/Pods-Heads or Tails.release.xcconfig"; sourceTree = "<group>"; };
+		E2ECFA641F9415E400442FE9 /* FirebaseManagerV2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseManagerV2.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -94,6 +96,7 @@
 			children = (
 				CAF42B591F5643820070F447 /* Player.swift */,
 				CAF42B571F56433C0070F447 /* FirebaseManager.swift */,
+				E2ECFA641F9415E400442FE9 /* FirebaseManagerV2.swift */,
 				CA0DF1521F64C4A9004BC162 /* Palette.swift */,
 				CA99889C1F5BD14800848DEF /* RoundedButton.swift */,
 				CA5243D51F60FCEE001BC63A /* PlayerCell.swift */,
@@ -309,6 +312,7 @@
 				CA5A81E11F537908009957FF /* SignupVC.swift in Sources */,
 				CAF42B5C1F5644EF0070F447 /* PlayersVC.swift in Sources */,
 				CA6169FD1F5A88A8004FE5E7 /* LogoutVC.swift in Sources */,
+				E2ECFA651F9415E400442FE9 /* FirebaseManagerV2.swift in Sources */,
 				CAF42B581F56433C0070F447 /* FirebaseManager.swift in Sources */,
 				CA99889D1F5BD14800848DEF /* RoundedButton.swift in Sources */,
 				CAF42B5A1F5643820070F447 /* Player.swift in Sources */,

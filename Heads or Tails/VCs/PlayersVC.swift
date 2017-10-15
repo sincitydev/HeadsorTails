@@ -17,6 +17,7 @@ class PlayersVC: UIViewController
     fileprivate var playerCellHeight: CGFloat = 75
     fileprivate var emptyPlayerCellHeight: CGFloat = 380
     private var firebaseManager = FirebaseManager()
+    private var FBmanager = FirebaseManagerV2()
     
     override func viewDidLoad()
     {
@@ -24,7 +25,7 @@ class PlayersVC: UIViewController
         playersTableView.dataSource = self
         playersTableView.delegate = self
         setupViews()
-        fetchPlayers()
+        refreshPlayers()
     }
     
     private func setupViews()
@@ -35,25 +36,31 @@ class PlayersVC: UIViewController
         playersTableView.refreshControl = refreshControl
     }
     
-    private func fetchPlayers()
-    {
-        playersTableView.refreshControl?.beginRefreshing()
-        firebaseManager.fetchPlayers { [weak self] (players, error) in
-            self?.playersTableView.refreshControl?.endRefreshing()
-            if let error = error {
-                print(error.localizedDescription)
-            }
-            else if let players = players
-            {
-                self?.players = players
-                self?.playersTableView.reloadData()
-            }
-        }
-    }
+//    private func fetchPlayers()
+//    {
+//        playersTableView.refreshControl?.beginRefreshing()
+//        firebaseManager.fetchPlayers { [weak self] (players, error) in
+//            self?.playersTableView.refreshControl?.endRefreshing()
+//            if let error = error {
+//                print(error.localizedDescription)
+//            }
+//            else if let players = players
+//            {
+//                self?.players = players
+//                self?.playersTableView.reloadData()
+//            }
+//        }
+//    }
     
     @objc private func refreshPlayers()
     {
-        fetchPlayers()
+        FBmanager.getPlayers { (returnedPlayers) in
+            self.players = returnedPlayers
+            print(self.players)
+            DispatchQueue.main.async {
+                self.playersTableView.reloadData()
+            }
+        }
     }
     
     @IBAction func touchedLogout(_ sender: UIBarButtonItem)

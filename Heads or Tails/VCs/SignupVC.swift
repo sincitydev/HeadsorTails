@@ -19,6 +19,7 @@ class SignupVC: UIViewController, UITextFieldDelegate {
     
     private let firebaseManager = FirebaseManager.shared
     private let notificationCenter = NotificationCenter.default
+    private let FBManager = FirebaseManagerV2.instance
     
     var validInput: Bool
     {
@@ -70,7 +71,8 @@ class SignupVC: UIViewController, UITextFieldDelegate {
                     
                     let player = Player(uid: user.uid, username: username, coins: 100)
                     
-                    self?.firebaseManager.saveNewPlayer(player)
+                    //self?.firebaseManager.saveNewPlayer(player)
+                    self?.FBManager.saveNewUser(player)
                     self?.notificationCenter.post(name: .authenticationDidChange, object: nil)
                     
                 }
