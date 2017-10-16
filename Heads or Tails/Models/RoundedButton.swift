@@ -9,17 +9,13 @@
 import UIKit
 
 @IBDesignable
-class RoundedButton: UIButton
-{
+class RoundedButton: UIButton {
     @IBInspectable
-    var cornerRadius: CGFloat
-    {
-        get
-        {
+    var cornerRadius: CGFloat {
+        get {
             return self.layer.cornerRadius
         }
-        set
-        {
+        set {
             self.layer.cornerRadius = newValue
         }
     }

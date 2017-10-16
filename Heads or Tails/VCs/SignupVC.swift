@@ -21,52 +21,43 @@ class SignupVC: UIViewController, UITextFieldDelegate {
     private let notificationCenter = NotificationCenter.default
     private let FBManager = FirebaseManagerV2.instance
     
-    var validInput: Bool
-    {
+    var validInput: Bool {
         let username = usernameTextField.text ?? ""
         let email = emailTextField.text ?? ""
         let password = passwordTextField.text ?? ""
         
-        if email.isEmpty || password.isEmpty || username.isEmpty
-        {
+        if email.isEmpty || password.isEmpty || username.isEmpty {
             return false
         }
-        else
-        {
+        else {
             return true
         }
     }
     
-    override func viewDidLoad()
-    {
+    override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
         usernameTextField.delegate = self
     }
     
-    private func setupViews()
-    {
+    private func setupViews() {
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "Back", style: .plain, target: nil, action: nil)
         
         errorMessageLabel.alpha = 0
     }
     
-    @IBAction func signup()
-    {
+    @IBAction func signup() {
         let username = usernameTextField.text ?? ""
         let email = emailTextField.text ?? ""
         let password = passwordTextField.text ?? ""
         
-        if validInput
-        {
+        if validInput {
             Auth.auth().createUser(withEmail: email, password: password) { [weak self] (user, error) in
                 
-                if let error = error, let authError = AuthErrorCode(rawValue: error._code)
-                {
+                if let error = error, let authError = AuthErrorCode(rawValue: error._code) {
                     self?.showLoginError(authError.description)
                 }
-                else
-                {
+                else {
                     guard let user = user else { return }
                     
                     let player = Player(uid: user.uid, username: username, coins: 100)
@@ -78,33 +69,27 @@ class SignupVC: UIViewController, UITextFieldDelegate {
                 }
             }
         }
-        else
-        {
+        else {
             showLoginError("Invalid input")
         }
     }
     
-    private func showLoginError(_ message: String)
-    {
+    private func showLoginError(_ message: String) {
         errorMessageLabel.text = message
         errorMessageLabel.fadeIn(duration: 0.2)
     }
     
-    private func hideLoginError()
-    {
+    private func hideLoginError() {
         errorMessageLabel.text = ""
         errorMessageLabel.fadeOut(duration: 0.2)
     }
     
-    func textFieldDidEndEditing(_ textField: UITextField, reason: UITextFieldDidEndEditingReason)
-    {
+    func textFieldDidEndEditing(_ textField: UITextField, reason: UITextFieldDidEndEditingReason) {
         firebaseManager.checkUsername(usernameTextField.text ?? "") { [weak self] (authUsernameError) in
-            if let authUsernameError = authUsernameError
-            {
+            if let authUsernameError = authUsernameError {
                 self?.showLoginError(authUsernameError.description)
             }
-            else
-            {
+            else {
                 self?.hideLoginError()
             }
         }
