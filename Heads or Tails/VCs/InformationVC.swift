@@ -84,4 +84,8 @@ class InformationVC: UIViewController {
     @objc private func touchedRightButton() {
         dismiss(animated: true, completion: rightButtonData?.action)
     }
+    
+    deinit {
+        print("InformationVC has been deallocated :)")
+    }
 }

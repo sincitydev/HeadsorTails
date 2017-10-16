@@ -71,4 +71,8 @@ class LoginVC: UIViewController {
         errorMessageLabel.text = ""
         errorMessageLabel.fadeOut(duration: 0.2)
     }
+    
+    deinit {
+        print("LoginVC has been deallocated :)")
+    }
 }

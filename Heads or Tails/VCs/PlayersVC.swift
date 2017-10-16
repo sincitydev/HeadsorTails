@@ -67,6 +67,10 @@ class PlayersVC: UIViewController {
         
         present(informationVC, animated: true, completion: nil)
     }
+    
+    deinit {
+        print("PlayersVC has been deallocated :)")
+    }
 }
 
 extension PlayersVC: UITableViewDataSource {
