@@ -33,11 +33,13 @@ PODS:
     - GoogleToolboxForMac/NSString+URLArguments (= 2.1.1)
   - GoogleToolboxForMac/NSString+URLArguments (2.1.1)
   - GTMSessionFetcher/Core (1.1.10)
+  - SwiftLint (0.23.0)
 
 DEPENDENCIES:
   - Firebase/Auth
   - Firebase/Core
   - Firebase/Database
+  - SwiftLint
 
 SPEC CHECKSUMS:
   Firebase: 9e33fdfbca37cab635c693883caa90a4475b842b
@@ -48,7 +50,8 @@ SPEC CHECKSUMS:
   FirebaseInstanceID: 9fbf536668f4d3f0880e7438456dabd1376e294b
   GoogleToolboxForMac: 8e329f1b599f2512c6b10676d45736bcc2cbbeb0
   GTMSessionFetcher: 30d874b96d0d76028f61fbd122801e3f030d47db
+  SwiftLint: 6ddf7d305644c2239cb768a11d97cce804816691
 
-PODFILE CHECKSUM: cfe00156cf1a2cc33b2cc2fe8269e229fa518e40
+PODFILE CHECKSUM: 16c0a6712438a56d1b55aedd5273a3bfc9f911e3
 
 COCOAPODS: 1.2.1

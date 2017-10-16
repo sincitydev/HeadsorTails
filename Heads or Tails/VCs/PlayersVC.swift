@@ -9,8 +9,7 @@
 import UIKit
 import FirebaseAuth
 
-class PlayersVC: UIViewController
-{
+class PlayersVC: UIViewController {
     @IBOutlet weak var playersTableView: UITableView!
     
     fileprivate var players: [Player] = []
@@ -19,8 +18,7 @@ class PlayersVC: UIViewController
     private var firebaseManager = FirebaseManager()
     private var FBmanager = FirebaseManagerV2()
     
-    override func viewDidLoad()
-    {
+    override func viewDidLoad() {
         super.viewDidLoad()
         playersTableView.dataSource = self
         playersTableView.delegate = self
@@ -28,8 +26,7 @@ class PlayersVC: UIViewController
         refreshPlayers()
     }
     
-    private func setupViews()
-    {
+    private func setupViews() {
         let refreshControl = UIRefreshControl()
         
         refreshControl.addTarget(self, action: #selector(refreshPlayers), for: .valueChanged)
@@ -61,8 +58,7 @@ class PlayersVC: UIViewController
         }
     }
     
-    @IBAction func touchedLogout(_ sender: UIBarButtonItem)
-    {
+    @IBAction func touchedLogout(_ sender: UIBarButtonItem) {
         let message = "Are you sure \n you want to logout?"
         let leftButtonData = ButtonData(title: "Yes", color: .red) { [weak self] in
             self?.firebaseManager.logout { _ in }
@@ -74,31 +70,24 @@ class PlayersVC: UIViewController
     }
 }
 
-extension PlayersVC: UITableViewDataSource
-{
-    func numberOfSections(in tableView: UITableView) -> Int
-    {
+extension PlayersVC: UITableViewDataSource {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return 2
     }
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
-    {
-        if players.count == 0 && section == 1
-        {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if players.count == 0 && section == 1 {
             return 1
         }
-        else if section == 0
-        {
+        else if section == 0 {
             return players.count
         }
         
         return 0
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
-    {
-        if indexPath.section == 0
-        {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if indexPath.section == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: PlayerCell.identifier, for: indexPath) as! PlayerCell
             let player = players[indexPath.row]
             
@@ -107,8 +96,7 @@ extension PlayersVC: UITableViewDataSource
             
             return cell
         }
-        else
-        {
+        else {
             let cell = tableView.dequeueReusableCell(withIdentifier: EmptyPlayerCell.identifier, for: indexPath) as! EmptyPlayerCell
         
             return cell
@@ -116,16 +104,12 @@ extension PlayersVC: UITableViewDataSource
     }
 }
 
-extension PlayersVC: UITableViewDelegate
-{
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat
-    {
-        if indexPath.section == 0
-        {
+extension PlayersVC: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if indexPath.section == 0 {
             return playerCellHeight
         }
-        else
-        {
+        else {
             return emptyPlayerCellHeight
         }
     }

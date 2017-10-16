@@ -11,16 +11,13 @@ import Firebase
 import FirebaseAuth
 import FirebaseDatabase
 
-enum AuthError
-{
+enum AuthError {
     case usernameAlreadyInUse
     case couldntLogout
     case invalidFirebaseData
     
-    var description: String
-    {
-        switch self
-        {
+    var description: String {
+        switch self {
         case .usernameAlreadyInUse: return "Username already in use"
         case .couldntLogout: return "Couldn't log out"
         case .invalidFirebaseData: return "Invalid Firebase data"
@@ -28,16 +25,14 @@ enum AuthError
     }
 }
 
-struct FirebaseLiterals
-{
+struct FirebaseLiterals {
     static let players = "players"
     static let uid = "uid"
     static let username = "username"
     static let coins = "coins"
 }
 
-class FirebaseManager
-{
+class FirebaseManager {
     static let shared = FirebaseManager()
     let notificationCenter = NotificationCenter.default
     
@@ -53,27 +48,22 @@ class FirebaseManager
     
     // MARK: - Login and logout methods
     
-    func login(email: String, password: String, authCallback: AuthResultCallback?)
-    {
+    func login(email: String, password: String, authCallback: AuthResultCallback?) {
         Auth.auth().signIn(withEmail: email, password: password, completion: authCallback)
     }
     
-    func logout(completion: (AuthError?) -> Void)
-    {
-        do
-        {
+    func logout(completion: (AuthError?) -> Void) {
+        do {
             try Auth.auth().signOut()
             notificationCenter.post(name: .authenticationDidChange, object: nil)
             completion(nil)
         }
-        catch
-        {
+        catch {
             completion(.couldntLogout)
         }
     }
     
-    func checkUsername(_ newPlayerUsername: String, completion: @escaping (AuthError?) -> Void)
-    {
+    func checkUsername(_ newPlayerUsername: String, completion: @escaping (AuthError?) -> Void) {
         ref.child(FirebaseLiterals.players).observeSingleEvent(of: .value, with: { (snapshot) in
             guard let playerInfos = snapshot.value as? [String: Any] else {
                 completion(nil)
@@ -82,12 +72,10 @@ class FirebaseManager
             
             if playerInfos.contains(where: { (playerInfo: (takenUsername: String, value: Any)) -> Bool in
                 return playerInfo.takenUsername == newPlayerUsername
-            })
-            {
+            }) {
                 completion(.usernameAlreadyInUse)
             }
-            else
-            {
+            else {
                 completion(nil)
             }
         })
@@ -95,8 +83,7 @@ class FirebaseManager
     
     // MARK: - Saving and fetching data methods
     
-    func saveNewPlayer(_ player: Player)
-    {
+    func saveNewPlayer(_ player: Player) {
         let playerData = [FirebaseLiterals.uid: player.uid,
                           FirebaseLiterals.username: player.username,
                           FirebaseLiterals.coins: player.coins] as [String : Any]
@@ -104,17 +91,14 @@ class FirebaseManager
         ref.child(FirebaseLiterals.players).child(player.username).setValue(playerData)
     }
     
-    func fetchPlayers(completion: @escaping ([Player]?, Error?) -> Void)
-    {
+    func fetchPlayers(completion: @escaping ([Player]?, Error?) -> Void) {
         ref.child(FirebaseLiterals.players).observeSingleEvent(of: .value, with: { (snapshot) in
-            if let firebasePlayers = snapshot.value as? [String: Any]
-            {
+            if let firebasePlayers = snapshot.value as? [String: Any] {
                 var players: [Player] = []
                 
                 firebasePlayers.forEach({ (username: String, player: Any) in
                     guard let playerInfo = player as? [String: Any] else { return }
-                    if let player = Player(playerInfo)
-                    {
+                    if let player = Player(playerInfo) {
                         players.append(player)
                     }
                 })

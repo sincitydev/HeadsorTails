@@ -5,4 +5,5 @@ target 'Heads or Tails' do
 	pod 'Firebase/Core'
 	pod 'Firebase/Auth'
 	pod 'Firebase/Database'
+	pod 'SwiftLint'
 end

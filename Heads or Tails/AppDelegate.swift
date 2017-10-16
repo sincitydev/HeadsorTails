@@ -11,13 +11,11 @@ import Firebase
 import FirebaseAuth
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate
-{   
+class AppDelegate: UIResponder, UIApplicationDelegate {   
     var window: UIWindow?
     let notificationCenter = NotificationCenter.default
 
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool
-    {
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         FirebaseApp.configure()
         addNotificationObservers()
         setAppearance()
@@ -26,13 +24,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate
         return true
     }
     
-    private func addNotificationObservers()
-    {
+    private func addNotificationObservers() {
         notificationCenter.addObserver(self, selector: #selector(setupRootVC), name: .authenticationDidChange, object: nil)
     }
     
-    private func setAppearance()
-    {
+    private func setAppearance() {
         let appNavigationBar = UINavigationBar.appearance()
         
         appNavigationBar.barStyle = .black
@@ -40,18 +36,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate
         appNavigationBar.barTintColor = Palette.blue
     }
     
-    @objc private func setupRootVC()
-    {
+    @objc private func setupRootVC() {
         var rootVC: UIViewController!
         
-        if let _ = Auth.auth().currentUser
-        {
+        if let _ = Auth.auth().currentUser {
             let navVC = UIStoryboard.main.instantiateInitialViewController() as! UINavigationController
 
             rootVC = navVC
         }
-        else
-        {
+        else {
             let navVC = UIStoryboard.auth.instantiateInitialViewController() as! UINavigationController
             
             rootVC = navVC
