@@ -94,4 +94,8 @@ class SignupVC: UIViewController, UITextFieldDelegate {
             }
         }
     }
+    
+    deinit {
+        print("SignupVC has been deallocated :)")
+    }
 }
