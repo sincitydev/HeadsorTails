@@ -47,6 +47,27 @@ class FirebaseManagerV2 {
             }
         })
     }
+    
+    func searchPlayers(searchQuery: String, completion: @escaping (_ userSeachArray: [Player]) -> ()) {
+        var players = [Player]()
+        
+        Literals.users.observe(.value, with: { (snapshot) in
+            guard let userSnapshot = snapshot.children.allObjects as? [DataSnapshot] else { return }
+            for user in userSnapshot {
+                let username = user.childSnapshot(forPath: "username").value as! String
+                if username.contains(searchQuery) == true && user.key != Auth.auth().currentUser?.uid {
+                    guard let coins = user.childSnapshot(forPath: "coins").value as? Int else { return }
+                    let player = Player(uid: user.key, username: username, coins: coins)
+                    players.append(player)
+                }
+            }
+            DispatchQueue.main.async {
+                completion(players)
+            }
+        
+        
+        })
+    }
 
    // TODO - Create Game (uid, uid)
     

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7B6165CE1F95071F005E8104 /* SearchUserVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B6165CD1F95071F005E8104 /* SearchUserVC.swift */; };
 		CA0DF1531F64C4A9004BC162 /* Palette.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA0DF1521F64C4A9004BC162 /* Palette.swift */; };
 		CA29B6A11F52975100C63D42 /* LoginVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA29B6A01F52975100C63D42 /* LoginVC.swift */; };
 		CA5243D61F60FCEE001BC63A /* PlayerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA5243D51F60FCEE001BC63A /* PlayerCell.swift */; };
@@ -35,6 +36,7 @@
 /* Begin PBXFileReference section */
 		69834EBE1B33168DDA8242AB /* Pods_Heads_or_Tails.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Heads_or_Tails.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6BCB35E481FC60AA227782F6 /* Pods-Heads or Tails.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Heads or Tails.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Heads or Tails/Pods-Heads or Tails.debug.xcconfig"; sourceTree = "<group>"; };
+		7B6165CD1F95071F005E8104 /* SearchUserVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchUserVC.swift; sourceTree = "<group>"; };
 		CA0DF1521F64C4A9004BC162 /* Palette.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Palette.swift; sourceTree = "<group>"; };
 		CA29B6A01F52975100C63D42 /* LoginVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginVC.swift; sourceTree = "<group>"; };
 		CA5243D51F60FCEE001BC63A /* PlayerCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerCell.swift; sourceTree = "<group>"; };
@@ -124,6 +126,7 @@
 				CA5A81E01F537908009957FF /* SignupVC.swift */,
 				CAF42B5B1F5644EF0070F447 /* PlayersVC.swift */,
 				CAFCEFF41F9410D900BF596E /* InformationVC.swift */,
+				7B6165CD1F95071F005E8104 /* SearchUserVC.swift */,
 			);
 			path = VCs;
 			sourceTree = "<group>";
@@ -322,6 +325,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7B6165CE1F95071F005E8104 /* SearchUserVC.swift in Sources */,
 				CA616A011F5A9411004FE5E7 /* UIView+Extension.swift in Sources */,
 				CADF9AD51F56541B00FEB4E6 /* AuthErrorCode+Extension.swift in Sources */,
 				CAF4CAD51F5E535800BCD410 /* NotificationName+Extension.swift in Sources */,
