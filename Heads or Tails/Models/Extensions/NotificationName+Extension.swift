@@ -8,7 +8,6 @@
 
 import Foundation
 
-extension Notification.Name
-{
+extension Notification.Name {
     static let authenticationDidChange = Notification.Name.init("authenticationDidChange")
 }

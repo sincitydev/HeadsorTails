@@ -9,10 +9,8 @@
 import UIKit
 import Foundation
 
-extension UIView
-{
-    func fadeIn(duration: TimeInterval)
-    {
+extension UIView {
+    func fadeIn(duration: TimeInterval) {
         self.alpha = 0
         
         UIView.animate(withDuration: duration) { 
@@ -20,8 +18,7 @@ extension UIView
         }
     }
     
-    func fadeOut(duration: TimeInterval)
-    {
+    func fadeOut(duration: TimeInterval) {
         UIView.animate(withDuration: duration) { 
             self.alpha = 0
         }

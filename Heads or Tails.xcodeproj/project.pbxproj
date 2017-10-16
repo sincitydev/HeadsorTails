@@ -58,6 +58,7 @@
 		CAF5E9821F5265E400725B04 /* Authentication.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Authentication.storyboard; sourceTree = "<group>"; };
 		CAFCEFF21F9410CD00BF596E /* InformationVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InformationVC.xib; sourceTree = "<group>"; };
 		CAFCEFF41F9410D900BF596E /* InformationVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InformationVC.swift; sourceTree = "<group>"; };
+		CAFCEFF71F941E1B00BF596E /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text; path = .swiftlint.yml; sourceTree = "<group>"; };
 		DA14FA313507141B3563585E /* Pods-Heads or Tails.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Heads or Tails.release.xcconfig"; path = "Pods/Target Support Files/Pods-Heads or Tails/Pods-Heads or Tails.release.xcconfig"; sourceTree = "<group>"; };
 		E2ECFA641F9415E400442FE9 /* FirebaseManagerV2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseManagerV2.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -159,6 +160,7 @@
 		CA6CAFE11F4FF8670004022F /* Heads or Tails */ = {
 			isa = PBXGroup;
 			children = (
+				CAFCEFF71F941E1B00BF596E /* .swiftlint.yml */,
 				CA6CAFE21F4FF8670004022F /* AppDelegate.swift */,
 				CA5D30211F508FA600430515 /* Models */,
 				CA5D30251F508FA600430515 /* VCs */,
@@ -192,6 +194,7 @@
 				CA6CAFDD1F4FF8670004022F /* Resources */,
 				8DAF01CD217A3CECB2274455 /* [CP] Embed Pods Frameworks */,
 				D407F2BBCF0F2C6321FBA66B /* [CP] Copy Pods Resources */,
+				CAFCEFF61F941C7100BF596E /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -268,6 +271,19 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Heads or Tails/Pods-Heads or Tails-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
+		};
+		CAFCEFF61F941C7100BF596E /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which swiftlint >/dev/null; then\nswiftlint autocorrect\nelse\necho \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi";
 		};
 		D407F2BBCF0F2C6321FBA66B /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;

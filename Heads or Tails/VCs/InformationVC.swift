@@ -8,15 +8,13 @@
 
 import UIKit
 
-struct ButtonData
-{
+struct ButtonData {
     let title: String
     let color: UIColor
     let action: (() -> Void)?
 }
 
-class InformationVC: UIViewController
-{
+class InformationVC: UIViewController {
     @IBOutlet weak var informationView: UIView!
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var messageLabel: UILabel!
@@ -27,8 +25,7 @@ class InformationVC: UIViewController
     private var leftButtonData: ButtonData?
     private var rightButtonData: ButtonData?
     
-    init(message: String, image: UIImage?, leftButtonData: ButtonData?, rightButtonData: ButtonData?)
-    {
+    init(message: String, image: UIImage?, leftButtonData: ButtonData?, rightButtonData: ButtonData?) {
         super.init(nibName: "InformationVC", bundle: nil)
         self.message = message
         self.image = image
@@ -38,31 +35,26 @@ class InformationVC: UIViewController
         modalPresentationStyle = .overFullScreen
     }
     
-    required init?(coder aDecoder: NSCoder)
-    {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
     
-    override func viewDidLoad()
-    {
+    override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
     }
     
-    private func setupViews()
-    {
+    private func setupViews() {
         messageLabel.text = message
         imageView.image = image
         setupStackView()
     }
     
-    private func setupStackView()
-    {
+    private func setupStackView() {
         var buttons: [UIView] = []
         let buttonFont = UIFont.systemFont(ofSize: 18, weight: UIFontWeightSemibold)
         
-        if let leftButtonData = leftButtonData
-        {
+        if let leftButtonData = leftButtonData {
             let leftButton = UIButton(type: .system)
             leftButton.setTitle(leftButtonData.title, for: .normal)
             leftButton.setTitleColor(leftButtonData.color, for: .normal)
@@ -71,8 +63,7 @@ class InformationVC: UIViewController
             buttons.append(leftButton)
         }
         
-        if let rightButtonData = rightButtonData
-        {
+        if let rightButtonData = rightButtonData {
             let rightButton = UIButton(type: .system)
             rightButton.setTitle(rightButtonData.title, for: .normal)
             rightButton.setTitleColor(rightButtonData.color, for: .normal)
@@ -86,13 +77,11 @@ class InformationVC: UIViewController
         }
     }
     
-    @objc private func touchedLeftButton()
-    {
+    @objc private func touchedLeftButton() {
         dismiss(animated: true, completion: leftButtonData?.action)
     }
     
-    @objc private func touchedRightButton()
-    {
+    @objc private func touchedRightButton() {
         dismiss(animated: true, completion: rightButtonData?.action)
     }
 }
