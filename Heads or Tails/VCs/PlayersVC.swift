@@ -26,6 +26,17 @@ class PlayersVC: UIViewController {
         refreshPlayers()
     }
     
+    // example of finding a game and updating a players bet
+    
+//    override func viewDidAppear(_ animated: Bool) {
+//        super.viewDidAppear(animated)
+//        FBmanager.getGameKeyWith(playerUID: (Auth.auth().currentUser?.uid)!, playerUId: "opponentsUID") { (gameKey) in
+//            if gameKey != nil {
+//                self.FBmanager.updateBet(forPlayerUID: "opponentsUID", gameKey: gameKey!, bet: 1000)
+//            }
+//        }
+//    }
+    
     private func setupViews() {
         let refreshControl = UIRefreshControl()
         

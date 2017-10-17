@@ -48,13 +48,63 @@ class FirebaseManagerV2 {
         })
     }
 
-   // TODO - Create Game (uid, uid)
+   // TODO - Create Game for two players (uid, uid)
+    func createGame(oppenentUID: String, initialBet: Int) {
+        guard let userUID = Auth.auth().currentUser?.uid else { return }
+        getGameKeyWith(playerUID: userUID, playerUId: oppenentUID, completion: { (existingGame) in
+            if existingGame == nil {
+                let gamePlayers = [userUID: ["bet": initialBet], oppenentUID: ["bet": 0], "Status": "invite pending"] as [String : Any]
+                
+                Literals.games.childByAutoId().updateChildValues(gamePlayers)
+            } else {
+                print("Game already exists")
+            }
+        })
+    }
+
+    // function that returns the key for a specific game that contains the two players
+    func getGameKeyWith(playerUID player1: String, playerUId player2: String, completion: @escaping (_ gameKey: String?)->()) {
+        var gameKey: String? = nil
+        Literals.games.observeSingleEvent(of: .value, with: { (gamesSnapshot) in
+            guard let gamesSnapshot = gamesSnapshot.value as? [String: Any] else { completion(nil)
+                return
+            }
+            gamesSnapshot.forEach({ (snap) in
+                guard let gameDetails = snap.value as? [String: Any] else { completion(nil)
+                    return
+                }
+                if gameDetails.keys.contains(player1) && gameDetails.keys.contains(player2) {
+                    print("found")
+                    gameKey = snap.key
+                    completion(gameKey)
+                    return
+                }
+            })
+        })
+    }
     
+    func updateBet(forPlayerUID player: String, gameKey: String, bet: Int) {
+        Literals.games.child(gameKey).observeSingleEvent(of: .value, with: { (gameSnapshot) in
+            guard let gameSnapshot = gameSnapshot.value as? [String: Any] else { return }
+            if gameSnapshot.keys.contains(player) {
+                let bet = ["bet": bet]
+                Literals.games.child(gameKey).child(player).updateChildValues(bet)
+            }    
+        })
+    }
     
     // TODO - Get Games for players (uid)
-
+    func getGames() {
+        
+    }
     
     // TODO - Get current currency
+    func getCurrency(forPlayerUID player: String) {
+        
+    }
     
     // TODO - Update currecy for uid
+    func updateCurrency(forPlayerUID player: String) {
+        
+    }
 }
