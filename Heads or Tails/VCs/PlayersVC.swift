@@ -49,17 +49,12 @@ class PlayersVC: UIViewController {
 //        }
 //    }
     
-<<<<<<< HEAD
-    @objc private func refreshPlayers() {
-=======
-    
     @IBAction func searchUsersAction(_ sender: Any) {
         performSegue(withIdentifier: "SearchUsersVC", sender: self)
     }
     
     @objc private func refreshPlayers()
     {
->>>>>>> Added View Controller(SeachUsers) to Main.Storyboard for searching Users. Added swift file for SearchUsersVC that allows users to search for other users. In FBManagerV2 added method for searching users with queried characters.
         FBmanager.getPlayers { (returnedPlayers) in
             self.players = returnedPlayers
             self.playersTableView.reloadData()
