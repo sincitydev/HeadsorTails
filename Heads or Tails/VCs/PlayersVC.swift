@@ -60,7 +60,12 @@ class PlayersVC: UIViewController {
 //        }
 //    }
     
-    @objc private func refreshPlayers() {
+    @IBAction func searchUsersAction(_ sender: Any) {
+        performSegue(withIdentifier: "SearchUsersVC", sender: self)
+    }
+    
+    @objc private func refreshPlayers()
+    {
         FBmanager.getPlayers { (returnedPlayers) in
             self.players = returnedPlayers
             self.playersTableView.reloadData()
