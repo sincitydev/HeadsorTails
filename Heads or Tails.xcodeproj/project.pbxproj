@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		CA0DF1531F64C4A9004BC162 /* Palette.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA0DF1521F64C4A9004BC162 /* Palette.swift */; };
+		CA2702141F997DB300F22E9B /* AuthHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA2702131F997DB300F22E9B /* AuthHelper.swift */; };
 		CA29B6A11F52975100C63D42 /* LoginVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA29B6A01F52975100C63D42 /* LoginVC.swift */; };
 		CA5243D61F60FCEE001BC63A /* PlayerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA5243D51F60FCEE001BC63A /* PlayerCell.swift */; };
 		CA5A81E11F537908009957FF /* SignupVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA5A81E01F537908009957FF /* SignupVC.swift */; };
@@ -36,6 +37,7 @@
 		69834EBE1B33168DDA8242AB /* Pods_Heads_or_Tails.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Heads_or_Tails.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6BCB35E481FC60AA227782F6 /* Pods-Heads or Tails.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Heads or Tails.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Heads or Tails/Pods-Heads or Tails.debug.xcconfig"; sourceTree = "<group>"; };
 		CA0DF1521F64C4A9004BC162 /* Palette.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Palette.swift; sourceTree = "<group>"; };
+		CA2702131F997DB300F22E9B /* AuthHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthHelper.swift; sourceTree = "<group>"; };
 		CA29B6A01F52975100C63D42 /* LoginVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginVC.swift; sourceTree = "<group>"; };
 		CA5243D51F60FCEE001BC63A /* PlayerCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerCell.swift; sourceTree = "<group>"; };
 		CA5A81E01F537908009957FF /* SignupVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignupVC.swift; sourceTree = "<group>"; };
@@ -102,6 +104,7 @@
 				CA99889C1F5BD14800848DEF /* RoundedButton.swift */,
 				CA5243D51F60FCEE001BC63A /* PlayerCell.swift */,
 				CA8AD94D1F625C7B0025B729 /* EmptyPlayerCell.swift */,
+				CA2702131F997DB300F22E9B /* AuthHelper.swift */,
 				CADF9AD11F56541B00FEB4E6 /* Extensions */,
 			);
 			path = Models;
@@ -337,6 +340,7 @@
 				CA0DF1531F64C4A9004BC162 /* Palette.swift in Sources */,
 				CAFCEFF51F9410D900BF596E /* InformationVC.swift in Sources */,
 				CA29B6A11F52975100C63D42 /* LoginVC.swift in Sources */,
+				CA2702141F997DB300F22E9B /* AuthHelper.swift in Sources */,
 				CA5243D61F60FCEE001BC63A /* PlayerCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
