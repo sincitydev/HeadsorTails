@@ -26,6 +26,14 @@ class PlayersVC: UIViewController {
         refreshPlayers()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        FBmanager.postOnlineStatus(onlineStatus: true)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        FBmanager.postOnlineStatus(onlineStatus: false)
+    }
+    
     // example of finding a game and updating a players bet
     
 //    override func viewDidAppear(_ animated: Bool) {

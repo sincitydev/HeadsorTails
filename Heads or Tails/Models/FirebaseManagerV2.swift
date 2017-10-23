@@ -93,6 +93,11 @@ class FirebaseManagerV2 {
         })
     }
     
+    func postOnlineStatus(onlineStatus: Bool) {
+        guard let currentUserUID = Auth.auth().currentUser?.uid else { return }
+        Literals.users.child(currentUserUID).updateChildValues(["online": onlineStatus])
+    }
+    
     // TODO - Get Games for players (uid)
     func getGames() {
         
