@@ -11,6 +11,7 @@ import FirebaseAuth
 
 class PlayersVC: UIViewController {
     @IBOutlet weak var playersTableView: UITableView!
+    @IBOutlet weak var viewAllPlayersSwitch: UISwitch!
     
     fileprivate var players: [Player] = []
     fileprivate var playerCellHeight: CGFloat = 75
@@ -23,6 +24,9 @@ class PlayersVC: UIViewController {
         playersTableView.dataSource = self
         playersTableView.delegate = self
         setupViews()
+        refreshPlayers()
+    }
+    @IBAction func viewAllPlayersSwitch(_ sender: UISwitch) {
         refreshPlayers()
     }
     
@@ -75,7 +79,17 @@ class PlayersVC: UIViewController {
     @objc private func refreshPlayers()
     {
         FBmanager.getPlayers { (returnedPlayers) in
-            self.players = returnedPlayers
+            self.players = []
+            returnedPlayers.forEach({ (player) in
+                if self.viewAllPlayersSwitch.isOn {
+                    if player.online == true {
+                        self.players.append(player)
+                    }
+                } else {
+                    self.players.append(player)
+                }
+            })
+            
             self.playersTableView.reloadData()
             self.playersTableView.refreshControl?.endRefreshing()
         }
@@ -117,6 +131,12 @@ extension PlayersVC: UITableViewDataSource {
         if indexPath.section == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: PlayerCell.identifier, for: indexPath) as! PlayerCell
             let player = players[indexPath.row]
+            
+            if player.online == true {
+                let onlineView = UIView(frame: CGRect(origin: CGPoint.zero, size: CGSize(width: 10, height: cell.bounds.height)))
+                onlineView.backgroundColor = #colorLiteral(red: 0.3411764801, green: 0.6235294342, blue: 0.1686274558, alpha: 1)
+                cell.addSubview(onlineView)
+            }
             
             cell.usernameLabel.text = player.username
             cell.coins.text = String(player.coins)
