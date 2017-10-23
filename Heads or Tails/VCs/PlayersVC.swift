@@ -80,6 +80,13 @@ class PlayersVC: UIViewController {
     {
         FBmanager.getPlayers { (returnedPlayers) in
             self.players = []
+            
+            if self.viewAllPlayersSwitch.isOn {
+                self.navigationItem.title = "Onine Players"
+            } else {
+                self.navigationItem.title = "All Players"
+            }
+            
             returnedPlayers.forEach({ (player) in
                 if self.viewAllPlayersSwitch.isOn {
                     if player.online == true {
