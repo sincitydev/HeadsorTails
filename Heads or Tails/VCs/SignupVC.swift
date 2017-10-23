@@ -46,7 +46,7 @@ class SignupVC: UIViewController, UITextFieldDelegate, AuthHelper {
                 else {
                     guard let user = user else { return }
                     
-                    let player = Player(uid: user.uid, username: username, coins: 100)
+                    let player = Player(uid: user.uid, username: username, coins: 100, online: true)
                     
                     //self?.firebaseManager.saveNewPlayer(player)
                     self?.FBManager.saveNewUser(player)

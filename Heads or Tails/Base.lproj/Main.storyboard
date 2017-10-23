@@ -75,6 +75,13 @@
                                                         <constraint firstAttribute="height" constant="1" id="WOo-wg-m3M"/>
                                                     </constraints>
                                                 </view>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yPk-3j-B4o">
+                                                    <rect key="frame" x="0.0" y="0.0" width="10" height="72"/>
+                                                    <color key="backgroundColor" red="0.0" green="0.50196081400000003" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="10" id="EuG-Ya-mUO"/>
+                                                    </constraints>
+                                                </view>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="XnG-zL-GsW" firstAttribute="centerY" secondItem="0FD-Ng-DTj" secondAttribute="centerY" id="3Ue-qc-bTx"/>
@@ -83,13 +90,17 @@
                                                 <constraint firstAttribute="bottom" secondItem="uWk-K7-hvc" secondAttribute="bottom" id="MFt-hR-RdG"/>
                                                 <constraint firstItem="XnG-zL-GsW" firstAttribute="leading" secondItem="A9A-Hw-eYQ" secondAttribute="trailing" constant="5" id="PFJ-dP-jrI"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="XnG-zL-GsW" secondAttribute="trailing" constant="5" id="REh-F0-esi"/>
+                                                <constraint firstItem="yPk-3j-B4o" firstAttribute="leading" secondItem="0FD-Ng-DTj" secondAttribute="leading" id="WIM-ki-rGZ"/>
                                                 <constraint firstItem="W5C-lN-uO2" firstAttribute="leading" secondItem="0FD-Ng-DTj" secondAttribute="leadingMargin" constant="8" id="ceI-Wf-16C"/>
+                                                <constraint firstAttribute="bottom" secondItem="yPk-3j-B4o" secondAttribute="bottom" id="faR-UA-qYT"/>
+                                                <constraint firstItem="yPk-3j-B4o" firstAttribute="top" secondItem="0FD-Ng-DTj" secondAttribute="top" id="g7b-yZ-xtr"/>
                                                 <constraint firstItem="W5C-lN-uO2" firstAttribute="centerY" secondItem="0FD-Ng-DTj" secondAttribute="centerY" id="gdt-Dl-ky7"/>
                                                 <constraint firstAttribute="trailing" secondItem="uWk-K7-hvc" secondAttribute="trailing" id="vTo-JH-qKc"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="coins" destination="A9A-Hw-eYQ" id="d8P-Rp-Mdu"/>
+                                            <outlet property="onlineView" destination="yPk-3j-B4o" id="dE8-eT-2fL"/>
                                             <outlet property="usernameLabel" destination="W5C-lN-uO2" id="Vnp-9N-IOV"/>
                                         </connections>
                                     </tableViewCell>
@@ -124,11 +135,23 @@
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
+                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Pbg-MJ-9ro">
+                                <rect key="frame" x="20" y="617" width="52" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="OzX-Ex-lHe"/>
+                                    <constraint firstAttribute="width" constant="50" id="tbO-d8-FEw"/>
+                                </constraints>
+                                <connections>
+                                    <action selector="viewAllPlayersSwitch:" destination="BYZ-38-t0r" eventType="valueChanged" id="eUd-QY-Ob3"/>
+                                </connections>
+                            </switch>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="UMN-Y4-9rm" secondAttribute="bottom" id="CxS-cN-SKZ"/>
                             <constraint firstAttribute="trailing" secondItem="UMN-Y4-9rm" secondAttribute="trailing" id="Fxo-We-JDM"/>
+                            <constraint firstItem="Pbg-MJ-9ro" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="20" id="Llg-53-y0w"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="Pbg-MJ-9ro" secondAttribute="bottom" constant="20" id="QrZ-KO-lSr"/>
                             <constraint firstItem="UMN-Y4-9rm" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="uxG-nf-b8m"/>
                             <constraint firstItem="UMN-Y4-9rm" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="yv2-Pb-oAL"/>
                         </constraints>
@@ -147,6 +170,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="playersTableView" destination="UMN-Y4-9rm" id="uGI-KP-lHa"/>
+                        <outlet property="viewAllPlayersSwitch" destination="Pbg-MJ-9ro" id="dEW-ep-PN1"/>
                         <segue destination="E5h-6N-iAr" kind="show" identifier="SearchUsersVC" id="h53-95-2pA"/>
                     </connections>
                 </viewController>

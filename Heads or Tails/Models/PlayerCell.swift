@@ -11,6 +11,7 @@ import UIKit
 class PlayerCell: UITableViewCell {
     @IBOutlet weak var usernameLabel: UILabel!
     @IBOutlet weak var coins: UILabel!
+    @IBOutlet weak var onlineView: UIView!
     
     static let identifier = "playerCell"
     

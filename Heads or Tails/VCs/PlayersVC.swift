@@ -11,6 +11,7 @@ import FirebaseAuth
 
 class PlayersVC: UIViewController {
     @IBOutlet weak var playersTableView: UITableView!
+    @IBOutlet weak var viewAllPlayersSwitch: UISwitch!
     
     fileprivate var players: [Player] = []
     fileprivate var playerCellHeight: CGFloat = 75
@@ -23,6 +24,9 @@ class PlayersVC: UIViewController {
         playersTableView.dataSource = self
         playersTableView.delegate = self
         setupViews()
+        refreshPlayers()
+    }
+    @IBAction func viewAllPlayersSwitch(_ sender: UISwitch) {
         refreshPlayers()
     }
     
@@ -75,7 +79,24 @@ class PlayersVC: UIViewController {
     @objc private func refreshPlayers()
     {
         FBmanager.getPlayers { (returnedPlayers) in
-            self.players = returnedPlayers
+            self.players = []
+            
+            if self.viewAllPlayersSwitch.isOn {
+                self.navigationItem.title = "Onine Players"
+            } else {
+                self.navigationItem.title = "All Players"
+            }
+            
+            returnedPlayers.forEach({ (player) in
+                if self.viewAllPlayersSwitch.isOn {
+                    if player.online == true {
+                        self.players.append(player)
+                    }
+                } else {
+                    self.players.append(player)
+                }
+            })
+            
             self.playersTableView.reloadData()
             self.playersTableView.refreshControl?.endRefreshing()
         }
@@ -118,6 +139,11 @@ extension PlayersVC: UITableViewDataSource {
             let cell = tableView.dequeueReusableCell(withIdentifier: PlayerCell.identifier, for: indexPath) as! PlayerCell
             let player = players[indexPath.row]
             
+            if players[indexPath.row].online == true {
+                cell.onlineView.backgroundColor = #colorLiteral(red: 0.3411764801, green: 0.6235294342, blue: 0.1686274558, alpha: 1)
+            } else {
+                cell.onlineView.backgroundColor = UIColor.clear
+            }
             cell.usernameLabel.text = player.username
             cell.coins.text = String(player.coins)
             
