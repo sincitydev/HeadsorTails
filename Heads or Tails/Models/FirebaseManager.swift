@@ -54,6 +54,8 @@ class FirebaseManager {
     
     func logout(completion: (AuthError?) -> Void) {
         do {
+            let currentUserUID = Auth.auth().currentUser?.uid
+            Literals.users.child(currentUserUID!).updateChildValues(["online": false])
             try Auth.auth().signOut()
             notificationCenter.post(name: .authenticationDidChange, object: nil)
             completion(nil)
