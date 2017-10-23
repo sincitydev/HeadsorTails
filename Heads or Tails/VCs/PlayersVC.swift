@@ -11,6 +11,7 @@ import FirebaseAuth
 
 class PlayersVC: UIViewController {
     @IBOutlet weak var playersTableView: UITableView!
+    @IBOutlet weak var viewAllPlayersSwitch: UISwitch!
     
     fileprivate var players: [Player] = []
     fileprivate var playerCellHeight: CGFloat = 75
@@ -23,6 +24,9 @@ class PlayersVC: UIViewController {
         playersTableView.dataSource = self
         playersTableView.delegate = self
         setupViews()
+        refreshPlayers()
+    }
+    @IBAction func viewAllPlayersSwitch(_ sender: UISwitch) {
         refreshPlayers()
     }
     
@@ -77,10 +81,15 @@ class PlayersVC: UIViewController {
         FBmanager.getPlayers { (returnedPlayers) in
             self.players = []
             returnedPlayers.forEach({ (player) in
-                if player.online == true {
+                if self.viewAllPlayersSwitch.isOn {
+                    if player.online == true {
+                        self.players.append(player)
+                    }
+                } else {
                     self.players.append(player)
                 }
             })
+            
             self.playersTableView.reloadData()
             self.playersTableView.refreshControl?.endRefreshing()
         }
