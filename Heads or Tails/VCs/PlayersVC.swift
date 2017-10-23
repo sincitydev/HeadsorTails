@@ -75,7 +75,12 @@ class PlayersVC: UIViewController {
     @objc private func refreshPlayers()
     {
         FBmanager.getPlayers { (returnedPlayers) in
-            self.players = returnedPlayers
+            self.players = []
+            returnedPlayers.forEach({ (player) in
+                if player.online == true {
+                    self.players.append(player)
+                }
+            })
             self.playersTableView.reloadData()
             self.playersTableView.refreshControl?.endRefreshing()
         }
@@ -117,6 +122,12 @@ extension PlayersVC: UITableViewDataSource {
         if indexPath.section == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: PlayerCell.identifier, for: indexPath) as! PlayerCell
             let player = players[indexPath.row]
+            
+            if player.online == true {
+                let onlineView = UIView(frame: CGRect(origin: CGPoint.zero, size: CGSize(width: 10, height: cell.bounds.height)))
+                onlineView.backgroundColor = #colorLiteral(red: 0.3411764801, green: 0.6235294342, blue: 0.1686274558, alpha: 1)
+                cell.addSubview(onlineView)
+            }
             
             cell.usernameLabel.text = player.username
             cell.coins.text = String(player.coins)
