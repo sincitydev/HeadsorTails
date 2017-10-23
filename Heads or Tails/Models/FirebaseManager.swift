@@ -30,6 +30,7 @@ struct FirebaseLiterals {
     static let uid = "uid"
     static let username = "username"
     static let coins = "coins"
+    static let online = "online"
 }
 
 class FirebaseManager {
