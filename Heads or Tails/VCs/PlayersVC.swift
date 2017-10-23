@@ -139,16 +139,11 @@ extension PlayersVC: UITableViewDataSource {
             let cell = tableView.dequeueReusableCell(withIdentifier: PlayerCell.identifier, for: indexPath) as! PlayerCell
             let player = players[indexPath.row]
             
-            
-            let onlineView = UIView(frame: CGRect(origin: CGPoint.zero, size: CGSize(width: 10, height: cell.bounds.height)))
-            if player.online == true {
-                onlineView.backgroundColor = #colorLiteral(red: 0.3411764801, green: 0.6235294342, blue: 0.1686274558, alpha: 1)
+            if players[indexPath.row].online == true {
+                cell.onlineView.backgroundColor = #colorLiteral(red: 0.3411764801, green: 0.6235294342, blue: 0.1686274558, alpha: 1)
             } else {
-                onlineView.backgroundColor = UIColor.clear
+                cell.onlineView.backgroundColor = UIColor.clear
             }
-            cell.addSubview(onlineView)
-        
-            
             cell.usernameLabel.text = player.username
             cell.coins.text = String(player.coins)
             
