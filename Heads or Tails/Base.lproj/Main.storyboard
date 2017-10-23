@@ -124,11 +124,23 @@
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
+                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Pbg-MJ-9ro">
+                                <rect key="frame" x="20" y="617" width="52" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="OzX-Ex-lHe"/>
+                                    <constraint firstAttribute="width" constant="50" id="tbO-d8-FEw"/>
+                                </constraints>
+                                <connections>
+                                    <action selector="viewAllPlayersSwitch:" destination="BYZ-38-t0r" eventType="valueChanged" id="eUd-QY-Ob3"/>
+                                </connections>
+                            </switch>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="UMN-Y4-9rm" secondAttribute="bottom" id="CxS-cN-SKZ"/>
                             <constraint firstAttribute="trailing" secondItem="UMN-Y4-9rm" secondAttribute="trailing" id="Fxo-We-JDM"/>
+                            <constraint firstItem="Pbg-MJ-9ro" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="20" id="Llg-53-y0w"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="Pbg-MJ-9ro" secondAttribute="bottom" constant="20" id="QrZ-KO-lSr"/>
                             <constraint firstItem="UMN-Y4-9rm" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="uxG-nf-b8m"/>
                             <constraint firstItem="UMN-Y4-9rm" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="yv2-Pb-oAL"/>
                         </constraints>
@@ -147,6 +159,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="playersTableView" destination="UMN-Y4-9rm" id="uGI-KP-lHa"/>
+                        <outlet property="viewAllPlayersSwitch" destination="Pbg-MJ-9ro" id="dEW-ep-PN1"/>
                         <segue destination="E5h-6N-iAr" kind="show" identifier="SearchUsersVC" id="h53-95-2pA"/>
                     </connections>
                 </viewController>

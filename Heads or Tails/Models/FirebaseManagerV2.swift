@@ -38,7 +38,8 @@ class FirebaseManagerV2 {
                 if snap.key != Auth.auth().currentUser?.uid {
                     guard let username = snap.childSnapshot(forPath: "username").value as? String else { return }
                     guard let coins = snap.childSnapshot(forPath: "coins").value as? Int else { return }
-                    let player = Player(uid: snap.key, username: username, coins: coins)
+                    guard let online = snap.childSnapshot(forPath: "online").value as? Bool else { return }
+                    let player = Player(uid: snap.key, username: username, coins: coins, online: online)
                     playerArray.append(player)
                 }
             }
@@ -57,7 +58,8 @@ class FirebaseManagerV2 {
                 let username = user.childSnapshot(forPath: "username").value as! String
                 if username.contains(searchQuery) == true && user.key != Auth.auth().currentUser?.uid {
                     guard let coins = user.childSnapshot(forPath: "coins").value as? Int else { return }
-                    let player = Player(uid: user.key, username: username, coins: coins)
+                    guard let online = user.childSnapshot(forPath: "online").value as? Bool else { return }
+                    let player = Player(uid: user.key, username: username, coins: coins, online: online)
                     players.append(player)
                 }
             }
