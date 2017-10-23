@@ -17,9 +17,10 @@ class SignupVC: UIViewController, UITextFieldDelegate, AuthHelper {
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
     
-    fileprivate let firebaseManager = FirebaseManager.shared
+    
+    var validUsername = false
+    fileprivate let firebaseManager = FirebaseManager.instance
     private let notificationCenter = NotificationCenter.default
-    private let FBManager = FirebaseManagerV2.instance
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,7 +38,7 @@ class SignupVC: UIViewController, UITextFieldDelegate, AuthHelper {
         let email = emailTextField.text ?? ""
         let password = passwordTextField.text ?? ""
         
-        if validInput(username: username, email: email, password: password) {
+        if validInput(username: username, email: email, password: password, validUsername: validUsername) {
             Auth.auth().createUser(withEmail: email, password: password) { [weak self] (user, error) in
                 
                 if let error = error, let authError = AuthErrorCode(rawValue: error._code) {
@@ -48,15 +49,19 @@ class SignupVC: UIViewController, UITextFieldDelegate, AuthHelper {
                     
                     let player = Player(uid: user.uid, username: username, coins: 100, online: true)
                     
-                    //self?.firebaseManager.saveNewPlayer(player)
-                    self?.FBManager.saveNewUser(player)
+                    self?.firebaseManager.saveNewUser(player)
                     self?.notificationCenter.post(name: .authenticationDidChange, object: nil)
                     
                 }
             }
         }
         else {
-            showLoginError(self.errorMessageLabel, with: "Invalid input")
+            if validUsername == false {
+                showLoginError(self.errorMessageLabel, with: "Username already in use")
+            }
+            else {
+                showLoginError(self.errorMessageLabel, with: "Invalid input")
+            }
         }
     }
     
@@ -69,9 +74,11 @@ extension SignupVC: UITextViewDelegate {
     func textFieldDidEndEditing(_ textField: UITextField, reason: UITextFieldDidEndEditingReason) {
         firebaseManager.checkUsername(usernameTextField.text ?? "") { [weak self] (authUsernameError) in
             if let authUsernameError = authUsernameError {
+                self?.validUsername = false
                 self?.showLoginError(self?.errorMessageLabel, with: authUsernameError.description)
             }
             else {
+                self?.validUsername = true
                 self?.hideLoginError(self?.errorMessageLabel)
             }
         }

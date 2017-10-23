@@ -2,14 +2,12 @@
 //  FirebaseManager.swift
 //  Heads or Tails
 //
-//  Created by Amanuel Ketebo on 8/29/17.
+//  Created by Joshua Ramos on 10/15/17.
 //  Copyright © 2017 Amanuel Ketebo. All rights reserved.
 //
 
 import Foundation
 import Firebase
-import FirebaseAuth
-import FirebaseDatabase
 
 enum AuthError {
     case usernameAlreadyInUse
@@ -25,38 +23,29 @@ enum AuthError {
     }
 }
 
-struct FirebaseLiterals {
-    static let players = "players"
-    static let uid = "uid"
-    static let username = "username"
-    static let coins = "coins"
-    static let online = "online"
+struct Literals {
+    static let base = DB_Base
+    static let users = DB_Base.child("users")
+    static let games = DB_Base.child("games")
 }
 
+fileprivate let DB_Base = Database.database().reference()
+
 class FirebaseManager {
-    static let shared = FirebaseManager()
+    static let instance = FirebaseManager()
+    
     let notificationCenter = NotificationCenter.default
     
-    typealias AuthErrorCallback = (AuthError) -> Void
-    
-    // ref property needs to be a lazy var because when initializing
-    // Firebase complains that configure() hasn't been called when it
-    // acutally is being called in the AppDelegate
-    
-    lazy var ref: DatabaseReference = {
-        return Database.database().reference()
-    }()
-    
-    // MARK: - Login and logout methods
-    
-    func login(email: String, password: String, authCallback: AuthResultCallback?) {
-        Auth.auth().signIn(withEmail: email, password: password, completion: authCallback)
+    func login(email: String, password: String, authCallBack: AuthResultCallback?) {
+        Auth.auth().signIn(withEmail: email, password: password, completion: authCallBack)
     }
     
     func logout(completion: (AuthError?) -> Void) {
         do {
             let currentUserUID = Auth.auth().currentUser?.uid
+            
             Literals.users.child(currentUserUID!).updateChildValues(["online": false])
+            
             try Auth.auth().signOut()
             notificationCenter.post(name: .authenticationDidChange, object: nil)
             completion(nil)
@@ -67,49 +56,141 @@ class FirebaseManager {
     }
     
     func checkUsername(_ newPlayerUsername: String, completion: @escaping (AuthError?) -> Void) {
-        ref.child(FirebaseLiterals.players).observeSingleEvent(of: .value, with: { (snapshot) in
+        Literals.users.observeSingleEvent(of: .value, with: { (snapshot) in
             guard let playerInfos = snapshot.value as? [String: Any] else {
                 completion(nil)
                 return
             }
             
-            if playerInfos.contains(where: { (playerInfo: (takenUsername: String, value: Any)) -> Bool in
-                return playerInfo.takenUsername == newPlayerUsername
+            if playerInfos.contains(where: { (uid, userData) -> Bool in
+                if let userInfo = userData as? [String: Any],
+                    let takenUsername = userInfo["username"] as? String {
+                    return takenUsername == newPlayerUsername
+                }
+                return false
             }) {
                 completion(.usernameAlreadyInUse)
-            }
-            else {
+            } else {
                 completion(nil)
             }
         })
     }
     
-    // MARK: - Saving and fetching data methods
-    
-    func saveNewPlayer(_ player: Player) {
-        let playerData = [FirebaseLiterals.uid: player.uid,
-                          FirebaseLiterals.username: player.username,
-                          FirebaseLiterals.coins: player.coins] as [String : Any]
+    func saveNewUser(_ player: Player) {
+        let playerData = ["username": player.username,
+                          "coins": player.coins] as [String : Any]
         
-        ref.child(FirebaseLiterals.players).child(player.username).setValue(playerData)
+        Literals.users.child(player.uid).updateChildValues(playerData)
     }
     
-    func fetchPlayers(completion: @escaping ([Player]?, Error?) -> Void) {
-        ref.child(FirebaseLiterals.players).observeSingleEvent(of: .value, with: { (snapshot) in
-            if let firebasePlayers = snapshot.value as? [String: Any] {
-                var players: [Player] = []
-                
-                firebasePlayers.forEach({ (username: String, player: Any) in
-                    guard let playerInfo = player as? [String: Any] else { return }
-                    if let player = Player(playerInfo) {
-                        players.append(player)
-                    }
-                })
-                
-                completion(players, nil)
+    func getPlayers(completion: @escaping (_ playersArray: [Player]) -> ()) {
+        var playerArray = [Player]()
+        
+        Literals.users.observeSingleEvent(of: .value, with: { (snapshot) in
+            guard let snapshot = snapshot.children.allObjects as? [DataSnapshot] else { return }
+            
+            for snap in snapshot {
+                if snap.key != Auth.auth().currentUser?.uid {
+                    guard let username = snap.childSnapshot(forPath: "username").value as? String,
+                        let coins = snap.childSnapshot(forPath: "coins").value as? Int,
+                        let online = snap.childSnapshot(forPath: "online").value as? Bool else { return }
+                    
+                    let player = Player(uid: snap.key, username: username, coins: coins, online: online)
+                    playerArray.append(player)
+                }
             }
-        }) { (error) in
-            completion(nil, error)
-        }
+            DispatchQueue.main.async {
+                completion(playerArray)
+            }
+        })
+    }
+    
+    func searchPlayers(searchQuery: String, completion: @escaping (_ userSeachArray: [Player]) -> ()) {
+        var players = [Player]()
+        
+        Literals.users.observe(.value, with: { (snapshot) in
+            guard let userSnapshot = snapshot.children.allObjects as? [DataSnapshot] else { return }
+            
+            for user in userSnapshot {
+                let username = user.childSnapshot(forPath: "username").value as! String
+                if username.contains(searchQuery) == true && user.key != Auth.auth().currentUser?.uid {
+                    guard let coins = user.childSnapshot(forPath: "coins").value as? Int else { return }
+                    guard let online = user.childSnapshot(forPath: "online").value as? Bool else { return }
+                    let player = Player(uid: user.key, username: username, coins: coins, online: online)
+                    players.append(player)
+                }
+            }
+            DispatchQueue.main.async {
+                completion(players)
+            }
+        })
+    }
+
+    func createGame(oppenentUID: String, initialBet: Int) {
+        guard let userUID = Auth.auth().currentUser?.uid else { return }
+        getGameKeyWith(playerUID: userUID, playerUId: oppenentUID, completion: { (existingGame) in
+            if existingGame == nil {
+                let gamePlayers = [userUID: ["bet": initialBet], oppenentUID: ["bet": 0], "Status": "invite pending"] as [String : Any]
+                
+                Literals.games.childByAutoId().updateChildValues(gamePlayers)
+            } else {
+                print("Game already exists")
+            }
+        })
+    }
+
+    // function that returns the key for a specific game that contains the two players
+    func getGameKeyWith(playerUID player1: String, playerUId player2: String, completion: @escaping (_ gameKey: String?)->()) {
+        var gameKey: String? = nil
+        Literals.games.observeSingleEvent(of: .value, with: { (gamesSnapshot) in
+            guard let gamesSnapshot = gamesSnapshot.value as? [String: Any] else {
+                completion(nil)
+                return
+            }
+            
+            gamesSnapshot.forEach({ (snap) in
+                guard let gameDetails = snap.value as? [String: Any] else {
+                    completion(nil)
+                    return
+                }
+                
+                if gameDetails.keys.contains(player1) && gameDetails.keys.contains(player2) {
+                    gameKey = snap.key
+                    completion(gameKey)
+                    return
+                }
+            })
+        })
+    }
+    
+    func updateBet(forPlayerUID player: String, gameKey: String, bet: Int) {
+        Literals.games.child(gameKey).observeSingleEvent(of: .value, with: { (gameSnapshot) in
+            guard let gameSnapshot = gameSnapshot.value as? [String: Any] else { return }
+            
+            if gameSnapshot.keys.contains(player) {
+                let bet = ["bet": bet]
+                Literals.games.child(gameKey).child(player).updateChildValues(bet)
+            }    
+        })
+    }
+    
+    func postOnlineStatus(_ onlineStatus: Bool) {
+        guard let currentUserUID = Auth.auth().currentUser?.uid else { return }
+        Literals.users.child(currentUserUID).updateChildValues(["online": onlineStatus])
+    }
+    
+    // TODO - Get Games for players (uid)
+    func getGames() {
+        
+    }
+    
+    // TODO - Get current currency
+    func getCurrency(forPlayerUID player: String) {
+        
+    }
+    
+    // TODO - Update currecy for uid
+    func updateCurrency(forPlayerUID player: String) {
+        
     }
 }

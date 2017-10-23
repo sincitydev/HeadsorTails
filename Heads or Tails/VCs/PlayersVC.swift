@@ -16,8 +16,7 @@ class PlayersVC: UIViewController {
     fileprivate var players: [Player] = []
     fileprivate var playerCellHeight: CGFloat = 75
     fileprivate var emptyPlayerCellHeight: CGFloat = 380
-    private var firebaseManager = FirebaseManager()
-    private var FBmanager = FirebaseManagerV2()
+    private var firebaseManager = FirebaseManager.instance
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,20 +30,20 @@ class PlayersVC: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        FBmanager.postOnlineStatus(onlineStatus: true)
+        firebaseManager.postOnlineStatus(true)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
-        FBmanager.postOnlineStatus(onlineStatus: false)
+        firebaseManager.postOnlineStatus(false)
     }
     
     // example of finding a game and updating a players bet
     
 //    override func viewDidAppear(_ animated: Bool) {
 //        super.viewDidAppear(animated)
-//        FBmanager.getGameKeyWith(playerUID: (Auth.auth().currentUser?.uid)!, playerUId: "opponentsUID") { (gameKey) in
+//        firebaseManager.getGameKeyWith(playerUID: (Auth.auth().currentUser?.uid)!, playerUId: "opponentsUID") { (gameKey) in
 //            if gameKey != nil {
-//                self.FBmanager.updateBet(forPlayerUID: "opponentsUID", gameKey: gameKey!, bet: 1000)
+//                self.firebaseManager.updateBet(forPlayerUID: "opponentsUID", gameKey: gameKey!, bet: 1000)
 //            }
 //        }
 //    }
@@ -76,9 +75,8 @@ class PlayersVC: UIViewController {
         performSegue(withIdentifier: "SearchUsersVC", sender: self)
     }
     
-    @objc private func refreshPlayers()
-    {
-        FBmanager.getPlayers { (returnedPlayers) in
+    @objc private func refreshPlayers() {
+        firebaseManager.getPlayers { (returnedPlayers) in
             self.players = []
             
             if self.viewAllPlayersSwitch.isOn {

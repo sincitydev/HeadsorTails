@@ -35,8 +35,8 @@ extension AuthHelper {
         }
     }
     
-    func validInput(username: String, email: String, password: String) -> Bool {
-        if username.isEmpty || email.isEmpty || password.isEmpty {
+    func validInput(username: String, email: String, password: String, validUsername: Bool) -> Bool {
+        if username.isEmpty || email.isEmpty || password.isEmpty || validUsername == false {
             return false
         }
         else {

@@ -17,7 +17,7 @@ class SearchUserVC: UIViewController {
     
     var usersSearched = [Player]()
     
-    var fBManager = FirebaseManagerV2()
+    var firebaseManager = FirebaseManager.instance
     
     
     override func viewDidLoad() {
@@ -34,7 +34,7 @@ class SearchUserVC: UIViewController {
             usersSearched = []
             tableview.reloadData()
         } else {
-            fBManager.searchPlayers(searchQuery: userSearchTextField.text!, completion: { (players) in
+            firebaseManager.searchPlayers(searchQuery: userSearchTextField.text!, completion: { (players) in
                 self.usersSearched = players
                 self.tableview.reloadData()
             })
