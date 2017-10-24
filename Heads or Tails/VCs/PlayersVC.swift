@@ -82,7 +82,7 @@ class PlayersVC: UIViewController {
             self.players = []
             
             if self.viewAllPlayersSwitch.isOn {
-                self.navigationItem.title = "Onine Players"
+                self.navigationItem.title = "Online Players"
             } else {
                 self.navigationItem.title = "All Players"
             }
