@@ -175,7 +175,7 @@ class FirebaseManager {
     }
     
     func postOnlineStatus(_ onlineStatus: Bool) {
-        guard let currentUserUID = Auth.auth().currentUser?.uid else { return }
+        guar d let currentUserUID = Auth.auth().currentUser?.uid else { return }
         Literals.users.child(currentUserUID).updateChildValues(["online": onlineStatus])
     }
     

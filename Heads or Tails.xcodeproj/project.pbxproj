@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7B3B58B31F9FD9EF00E17C9C /* HeadsOrTailsGameVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3B58B21F9FD9EF00E17C9C /* HeadsOrTailsGameVC.swift */; };
 		7B6165CE1F95071F005E8104 /* SearchUserVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B6165CD1F95071F005E8104 /* SearchUserVC.swift */; };
 		CA0DF1531F64C4A9004BC162 /* Palette.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA0DF1521F64C4A9004BC162 /* Palette.swift */; };
 		CA2702141F997DB300F22E9B /* AuthHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA2702131F997DB300F22E9B /* AuthHelper.swift */; };
@@ -36,6 +37,7 @@
 /* Begin PBXFileReference section */
 		69834EBE1B33168DDA8242AB /* Pods_Heads_or_Tails.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Heads_or_Tails.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6BCB35E481FC60AA227782F6 /* Pods-Heads or Tails.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Heads or Tails.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Heads or Tails/Pods-Heads or Tails.debug.xcconfig"; sourceTree = "<group>"; };
+		7B3B58B21F9FD9EF00E17C9C /* HeadsOrTailsGameVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeadsOrTailsGameVC.swift; sourceTree = "<group>"; };
 		7B6165CD1F95071F005E8104 /* SearchUserVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchUserVC.swift; sourceTree = "<group>"; };
 		CA0DF1521F64C4A9004BC162 /* Palette.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Palette.swift; sourceTree = "<group>"; };
 		CA2702131F997DB300F22E9B /* AuthHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthHelper.swift; sourceTree = "<group>"; };
@@ -127,6 +129,7 @@
 				CAF42B5B1F5644EF0070F447 /* PlayersVC.swift */,
 				CAFCEFF41F9410D900BF596E /* InformationVC.swift */,
 				7B6165CD1F95071F005E8104 /* SearchUserVC.swift */,
+				7B3B58B21F9FD9EF00E17C9C /* HeadsOrTailsGameVC.swift */,
 			);
 			path = VCs;
 			sourceTree = "<group>";
@@ -331,7 +334,9 @@
 				CAF4CAD51F5E535800BCD410 /* NotificationName+Extension.swift in Sources */,
 				CA5A81E11F537908009957FF /* SignupVC.swift in Sources */,
 				CAF42B5C1F5644EF0070F447 /* PlayersVC.swift in Sources */,
-				E2ECFA651F9415E400442FE9 /* FirebaseManager.swift in Sources */,
+				7B3B58B31F9FD9EF00E17C9C /* HeadsOrTailsGameVC.swift in Sources */,
+				E2ECFA651F9415E400442FE9 /* FirebaseManagerV2.swift in Sources */,
+				CAF42B581F56433C0070F447 /* FirebaseManager.swift in Sources */,
 				CA99889D1F5BD14800848DEF /* RoundedButton.swift in Sources */,
 				CAF42B5A1F5643820070F447 /* Player.swift in Sources */,
 				CA6CAFE31F4FF8670004022F /* AppDelegate.swift in Sources */,
