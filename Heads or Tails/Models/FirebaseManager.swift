@@ -144,43 +144,28 @@ class FirebaseManager {
         let autoId = Literals.games.childByAutoId().key
         Literals.games.child(autoId).setValue(gamePlayers)
         return autoId
-        //
-//        getGameKeyWith(playerUID: userUID, playerUId: oppenentUID, completion: { (existingGame) in
-//            print("MAKING A BABY \(existingGame)\n\n\n\n\n\n")
-//            if existingGame == nil {
-//                let gamePlayers = [userUID: ["bet": initialBet], oppenentUID: ["bet": initialBet], "Status": "needs key"] as [String : Any]
-//                Literals.games.childByAutoId().setValue(gamePlayers)
-//            } else {
-//                print("Game already exists")
-//            }
-//        })
     }
 
     // function that returns the key for a specific game that contains the two players
     func getGameKeyWith(playerUID player1: String, playerUId player2: String, completion: @escaping (_ gameKey: String?)->()) {
-        print("here is the damn players that are in this damn game already you fool \(player1) and \(player2)")
         var gameKey: String? = nil
         Literals.games.observeSingleEvent(of: .value, with: { (gamesSnapshot) in
             guard let gamesSnapshot = gamesSnapshot.value as? [String: Any] else {
-                completion(nil)
+                completion(nil) // should print error instead
                 return
             }
             
             gamesSnapshot.forEach({ (snap) in
                 guard let gameDetails = snap.value as? [String: Any] else {
-                    completion(nil)
                     return
                 }
-                
-                print("lookooookookkooo \(gameDetails.keys.contains(player1) && gameDetails.keys.contains(player2))")
+
                 if gameDetails.keys.contains(player1) && gameDetails.keys.contains(player2) {
                     gameKey = snap.key
-                    print(gameKey!)
-                    completion(gameKey)
                     return
                 }
             })
-//            completion(nil)
+            completion(gameKey)
         })
     }
     
@@ -202,6 +187,31 @@ class FirebaseManager {
             if returnStatus == "needs key" {
                 Literals.games.child(gameUID).updateChildValues(["Status": status])
             }
+        })
+    }
+    
+    func getBet(forPlayerUID player: String, gameKey: String, completion: @escaping (_ bet: Int)->()) {
+        Literals.games.child(gameKey).child(player).observeSingleEvent(of: .value, with: { (gameSnapshot) in
+            guard let gameSnapshot = gameSnapshot.value as? [String: Any] else { return }
+            guard let bet = gameSnapshot["bet"] as? Int else { return }
+            completion(bet)
+        })
+    }
+    
+    func getMove(forPlayerIUD player: String, gameKey: String, completion: @escaping (_ move: String?) -> ()) {
+        Literals.games.child(gameKey).child(player).observeSingleEvent(of: .value, with: { (gameSnapshot) in
+            guard let gameSnapshot = gameSnapshot.value as? [String: Any] else { return }
+            guard let move = gameSnapshot["move"] as? String else {
+                completion(nil)
+                return
+            }
+            completion(move)
+        })
+    }
+    
+    func createLisenerOn(gameKey: String, completion: @escaping () -> ()) {
+        Literals.games.observe(.value, with: { (_) in
+            completion()
         })
     }
     
@@ -229,7 +239,9 @@ class FirebaseManager {
         Literals.games.child(gameUID).observeSingleEvent(of: .value, with: { (gameSnapshot) in
             guard let gameSnapshot = gameSnapshot.value as? [String: Any] else { return }
             guard let playerInfo = gameSnapshot[player.uid] as? [String: Any] else { return }
-            guard var moves = playerInfo["move"] as? String else { return }
+            guard var moves = playerInfo["move"] as? String else {
+                Literals.games.child(gameUID).child(player.uid).updateChildValues(["move": move.rawValue])
+                return }
             moves += move.rawValue
             Literals.games.child(gameUID).child(player.uid).updateChildValues(["move": moves])
             
