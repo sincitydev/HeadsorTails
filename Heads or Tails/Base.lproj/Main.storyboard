@@ -135,6 +135,12 @@
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ONLINE" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rsV-km-jKP">
+                                <rect key="frame" x="23" y="597.5" width="45" height="14.5"/>
+                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="12"/>
+                                <color key="textColor" white="0.0" alpha="0.64511659020000001" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Pbg-MJ-9ro">
                                 <rect key="frame" x="20" y="617" width="52" height="30"/>
                                 <constraints>
@@ -152,6 +158,8 @@
                             <constraint firstAttribute="trailing" secondItem="UMN-Y4-9rm" secondAttribute="trailing" id="Fxo-We-JDM"/>
                             <constraint firstItem="Pbg-MJ-9ro" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="20" id="Llg-53-y0w"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="Pbg-MJ-9ro" secondAttribute="bottom" constant="20" id="QrZ-KO-lSr"/>
+                            <constraint firstItem="rsV-km-jKP" firstAttribute="centerX" secondItem="Pbg-MJ-9ro" secondAttribute="centerX" id="dkE-Kz-fzi"/>
+                            <constraint firstItem="Pbg-MJ-9ro" firstAttribute="top" secondItem="rsV-km-jKP" secondAttribute="bottom" constant="5" id="qcO-3X-S8f"/>
                             <constraint firstItem="UMN-Y4-9rm" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="uxG-nf-b8m"/>
                             <constraint firstItem="UMN-Y4-9rm" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="yv2-Pb-oAL"/>
                         </constraints>
