@@ -158,29 +158,24 @@ class FirebaseManager {
 
     // function that returns the key for a specific game that contains the two players
     func getGameKeyWith(playerUID player1: String, playerUId player2: String, completion: @escaping (_ gameKey: String?)->()) {
-        print("here is the damn players that are in this damn game already you fool \(player1) and \(player2)")
         var gameKey: String? = nil
         Literals.games.observeSingleEvent(of: .value, with: { (gamesSnapshot) in
             guard let gamesSnapshot = gamesSnapshot.value as? [String: Any] else {
-                completion(nil)
+                completion(nil) // should print error instead
                 return
             }
             
             gamesSnapshot.forEach({ (snap) in
                 guard let gameDetails = snap.value as? [String: Any] else {
-                    completion(nil)
                     return
                 }
-                
-                print("lookooookookkooo \(gameDetails.keys.contains(player1) && gameDetails.keys.contains(player2))")
+
                 if gameDetails.keys.contains(player1) && gameDetails.keys.contains(player2) {
                     gameKey = snap.key
-                    print(gameKey!)
-                    completion(gameKey)
                     return
                 }
             })
-//            completion(nil)
+            completion(gameKey)
         })
     }
     

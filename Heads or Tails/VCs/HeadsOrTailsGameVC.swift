@@ -39,7 +39,6 @@ class HeadsOrTailsGameVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("Already HERE")
         notificationCenter.addObserver(self, selector: #selector(updateView(_:)), name: NSNotification.Name(rawValue: "Update GameVC Details"), object: nil)
     }
     
