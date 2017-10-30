@@ -34,5 +34,16 @@ extension Player {
             return nil
         }
     }
+    
+    convenience init?(uid: String,_ firebaseJSON: [String: Any]) {
+        if let username = firebaseJSON["username"] as? String,
+            let coins = firebaseJSON["coins"] as? Int,
+            let online = firebaseJSON["online"] as? Bool {
+            self.init(uid: uid, username: username, coins: coins, online: online)
+        }
+        else {
+            return nil
+        }
+    }
 }
 

@@ -87,23 +87,25 @@ class FirebaseManager {
     }
     
     func getPlayers(completion: @escaping (_ playersArray: [Player]) -> ()) {
-        var playerArray = [Player]()
-        
         Literals.users.observeSingleEvent(of: .value, with: { (snapshot) in
-            guard let snapshot = snapshot.children.allObjects as? [DataSnapshot] else { return }
+            var playerArray = [Player]()
             
-            for snap in snapshot {
-                if snap.key != Auth.auth().currentUser?.uid {
-                    guard let username = snap.childSnapshot(forPath: "username").value as? String,
-                        let coins = snap.childSnapshot(forPath: "coins").value as? Int,
-                        let online = snap.childSnapshot(forPath: "online").value as? Bool else { return }
-                    
-                    let player = Player(uid: snap.key, username: username, coins: coins, online: online)
-                    playerArray.append(player)
+            if let users = snapshot.value as? [String: Any] {
+                for user in users {
+                    if user.key != Auth.auth().currentUser?.uid {
+                        if let userInfo = user.value as? [String: Any],
+                            let player = Player(uid: user.key, userInfo) {
+                            playerArray.append(player)
+                        }
+                    }
+                }
+                DispatchQueue.main.async {
+                    completion(playerArray)
                 }
             }
-            DispatchQueue.main.async {
-                completion(playerArray)
+            else {
+                // Later on down the line create an error to pass back
+                consolePrint("Oh no!")
             }
         })
     }
