@@ -23,7 +23,6 @@ class SearchUserVC: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        userSearchTextField.delegate = self
         userSearchTextField.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
         firebaseManager.getPlayers { (returnedPlayers) in
             self.returnedUsers = returnedPlayers
@@ -32,8 +31,6 @@ class SearchUserVC: UIViewController {
                 self.tableview.reloadData()
             }
         }
-
-        // Do any additional setup after loading the view.
     }
 
   @objc func textFieldDidChange() {
@@ -58,10 +55,6 @@ class SearchUserVC: UIViewController {
     }
 }
 
-extension SearchUserVC: UITextFieldDelegate {
-
-}
-
 extension SearchUserVC: UITableViewDelegate, UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -81,7 +74,5 @@ extension SearchUserVC: UITableViewDelegate, UITableViewDataSource {
         }
         return cell
     }
-
-
 }
 
