@@ -27,9 +27,7 @@ class SearchUserVC: UIViewController {
         firebaseManager.getPlayers { (returnedPlayers) in
             self.returnedUsers = returnedPlayers
             self.usersSearched = returnedPlayers
-            DispatchQueue.main.async {
-                self.tableview.reloadData()
-            }
+            self.tableview.reloadData()
         }
     }
 
