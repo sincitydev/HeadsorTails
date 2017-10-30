@@ -25,6 +25,7 @@ class HeadsOrTailsGame {
     var opponentMove: String?
     
     var finishedSettingUp = false
+    var turn = 0
     
     var gameUID: String? {
         didSet {
@@ -89,7 +90,9 @@ class HeadsOrTailsGame {
     }
     
     func addMove(_ move: Move, for player: Player) {
-        
+        if finishedSettingUp {
+            firebaseManager.addMove(move, for: player, gameUID: gameUID!)
+        }
     }
 
     func getGameDescription() -> String {
@@ -98,8 +101,14 @@ class HeadsOrTailsGame {
                 return "Enter your bet"
             } else if opponentBet == 0 {
                 return "Waiting for opponent to bet"
+            } else if localMove == nil {
+                return "Select your coin"
+            } else if opponentMove == nil {
+                return "Waiting on opponent to move"
+            } else if (localMove?.count)! < turn {
+                return "Select your coin"
             } else {
-                return "We are on the first move"
+                return "Waiting on opponent to move"
             }
         } else {
             return "Waiting on server..."

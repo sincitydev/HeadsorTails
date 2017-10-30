@@ -239,7 +239,9 @@ class FirebaseManager {
         Literals.games.child(gameUID).observeSingleEvent(of: .value, with: { (gameSnapshot) in
             guard let gameSnapshot = gameSnapshot.value as? [String: Any] else { return }
             guard let playerInfo = gameSnapshot[player.uid] as? [String: Any] else { return }
-            guard var moves = playerInfo["move"] as? String else { return }
+            guard var moves = playerInfo["move"] as? String else {
+                Literals.games.child(gameUID).child(player.uid).updateChildValues(["move": move.rawValue])
+                return }
             moves += move.rawValue
             Literals.games.child(gameUID).child(player.uid).updateChildValues(["move": moves])
             

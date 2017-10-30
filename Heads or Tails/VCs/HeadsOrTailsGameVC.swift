@@ -31,6 +31,16 @@ class HeadsOrTailsGameVC: UIViewController {
     @IBOutlet weak var confirmBetButton: UIButton!
     
     @IBOutlet weak var statusLabel: UILabel!
+    
+    @IBOutlet weak var opponentHeadImageView: UIImageView!
+    @IBOutlet weak var opponentTailImageView: UIImageView!
+    
+    @IBOutlet weak var localHeadImageView: UIImageView!
+    @IBOutlet weak var localTailImageView: UIImageView!
+    
+
+    
+    
     var opponentPlayer = Player(uid: "skdbfwerbufwef", username: "The Joker", coins: 500, online: true)
     var user = Player(uid: "kweibvwernviwern", username: "DannyJP", coins: 2600, online: true)
     var usersBet = 0
@@ -51,13 +61,44 @@ class HeadsOrTailsGameVC: UIViewController {
         makeYourBetLabel.isHidden = true
         confirmBetButton.isHidden = true
         betCoinImageView.isHidden = true
+        
+        localHeadImageView.isHidden = true
+        localTailImageView.isHidden = true
 
+        let headTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(headImageViewSelected(_:)))
+        let tailTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(tailImageViewSelected(_:)))
+        
+        localHeadImageView.addGestureRecognizer(headTapGestureRecognizer)
+        localTailImageView.addGestureRecognizer(tailTapGestureRecognizer)
+        
+        localHeadImageView.isUserInteractionEnabled = true
+        localTailImageView.isUserInteractionEnabled = true
+        
+        
         notificationCenter.addObserver(self, selector: #selector(updateStatus(_:)), name: NSNotification.Name.init(rawValue: "gameUpdated"), object: nil)
     }
     
     @objc func updateStatus(_ notification: Notification) {
+        localHeadImageView.isHidden = false
+        localTailImageView.isHidden = false
         self.statusLabel.text = gameManager.getGameDescription()
     }
+    
+    @objc func headImageViewSelected(_ sender: Any) {
+        self.localTailImageView.alpha = 0.5
+        self.localHeadImageView.alpha = 1
+        
+        gameManager.addMove(Move.heads, for: localPlayer)
+    }
+    
+    @objc func tailImageViewSelected(_ sender: Any) {
+        self.localTailImageView.alpha = 1
+        self.localHeadImageView.alpha = 0.5
+        
+        gameManager.addMove(Move.tails, for: localPlayer)
+    }
+    
+    
     
     @objc func updateView(_ notification: Notification) {
         if let info = notification.userInfo as? [String : Any] {

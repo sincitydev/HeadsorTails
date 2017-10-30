@@ -449,7 +449,11 @@
                         <outlet property="bettingCoinImageView" destination="2bv-II-sGg" id="Tat-dC-DzY"/>
                         <outlet property="bettingCoinsLabel" destination="mmh-cK-om7" id="nm1-YC-ljH"/>
                         <outlet property="confirmBetButton" destination="C6q-Oi-oc5" id="dar-VS-kv5"/>
+                        <outlet property="localHeadImageView" destination="TQY-7X-Sj4" id="eO8-oF-T9n"/>
+                        <outlet property="localTailImageView" destination="6ks-dC-Fkd" id="Vgi-8Z-vVM"/>
                         <outlet property="makeYourBetLabel" destination="hsC-ES-4st" id="GzO-si-BSN"/>
+                        <outlet property="opponentHeadImageView" destination="K7O-HV-nE0" id="gbQ-GL-qz4"/>
+                        <outlet property="opponentTailImageView" destination="mXd-vw-CN4" id="tgk-oT-Jpw"/>
                         <outlet property="opponentsCoinsLabel" destination="9fL-ar-ClF" id="bkn-dn-OI7"/>
                         <outlet property="opponentsUsernameLabel" destination="rAD-6m-YIs" id="I4D-1x-6LB"/>
                         <outlet property="statusLabel" destination="665-rj-9SY" id="iOc-8p-uBH"/>
