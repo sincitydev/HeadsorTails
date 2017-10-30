@@ -175,10 +175,8 @@ extension PlayersVC: UITableViewDelegate {
                 let gameKey = self?.firebaseManager.createGame(oppenentUID: (self?.players[indexPath.row].uid)!, initialBet: 0)
                 self?.firebaseManager.getPlayerInfoFor(uid: (Auth.auth().currentUser?.uid)!, completion: { (localPlayer) in
                     let dict = ["localPlayer" : localPlayer as Any, "opponentPlayer" : self?.players[indexPath.row] as Any, "gameKey" : gameKey! as Any] as [String: Any]
-                    
-                    
+                
                     self?.notificationCenter.post(name: NSNotification.Name.init(rawValue: "Update GameVC Details"), object: nil, userInfo: dict)
-                  self?.performSegue(withIdentifier: "gameVCSegue", sender: nil)
                 })
             } else {
            
@@ -186,8 +184,8 @@ extension PlayersVC: UITableViewDelegate {
                     let dict = ["localPlayer" : localPlayer as Any, "opponentPlayer" : self?.players[indexPath.row] as Any, "gameKey" : gameKey! as Any] as [String: Any]
                     self?.notificationCenter.post(name: NSNotification.Name.init(rawValue: "Update GameVC Details"), object: nil, userInfo: dict)
                 })
-                self?.performSegue(withIdentifier: "gameVCSegue", sender: nil)
             }
+            self?.performSegue(withIdentifier: "gameVCSegue", sender: nil)
         }
     }
 }
