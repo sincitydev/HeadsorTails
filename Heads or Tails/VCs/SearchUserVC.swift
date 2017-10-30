@@ -12,32 +12,32 @@ import Firebase
 class SearchUserVC: UIViewController {
 
     @IBOutlet weak var userSearchTextField: UITextField!
-    
+
     @IBOutlet weak var tableview: UITableView!
-    
+
     var returnedUsers = [Player]()
     var usersSearched = [Player]()
-    
-    var fBManager = FirebaseManagerV2()
-    
-    
+
+    var firebaseManager = FirebaseManager.instance
+
+
     override func viewDidLoad() {
         super.viewDidLoad()
         userSearchTextField.delegate = self
         userSearchTextField.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
-        fBManager.getPlayers { (returnedPlayers) in
+        firebaseManager.getPlayers { (returnedPlayers) in
             self.returnedUsers = returnedPlayers
             self.usersSearched = returnedPlayers
             DispatchQueue.main.async {
                 self.tableview.reloadData()
             }
         }
-        
+
         // Do any additional setup after loading the view.
     }
 
   @objc func textFieldDidChange() {
-        
+
         if userSearchTextField.text == "" {
             usersSearched = returnedUsers
             tableview.reloadData()
@@ -64,13 +64,13 @@ extension SearchUserVC: UITextFieldDelegate {
 }
 
 extension SearchUserVC: UITableViewDelegate, UITableViewDataSource {
-    
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return usersSearched.count
     }
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
+
         guard let cell = tableview.dequeueReusableCell(withIdentifier: "searchPlayerCell") as? PlayerCell else { return UITableViewCell() }
         let user = usersSearched[indexPath.row]
         cell.usernameLabel.text = user.username
@@ -82,7 +82,7 @@ extension SearchUserVC: UITableViewDelegate, UITableViewDataSource {
         }
         return cell
     }
-    
-    
+
+
 }
 

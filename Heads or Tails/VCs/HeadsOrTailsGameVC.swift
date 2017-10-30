@@ -31,22 +31,39 @@ class HeadsOrTailsGameVC: UIViewController {
     var user = Player(uid: "kweibvwernviwern", username: "DannyJP", coins: 2600, online: true)
     var usersBet = 0
     var usersTotal = 0
+    var gameUID: String!
+    var localPlayer: Player!
+    var oppenentPlayer: Player!
+    let notificationCenter = NotificationCenter.default
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        setUpView()
-        
-        
+        print("Already HERE")
+        notificationCenter.addObserver(self, selector: #selector(updateView(_:)), name: NSNotification.Name(rawValue: "Update GameVC Details"), object: nil)
     }
     
+    @objc func updateView(_ notification: Notification) {
+        if let info = notification.userInfo as? [String : Any] {
+            localPlayer = info["localPlayer"] as? Player
+            opponentPlayer = (info["opponentPlayer"] as? Player)!
+            
+            usersUsernameLabel.text = localPlayer.username
+            usersCoinsLabel.text = String(localPlayer.coins)
+            
+            opponentsUsernameLabel.text = opponentPlayer.username
+            opponentsCoinsLabel.text = String(opponentPlayer.coins)
+            
+            uiBettingSliderOutlet.maximumValue = Float(localPlayer.coins)
+            usersTotal = localPlayer.coins
+        }
+    }
     
     @IBAction func uiBettingSliderAction(_ sender: UISlider) {
         
         usersBet = Int(sender.value.rounded())
         bettingCoinsLabel.text = "\(usersBet)"
-        let newTotal = user.coins - Int(sender.value.rounded())
+        let newTotal = localPlayer.coins - Int(sender.value.rounded())
         usersTotal = newTotal
         usersCoinsLabel.text = "\(usersTotal)"
         
@@ -64,6 +81,9 @@ class HeadsOrTailsGameVC: UIViewController {
         
     }
     
-    
+
+    @IBAction func backButtonPressed(_ sender: Any) {
+        self.dismiss(animated: true, completion: nil)
+    }
     
 }

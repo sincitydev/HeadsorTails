@@ -24,10 +24,10 @@ class Player {
 
 extension Player {
     convenience init?(_ firebaseJSON: [String: Any]) {
-        if let uid = firebaseJSON[FirebaseLiterals.uid] as? String,
-            let username = firebaseJSON[FirebaseLiterals.username] as? String,
-            let coins = firebaseJSON[FirebaseLiterals.coins] as? Int,
-            let online = firebaseJSON[FirebaseLiterals.online] as? Bool {
+        if let uid = firebaseJSON["uid"] as? String,
+            let username = firebaseJSON["username"] as? String,
+            let coins = firebaseJSON["coins"] as? Int,
+            let online = firebaseJSON["online"] as? Bool {
             self.init(uid: uid, username: username, coins: coins, online: online)
         }
         else {

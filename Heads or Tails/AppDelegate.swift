@@ -14,7 +14,7 @@ import FirebaseAuth
 class AppDelegate: UIResponder, UIApplicationDelegate {   
     var window: UIWindow?
     let notificationCenter = NotificationCenter.default
-    let firebaseManager = FirebaseManagerV2.instance
+    let firebaseManager = FirebaseManager.instance
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         FirebaseApp.configure()
@@ -46,7 +46,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             rootVC = navVC
         }
         else {
-            firebaseManager.postOnlineStatus(onlineStatus: false)
+            firebaseManager.postOnlineStatus(false)
             let navVC = UIStoryboard.auth.instantiateInitialViewController() as! UINavigationController
             
             rootVC = navVC
