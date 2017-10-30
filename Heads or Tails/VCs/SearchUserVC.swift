@@ -37,7 +37,6 @@ class SearchUserVC: UIViewController {
     }
 
   @objc func textFieldDidChange() {
-
         if userSearchTextField.text == "" {
             usersSearched = returnedUsers
             tableview.reloadData()
