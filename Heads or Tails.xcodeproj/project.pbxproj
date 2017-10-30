@@ -10,6 +10,7 @@
 		7B3B58B31F9FD9EF00E17C9C /* HeadsOrTailsGameVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3B58B21F9FD9EF00E17C9C /* HeadsOrTailsGameVC.swift */; };
 		7B6165CE1F95071F005E8104 /* SearchUserVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B6165CD1F95071F005E8104 /* SearchUserVC.swift */; };
 		CA0DF1531F64C4A9004BC162 /* Palette.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA0DF1521F64C4A9004BC162 /* Palette.swift */; };
+		CA10DCCC1FA67E2800FEB509 /* HeadsOrTailsGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA10DCCB1FA67E2800FEB509 /* HeadsOrTailsGame.swift */; };
 		CA2702141F997DB300F22E9B /* AuthHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA2702131F997DB300F22E9B /* AuthHelper.swift */; };
 		CA29B6A11F52975100C63D42 /* LoginVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA29B6A01F52975100C63D42 /* LoginVC.swift */; };
 		CA5243D61F60FCEE001BC63A /* PlayerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA5243D51F60FCEE001BC63A /* PlayerCell.swift */; };
@@ -40,6 +41,7 @@
 		7B3B58B21F9FD9EF00E17C9C /* HeadsOrTailsGameVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeadsOrTailsGameVC.swift; sourceTree = "<group>"; };
 		7B6165CD1F95071F005E8104 /* SearchUserVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchUserVC.swift; sourceTree = "<group>"; };
 		CA0DF1521F64C4A9004BC162 /* Palette.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Palette.swift; sourceTree = "<group>"; };
+		CA10DCCB1FA67E2800FEB509 /* HeadsOrTailsGame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeadsOrTailsGame.swift; sourceTree = "<group>"; };
 		CA2702131F997DB300F22E9B /* AuthHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthHelper.swift; sourceTree = "<group>"; };
 		CA29B6A01F52975100C63D42 /* LoginVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginVC.swift; sourceTree = "<group>"; };
 		CA5243D51F60FCEE001BC63A /* PlayerCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerCell.swift; sourceTree = "<group>"; };
@@ -99,6 +101,7 @@
 		CA5D30211F508FA600430515 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				CA10DCCB1FA67E2800FEB509 /* HeadsOrTailsGame.swift */,
 				CAF42B591F5643820070F447 /* Player.swift */,
 				E2ECFA641F9415E400442FE9 /* FirebaseManager.swift */,
 				CA0DF1521F64C4A9004BC162 /* Palette.swift */,
@@ -347,6 +350,7 @@
 				CA29B6A11F52975100C63D42 /* LoginVC.swift in Sources */,
 				CA2702141F997DB300F22E9B /* AuthHelper.swift in Sources */,
 				CA5243D61F60FCEE001BC63A /* PlayerCell.swift in Sources */,
+				CA10DCCC1FA67E2800FEB509 /* HeadsOrTailsGame.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

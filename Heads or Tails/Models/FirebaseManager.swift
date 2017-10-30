@@ -105,6 +105,18 @@ class FirebaseManager {
         })
     }
     
+    func getPlayerInfoFor(uid: String, completion: @escaping (_ username: Player) -> ()) {
+        Literals.users.child(uid).observeSingleEvent(of: .value, with: { (userSnapshot) in
+            guard let userSnapshot = userSnapshot.value as? [String: Any] else { return }
+            guard let username = userSnapshot["username"] as? String else { return }
+            guard let coins = userSnapshot["coins"] as? Int else { return }
+            guard let online = userSnapshot["online"] as? Bool else { return }
+            let player = Player(uid: uid, username: username, coins: coins, online: online)
+            completion(player)
+        })
+    }
+
+    //username
     func searchPlayers(searchQuery: String, completion: @escaping (_ userSeachArray: [Player]) -> ()) {
         var players = [Player]()
         
@@ -126,21 +138,27 @@ class FirebaseManager {
         })
     }
 
-    func createGame(oppenentUID: String, initialBet: Int) {
-        guard let userUID = Auth.auth().currentUser?.uid else { return }
-        getGameKeyWith(playerUID: userUID, playerUId: oppenentUID, completion: { (existingGame) in
-            if existingGame == nil {
-                let gamePlayers = [userUID: ["bet": initialBet], oppenentUID: ["bet": 0], "Status": "invite pending"] as [String : Any]
-                
-                Literals.games.childByAutoId().updateChildValues(gamePlayers)
-            } else {
-                print("Game already exists")
-            }
-        })
+    func createGame(oppenentUID: String, initialBet: Int) -> String {
+        guard let userUID = Auth.auth().currentUser?.uid else { return "MISSING USER UID" }
+        let gamePlayers = [userUID: ["bet": initialBet], oppenentUID: ["bet": initialBet], "Status": "needs key"] as [String : Any]
+        let autoId = Literals.games.childByAutoId().key
+        Literals.games.child(autoId).setValue(gamePlayers)
+        return autoId
+        //
+//        getGameKeyWith(playerUID: userUID, playerUId: oppenentUID, completion: { (existingGame) in
+//            print("MAKING A BABY \(existingGame)\n\n\n\n\n\n")
+//            if existingGame == nil {
+//                let gamePlayers = [userUID: ["bet": initialBet], oppenentUID: ["bet": initialBet], "Status": "needs key"] as [String : Any]
+//                Literals.games.childByAutoId().setValue(gamePlayers)
+//            } else {
+//                print("Game already exists")
+//            }
+//        })
     }
 
     // function that returns the key for a specific game that contains the two players
     func getGameKeyWith(playerUID player1: String, playerUId player2: String, completion: @escaping (_ gameKey: String?)->()) {
+        print("here is the damn players that are in this damn game already you fool \(player1) and \(player2)")
         var gameKey: String? = nil
         Literals.games.observeSingleEvent(of: .value, with: { (gamesSnapshot) in
             guard let gamesSnapshot = gamesSnapshot.value as? [String: Any] else {
@@ -154,12 +172,15 @@ class FirebaseManager {
                     return
                 }
                 
+                print("lookooookookkooo \(gameDetails.keys.contains(player1) && gameDetails.keys.contains(player2))")
                 if gameDetails.keys.contains(player1) && gameDetails.keys.contains(player2) {
                     gameKey = snap.key
+                    print(gameKey!)
                     completion(gameKey)
                     return
                 }
             })
+//            completion(nil)
         })
     }
     
@@ -174,8 +195,18 @@ class FirebaseManager {
         })
     }
     
+    func updateStatus(status: String, gameUID: String) {
+        Literals.games.child(gameUID).observeSingleEvent(of: .value, with: { (gameSnapshot) in
+            guard let gameSnapshot = gameSnapshot.value as? [String: Any] else { return }
+            guard let returnStatus = gameSnapshot["Status"] as? String else { return }
+            if returnStatus == "needs key" {
+                Literals.games.child(gameUID).updateChildValues(["Status": status])
+            }
+        })
+    }
+    
     func postOnlineStatus(_ onlineStatus: Bool) {
-        guar d let currentUserUID = Auth.auth().currentUser?.uid else { return }
+        guard let currentUserUID = Auth.auth().currentUser?.uid else { return }
         Literals.users.child(currentUserUID).updateChildValues(["online": onlineStatus])
     }
     
@@ -192,5 +223,16 @@ class FirebaseManager {
     // TODO - Update currecy for uid
     func updateCurrency(forPlayerUID player: String) {
         
+    }
+    
+    func addMove(_ move: Move, for player: Player, gameUID: String) {
+        Literals.games.child(gameUID).observeSingleEvent(of: .value, with: { (gameSnapshot) in
+            guard let gameSnapshot = gameSnapshot.value as? [String: Any] else { return }
+            guard let playerInfo = gameSnapshot[player.uid] as? [String: Any] else { return }
+            guard var moves = playerInfo["move"] as? String else { return }
+            moves += move.rawValue
+            Literals.games.child(gameUID).child(player.uid).updateChildValues(["move": moves])
+            
+        })
     }
 }

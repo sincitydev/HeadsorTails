@@ -5,7 +5,7 @@
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13174"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -172,6 +172,7 @@
                         <outlet property="playersTableView" destination="UMN-Y4-9rm" id="uGI-KP-lHa"/>
                         <outlet property="viewAllPlayersSwitch" destination="Pbg-MJ-9ro" id="dEW-ep-PN1"/>
                         <segue destination="E5h-6N-iAr" kind="show" identifier="SearchUsersVC" id="h53-95-2pA"/>
+                        <segue destination="3WZ-MQ-xwi" kind="show" identifier="gameVCSegue" id="qv2-qZ-zQG"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -429,7 +430,11 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" title="Heads or Tails" id="ZhE-aB-QdX">
-                        <barButtonItem key="leftBarButtonItem" title="Back" id="JjG-bC-nRy"/>
+                        <barButtonItem key="leftBarButtonItem" title="Back" id="JjG-bC-nRy">
+                            <connections>
+                                <action selector="backButtonPressed:" destination="dHR-40-lRE" id="vvu-7E-Aew"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="bettingCoinImageView" destination="2bv-II-sGg" id="Tat-dC-DzY"/>

@@ -25,7 +25,7 @@ class SearchUserVC: UIViewController {
         super.viewDidLoad()
         userSearchTextField.delegate = self
         userSearchTextField.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
-        fBManager.getPlayers { (returnedPlayers) in
+        firebaseManager.getPlayers { (returnedPlayers) in
             self.returnedUsers = returnedPlayers
             self.usersSearched = returnedPlayers
             DispatchQueue.main.async {

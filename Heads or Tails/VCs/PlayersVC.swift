@@ -16,7 +16,8 @@ class PlayersVC: UIViewController {
     fileprivate var players: [Player] = []
     fileprivate var playerCellHeight: CGFloat = 75
     fileprivate var emptyPlayerCellHeight: CGFloat = 380
-    private var firebaseManager = FirebaseManager.instance
+    fileprivate var firebaseManager = FirebaseManager.instance
+    fileprivate var notificationCenter = NotificationCenter.default
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -111,6 +112,7 @@ class PlayersVC: UIViewController {
         present(informationVC, animated: true, completion: nil)
     }
     
+    
     deinit {
         print("PlayersVC has been deallocated :)")
     }
@@ -162,6 +164,33 @@ extension PlayersVC: UITableViewDelegate {
         }
         else {
             return emptyPlayerCellHeight
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        print("DID TAP DAT DICT \n\n\n\n\n\n")
+        firebaseManager.getGameKeyWith(playerUID: (Auth.auth().currentUser?.uid)!, playerUId: players[indexPath.row].uid) { [weak self] (gameKey) in
+            if gameKey == nil {
+                // Create game key
+                print("CREATING GAMES FOOOOO")
+                let gameKey = self?.firebaseManager.createGame(oppenentUID: (self?.players[indexPath.row].uid)!, initialBet: 0)
+                self?.firebaseManager.getPlayerInfoFor(uid: (Auth.auth().currentUser?.uid)!, completion: { (localPlayer) in
+                    let dict = ["localPlayer" : localPlayer as Any, "opponentPlayer" : self?.players[indexPath.row] as Any, "gameKey" : gameKey! as Any] as [String: Any]
+                    
+                    
+                    self?.notificationCenter.post(name: NSNotification.Name.init(rawValue: "Update GameVC Details"), object: nil, userInfo: dict)
+                  self?.performSegue(withIdentifier: "gameVCSegue", sender: nil)
+                })
+            } else {
+                
+                print("\n\n\n\n\n\n we have a game, fuck me so hard i hate this damn coding dITCCT DICCT")
+                
+                self?.firebaseManager.getPlayerInfoFor(uid: (Auth.auth().currentUser?.uid)!, completion: { (localPlayer) in
+                    let dict = ["localPlayer" : localPlayer as Any, "opponentPlayer" : self?.players[indexPath.row] as Any, "gameKey" : gameKey! as Any] as [String: Any]
+                    self?.notificationCenter.post(name: NSNotification.Name.init(rawValue: "Update GameVC Details"), object: nil, userInfo: dict)
+                })
+                self?.performSegue(withIdentifier: "gameVCSegue", sender: nil)
+            }
         }
     }
 }
