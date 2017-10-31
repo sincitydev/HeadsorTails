@@ -111,8 +111,8 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="383"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add more players" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tSr-Wo-7yE">
-                                                    <rect key="frame" x="115.5" y="261.5" width="143" height="21"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No players (try toggiling the online switch)" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tSr-Wo-7yE">
+                                                    <rect key="frame" x="59.5" y="261.5" width="257" height="41"/>
                                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                                                     <color key="textColor" red="0.50196078430000002" green="0.50196078430000002" blue="0.50196078430000002" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -136,7 +136,7 @@
                                 </prototypes>
                             </tableView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ONLINE" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rsV-km-jKP">
-                                <rect key="frame" x="23" y="597.5" width="45" height="14.5"/>
+                                <rect key="frame" x="22.5" y="597.5" width="45" height="14.5"/>
                                 <fontDescription key="fontDescription" type="system" weight="medium" pointSize="12"/>
                                 <color key="textColor" white="0.0" alpha="0.64511659020000001" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
@@ -170,7 +170,7 @@
                                 <action selector="touchedLogout:" destination="BYZ-38-t0r" id="siB-XE-aFJ"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" title="Item" image="add" id="E5H-oK-TSr">
+                        <barButtonItem key="rightBarButtonItem" systemItem="search" id="E5H-oK-TSr">
                             <connections>
                                 <action selector="searchUsersAction:" destination="BYZ-38-t0r" id="60C-Z0-hMB"/>
                             </connections>
@@ -187,7 +187,7 @@
             </objects>
             <point key="canvasLocation" x="-12" y="122.78860569715144"/>
         </scene>
-        <!--Search UserVC-->
+        <!--Search-->
         <scene sceneID="2Pt-kt-QnO">
             <objects>
                 <viewController id="1Bp-Fa-akb" customClass="SearchUserVC" customModule="Heads_or_Tails" customModuleProvider="target" sceneMemberID="viewController">
@@ -199,15 +199,15 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="70" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="7lp-ih-3hd">
-                                <rect key="frame" x="0.0" y="114" width="375" height="553"/>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="70" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="7lp-ih-3hd">
+                                <rect key="frame" x="0.0" y="124" width="375" height="543"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="searchPlayerCell" rowHeight="70" id="N0M-wB-QN0" customClass="PlayerCell" customModule="Heads_or_Tails" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="375" height="70"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="N0M-wB-QN0" id="Ylq-kN-bcS">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="69.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="70"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="username" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="t3z-v3-IBw">
@@ -271,13 +271,13 @@
                                     <outlet property="delegate" destination="1Bp-Fa-akb" id="48R-dV-VSj"/>
                                 </connections>
                             </tableView>
-                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Search User" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="czs-GZ-TKP">
-                                <rect key="frame" x="10" y="74" width="355" height="30"/>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="username" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="czs-GZ-TKP">
+                                <rect key="frame" x="10" y="74" width="355" height="40"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="30" id="gcV-ve-eq9"/>
+                                    <constraint firstAttribute="height" constant="40" id="gcV-ve-eq9"/>
                                 </constraints>
                                 <nil key="textColor"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="18"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                         </subviews>
@@ -292,7 +292,7 @@
                             <constraint firstAttribute="trailing" secondItem="czs-GZ-TKP" secondAttribute="trailing" constant="10" id="yFT-vP-m1C"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="VIZ-72-oB0">
+                    <navigationItem key="navigationItem" title="Search" id="VIZ-72-oB0">
                         <barButtonItem key="leftBarButtonItem" title="Back" id="4Om-qv-MgZ">
                             <connections>
                                 <action selector="backButtonAction:" destination="1Bp-Fa-akb" id="Jdc-M1-xjs"/>
@@ -495,7 +495,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="add" width="26" height="25"/>
         <image name="coin" width="256" height="256"/>
         <image name="heads" width="419" height="418"/>
         <image name="logout" width="13" height="20"/>
