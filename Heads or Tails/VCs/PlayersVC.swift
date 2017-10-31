@@ -14,10 +14,11 @@ class PlayersVC: UIViewController {
     @IBOutlet weak var viewAllPlayersSwitch: UISwitch!
     
     fileprivate var players: [Player] = []
-    fileprivate var playerCellHeight: CGFloat = 75
-    fileprivate var emptyPlayerCellHeight: CGFloat = 380
     fileprivate var firebaseManager = FirebaseManager.instance
     fileprivate var notificationCenter = NotificationCenter.default
+    
+    fileprivate var playerCellHeight: CGFloat = 75
+    fileprivate var emptyPlayerCellHeight: CGFloat = 380
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -72,7 +73,7 @@ class PlayersVC: UIViewController {
 //        }
 //    }
     
-    @IBAction func searchUsersAction(_ sender: Any) {
+    @IBAction func searchUsersAction(_ sender: UIBarButtonItem) {
         performSegue(withIdentifier: "SearchUsersVC", sender: self)
     }
     
