@@ -78,27 +78,27 @@ class PlayersVC: UIViewController {
     }
     
     @objc private func refreshPlayers() {
-        firebaseManager.getPlayers { (returnedPlayers) in
-            self.players = []
+        firebaseManager.getPlayers { [weak self] (returnedPlayers) in
+            guard let strongSelf = self else { return }
             
-            if self.viewAllPlayersSwitch.isOn {
-                self.navigationItem.title = "Online Players"
-            } else {
-                self.navigationItem.title = "All Players"
-            }
+            var fetchedPlayers: [Player] = []
+            
+            strongSelf.navigationItem.title = strongSelf.viewAllPlayersSwitch.isOn ? "Online Players" : "All Players"
             
             returnedPlayers.forEach({ (player) in
-                if self.viewAllPlayersSwitch.isOn {
+                if strongSelf.viewAllPlayersSwitch.isOn {
                     if player.online == true {
-                        self.players.append(player)
+                        fetchedPlayers.append(player)
                     }
                 } else {
-                    self.players.append(player)
+                    fetchedPlayers.append(player)
                 }
             })
             
-            self.playersTableView.reloadData()
-            self.playersTableView.refreshControl?.endRefreshing()
+            strongSelf.players = fetchedPlayers
+            
+            strongSelf.playersTableView.reloadData()
+            strongSelf.playersTableView.refreshControl?.endRefreshing()
         }
     }
     
