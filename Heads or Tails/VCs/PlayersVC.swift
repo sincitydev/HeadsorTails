@@ -113,7 +113,6 @@ class PlayersVC: UIViewController {
         present(informationVC, animated: true, completion: nil)
     }
     
-    
     deinit {
         print("PlayersVC has been deallocated :)")
     }
@@ -131,8 +130,6 @@ extension PlayersVC: UITableViewDataSource {
         else if section == 0 {
             return players.count
         }
-        
-        return 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -140,17 +137,12 @@ extension PlayersVC: UITableViewDataSource {
             let cell = tableView.dequeueReusableCell(withIdentifier: PlayerCell.identifier, for: indexPath) as! PlayerCell
             let player = players[indexPath.row]
             
-            if players[indexPath.row].online == true {
-                cell.onlineView.backgroundColor = #colorLiteral(red: 0.3411764801, green: 0.6235294342, blue: 0.1686274558, alpha: 1)
-            } else {
-                cell.onlineView.backgroundColor = UIColor.clear
-            }
             cell.usernameLabel.text = player.username
             cell.coins.text = String(player.coins)
+            cell.onlineView.backgroundColor = players[indexPath.row].online ? #colorLiteral(red: 0.3411764706, green: 0.6235294118, blue: 0.168627451, alpha: 1) : .clear
             
             return cell
-        }
-        else {
+        } else {
             let cell = tableView.dequeueReusableCell(withIdentifier: EmptyPlayerCell.identifier, for: indexPath) as! EmptyPlayerCell
         
             return cell
@@ -160,12 +152,7 @@ extension PlayersVC: UITableViewDataSource {
 
 extension PlayersVC: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if indexPath.section == 0 {
-            return playerCellHeight
-        }
-        else {
-            return emptyPlayerCellHeight
-        }
+        return indexPath.section == 0 ? playerCellHeight : emptyPlayerCellHeight
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
