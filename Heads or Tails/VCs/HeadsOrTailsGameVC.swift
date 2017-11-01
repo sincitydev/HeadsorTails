@@ -54,7 +54,7 @@ class HeadsOrTailsGameVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        notificationCenter.addObserver(self, selector: #selector(updateView(_:)), name: NSNotification.Name(rawValue: "Update GameVC Details"), object: nil)
+        notificationCenter.addObserver(self, selector: #selector(updateView(_:)), name: .updateGameVCDetails, object: nil)
         
         uiBettingSliderOutlet.isHidden = true
         bettingCoinsLabel.isHidden = true

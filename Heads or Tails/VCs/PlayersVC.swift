@@ -55,6 +55,8 @@ class PlayersVC: UIViewController {
         
         refreshControl.addTarget(self, action: #selector(refreshPlayers), for: .valueChanged)
         playersTableView.refreshControl = refreshControl
+        playersTableView.delegate = self
+        playersTableView.dataSource = self
     }
     
 //    private func fetchPlayers()
@@ -130,6 +132,8 @@ extension PlayersVC: UITableViewDataSource {
         else if section == 0 {
             return players.count
         }
+        
+        return 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -157,23 +161,27 @@ extension PlayersVC: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         playersTableView.deselectRow(at: indexPath, animated: true)
-        firebaseManager.getGameKeyWith(playerUID: (Auth.auth().currentUser?.uid)!, playerUId: players[indexPath.row].uid) { [weak self] (gameKey) in
+        
+        firebaseManager.getGameKeyWith(playerUID: firebaseManager.uid, playerUId: players[indexPath.row].uid) { [weak self] (gameKey) in
+            guard let strongSelf = self else { return }
+            
             if gameKey == nil {
                 // Create game key
-                let gameKey = self?.firebaseManager.createGame(oppenentUID: (self?.players[indexPath.row].uid)!, initialBet: 0)
-                self?.firebaseManager.getPlayerInfoFor(uid: (Auth.auth().currentUser?.uid)!, completion: { (localPlayer) in
-                    let dict = ["localPlayer" : localPlayer as Any, "opponentPlayer" : self?.players[indexPath.row] as Any, "gameKey" : gameKey! as Any] as [String: Any]
+                let gameKey = strongSelf.firebaseManager.createGame(oppenentUID: strongSelf.players[indexPath.row].uid, initialBet: 0)
+                strongSelf.firebaseManager.getPlayerInfoFor(uid: strongSelf.firebaseManager.uid, completion: { (localPlayer) in
+                    let dict = ["localPlayer" : localPlayer, "opponentPlayer" : strongSelf.players[indexPath.row], "gameKey" : gameKey] as [String: Any]
                 
-                    self?.notificationCenter.post(name: NSNotification.Name.init(rawValue: "Update GameVC Details"), object: nil, userInfo: dict)
+                    strongSelf.notificationCenter.post(name: .updateGameVCDetails, object: nil, userInfo: dict)
                 })
             } else {
-           
-                self?.firebaseManager.getPlayerInfoFor(uid: (Auth.auth().currentUser?.uid)!, completion: { (localPlayer) in
-                    let dict = ["localPlayer" : localPlayer as Any, "opponentPlayer" : self?.players[indexPath.row] as Any, "gameKey" : gameKey! as Any] as [String: Any]
-                    self?.notificationCenter.post(name: NSNotification.Name.init(rawValue: "Update GameVC Details"), object: nil, userInfo: dict)
+                strongSelf.firebaseManager.getPlayerInfoFor(uid: strongSelf.firebaseManager.uid, completion: { (localPlayer) in
+                    let dict = ["localPlayer" : localPlayer, "opponentPlayer" : strongSelf.players[indexPath.row], "gameKey" : gameKey!] as [String: Any]
+                    
+                    strongSelf.notificationCenter.post(name: .updateGameVCDetails, object: nil, userInfo: dict)
                 })
             }
-            self?.performSegue(withIdentifier: "gameVCSegue", sender: nil)
+            
+            self?.performSegue(withIdentifier: UIStoryboard.gameVCSegue, sender: nil)
         }
     }
 }

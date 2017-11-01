@@ -34,6 +34,14 @@ fileprivate let DB_Base = Database.database().reference()
 class FirebaseManager {
     static let instance = FirebaseManager()
     
+    var uid: String {
+        guard let currentUser = Auth.auth().currentUser else {
+            return ""
+        }
+        
+        return currentUser.uid
+    }
+    
     let notificationCenter = NotificationCenter.default
     
     func login(email: String, password: String, authCallBack: AuthResultCallback?) {
