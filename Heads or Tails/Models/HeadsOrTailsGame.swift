@@ -29,7 +29,51 @@ class HeadsOrTailsGame {
             }
             
             if newValue == 6 {
-                // Decide winner
+                var localScore = 0
+                var opponentScore = 0
+                
+                var statusArray = [String]()
+                var localMoveArray = [String]()
+                var opponentMoveArray = [String]()
+                
+                
+                // Creating the arrays of characters
+                for char in status {
+                    let char = String(char)
+                    statusArray.append(char)
+                }
+                
+                for char in localMove! {
+                    let char = String(char)
+                    localMoveArray.append(char)
+                }
+                
+                for char in opponentMove! {
+                    let char = String(char)
+                    opponentMoveArray.append(char)
+                }
+                
+                // calculating scores
+                for i in 0..<5 {
+                    if statusArray[i] == localMoveArray[i] {
+                        localScore += 1
+                    }
+                    if statusArray[i] == opponentMoveArray[i] {
+                        opponentScore += 1
+                    }
+                }
+                
+                // determine winner
+                if localScore == opponentScore {
+                    // draw
+                    print("Draw")
+                } else if localScore > opponentScore {
+                    // win
+                    print("Won")
+                } else if localScore < opponentScore {
+                    // lose
+                    print("Lost")
+                }
             }
         }
     }
