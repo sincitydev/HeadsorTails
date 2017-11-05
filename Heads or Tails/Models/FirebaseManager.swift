@@ -158,7 +158,7 @@ class FirebaseManager {
 
     func createGame(oppenentUID: String, initialBet: Int) -> String {
         guard let userUID = Auth.auth().currentUser?.uid else { return "MISSING USER UID" }
-        let gamePlayers = [userUID: ["bet": initialBet], oppenentUID: ["bet": initialBet], "Status": "needs key"] as [String : Any]
+        let gamePlayers = [userUID: ["bet": initialBet], oppenentUID: ["bet": initialBet], "status": "needs key", "round": 0] as [String : Any]
         let autoId = Literals.games.childByAutoId().key
         Literals.games.child(autoId).setValue(gamePlayers)
         return autoId
@@ -187,6 +187,28 @@ class FirebaseManager {
         })
     }
     
+    func getOpponentsFor(currentPlayerUID: String, completion: @escaping(_ playerUids: [String])->()) {
+        var playerUids = [String]()
+        Literals.games.observeSingleEvent(of: .value, with: { (returnedGames) in
+            guard let returnedGames = returnedGames.value as? [String: Any] else {
+                completion(playerUids)
+                return
+            }
+            for game in returnedGames {
+                guard let gameDetails = game.value as? [String: Any] else { return }
+             
+                if gameDetails.keys.contains(currentPlayerUID) {
+                    for key in gameDetails.keys {
+                        if !(key == currentPlayerUID || key == "status") {
+                            playerUids.append(key)
+                        }
+                    }
+                }
+            }
+            completion(playerUids)
+        })
+    }
+    
     func updateBet(forPlayerUID player: String, gameKey: String, bet: Int) {
         Literals.games.child(gameKey).observeSingleEvent(of: .value, with: { (gameSnapshot) in
             guard let gameSnapshot = gameSnapshot.value as? [String: Any] else { return }
@@ -201,9 +223,9 @@ class FirebaseManager {
     func updateStatus(status: String, gameUID: String) {
         Literals.games.child(gameUID).observeSingleEvent(of: .value, with: { (gameSnapshot) in
             guard let gameSnapshot = gameSnapshot.value as? [String: Any] else { return }
-            guard let returnStatus = gameSnapshot["Status"] as? String else { return }
+            guard let returnStatus = gameSnapshot["status"] as? String else { return }
             if returnStatus == "needs key" {
-                Literals.games.child(gameUID).updateChildValues(["Status": status])
+                Literals.games.child(gameUID).updateChildValues(["status": status])
             }
         })
     }
@@ -227,15 +249,22 @@ class FirebaseManager {
         })
     }
     
-    func createLisenerOn(gameKey: String, completion: @escaping () -> ()) {
-        Literals.games.observe(.value, with: { (_) in
-            completion()
+    func listen(on gameKey: String, completion: @escaping ([String: Any]) -> Void) {
+        Literals.games.observe(.value, with: { (snapshot) in
+            if let snapshotData = snapshot.value as? [String: Any],
+                let gameDetails = snapshotData[gameKey] as? [String: Any] {
+                completion(gameDetails)
+            }
         })
     }
     
     func postOnlineStatus(_ onlineStatus: Bool) {
         guard let currentUserUID = Auth.auth().currentUser?.uid else { return }
         Literals.users.child(currentUserUID).updateChildValues(["online": onlineStatus])
+    }
+    
+    func updateRound(for gameKey: String, with round: Int) {
+        Literals.games.child(gameKey).updateChildValues(["round": round])
     }
     
     func addMove(_ move: Move, for player: Player, gameUID: String) {
