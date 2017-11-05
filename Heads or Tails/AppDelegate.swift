@@ -18,15 +18,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         FirebaseApp.configure()
-        addNotificationObservers()
+        notificationCenter.addObserver(self, selector: #selector(setupRootVC), name: .authenticationDidChange, object: nil)
         setAppearance()
         setupRootVC()
         
         return true
-    }
-    
-    private func addNotificationObservers() {
-        notificationCenter.addObserver(self, selector: #selector(setupRootVC), name: .authenticationDidChange, object: nil)
     }
     
     private func setAppearance() {
