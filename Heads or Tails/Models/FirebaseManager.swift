@@ -187,6 +187,29 @@ class FirebaseManager {
         })
     }
     
+    func getOpponentsFor(currentPlayerUID: String, completion: @escaping(_ playerUids: [String])->()) {
+        print("HEEELLERE!")
+        var playerUids = [String]()
+        Literals.games.observeSingleEvent(of: .value, with: { (returnedGames) in
+            guard let returnedGames = returnedGames.value as? [String: Any] else {
+                completion(playerUids)
+                return
+            }
+            for game in returnedGames {
+                guard let gameDetails = game.value as? [String: Any] else { return }
+             
+                if gameDetails.keys.contains(currentPlayerUID) {
+                    for key in gameDetails.keys {
+                        if !(key == currentPlayerUID || key == "Status") {
+                            playerUids.append(key)
+                        }
+                    }
+                }
+            }
+            completion(playerUids)
+        })
+    }
+    
     func updateBet(forPlayerUID player: String, gameKey: String, bet: Int) {
         Literals.games.child(gameKey).observeSingleEvent(of: .value, with: { (gameSnapshot) in
             guard let gameSnapshot = gameSnapshot.value as? [String: Any] else { return }

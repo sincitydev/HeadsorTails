@@ -50,7 +50,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="username" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="W5C-lN-uO2">
-                                                    <rect key="frame" x="23" y="23.5" width="94" height="24"/>
+                                                    <rect key="frame" x="40" y="23.5" width="94" height="24"/>
                                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -82,24 +82,40 @@
                                                         <constraint firstAttribute="width" constant="10" id="EuG-Ya-mUO"/>
                                                     </constraints>
                                                 </view>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="53b-nY-ns8">
+                                                    <rect key="frame" x="15" y="28.5" width="15" height="15"/>
+                                                    <color key="backgroundColor" red="0.2901960784" green="0.56470588239999997" blue="0.8862745098" alpha="0.5" colorSpace="calibratedRGB"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="15" id="S30-62-hB5"/>
+                                                        <constraint firstAttribute="height" constant="15" id="uEr-fk-oS5"/>
+                                                    </constraints>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="corners">
+                                                            <real key="value" value="7"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                    </userDefinedRuntimeAttributes>
+                                                </view>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="XnG-zL-GsW" firstAttribute="centerY" secondItem="0FD-Ng-DTj" secondAttribute="centerY" id="3Ue-qc-bTx"/>
+                                                <constraint firstItem="53b-nY-ns8" firstAttribute="leading" secondItem="yPk-3j-B4o" secondAttribute="trailing" constant="5" id="90Z-Ne-OG1"/>
                                                 <constraint firstItem="uWk-K7-hvc" firstAttribute="leading" secondItem="0FD-Ng-DTj" secondAttribute="leading" id="Ey8-dr-6UD"/>
                                                 <constraint firstItem="A9A-Hw-eYQ" firstAttribute="centerY" secondItem="0FD-Ng-DTj" secondAttribute="centerY" id="FrY-FQ-tG0"/>
                                                 <constraint firstAttribute="bottom" secondItem="uWk-K7-hvc" secondAttribute="bottom" id="MFt-hR-RdG"/>
                                                 <constraint firstItem="XnG-zL-GsW" firstAttribute="leading" secondItem="A9A-Hw-eYQ" secondAttribute="trailing" constant="5" id="PFJ-dP-jrI"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="XnG-zL-GsW" secondAttribute="trailing" constant="5" id="REh-F0-esi"/>
                                                 <constraint firstItem="yPk-3j-B4o" firstAttribute="leading" secondItem="0FD-Ng-DTj" secondAttribute="leading" id="WIM-ki-rGZ"/>
-                                                <constraint firstItem="W5C-lN-uO2" firstAttribute="leading" secondItem="0FD-Ng-DTj" secondAttribute="leadingMargin" constant="8" id="ceI-Wf-16C"/>
                                                 <constraint firstAttribute="bottom" secondItem="yPk-3j-B4o" secondAttribute="bottom" id="faR-UA-qYT"/>
                                                 <constraint firstItem="yPk-3j-B4o" firstAttribute="top" secondItem="0FD-Ng-DTj" secondAttribute="top" id="g7b-yZ-xtr"/>
                                                 <constraint firstItem="W5C-lN-uO2" firstAttribute="centerY" secondItem="0FD-Ng-DTj" secondAttribute="centerY" id="gdt-Dl-ky7"/>
+                                                <constraint firstItem="53b-nY-ns8" firstAttribute="centerY" secondItem="0FD-Ng-DTj" secondAttribute="centerY" id="lWl-O3-sQX"/>
+                                                <constraint firstItem="W5C-lN-uO2" firstAttribute="leading" secondItem="0FD-Ng-DTj" secondAttribute="leading" constant="40" id="tho-tl-UZc"/>
                                                 <constraint firstAttribute="trailing" secondItem="uWk-K7-hvc" secondAttribute="trailing" id="vTo-JH-qKc"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="coins" destination="A9A-Hw-eYQ" id="d8P-Rp-Mdu"/>
+                                            <outlet property="inGameView" destination="53b-nY-ns8" id="XUm-fW-0mK"/>
                                             <outlet property="onlineView" destination="yPk-3j-B4o" id="dE8-eT-2fL"/>
                                             <outlet property="usernameLabel" destination="W5C-lN-uO2" id="Vnp-9N-IOV"/>
                                         </connections>
