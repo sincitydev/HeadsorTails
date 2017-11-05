@@ -15,8 +15,8 @@ enum Move: String {
 }
 
 class HeadsOrTailsGame {
-    var localPlayer: Player?
-    var opponentPlayer: Player?
+    var localPlayer: Player!
+    var opponentPlayer: Player!
     
     var localBet: Int?
     var opponentBet: Int?
@@ -27,11 +27,18 @@ class HeadsOrTailsGame {
     var finishedSettingUp = false
     var turn = 0
     
-    var gameUID: String? {
+    init(gameID: String, localPlayer: Player, opponent: Player) {
+        self.gameUID = gameID
+        self.localPlayer = localPlayer
+        self.opponentPlayer = opponent
+        fetchBetsAndMoves()
+    }
+    
+    var gameUID: String {
         didSet {
             setupCoins()
             fetchBetsAndMoves()
-            firebaseManager.createLisenerOn(gameKey: gameUID!, completion: { (_) in
+            firebaseManager.createLisenerOn(gameKey: gameUID, completion: { (_) in
                 self.updateBetsandMoves()
             })
         }
@@ -42,38 +49,27 @@ class HeadsOrTailsGame {
     let firebaseManager = FirebaseManager.instance
 
     private func fetchBetsAndMoves() {
-        if gameUID != nil {
-            if localPlayer != nil && opponentPlayer != nil {
-                
-                self.updateBetsandMoves()
-            }
-            self.finishedSettingUp = true
-        }
+        self.updateBetsandMoves()
+        self.finishedSettingUp = true
     }
     
     private func updateBetsandMoves() {
-        firebaseManager.getBet(forPlayerUID: (localPlayer?.uid)!, gameKey: gameUID!, completion: { (bet) in
+        firebaseManager.getBet(forPlayerUID: localPlayer.uid, gameKey: gameUID, completion: { (bet) in
             self.localBet = bet
             self.notificationCeneter.post(name: NSNotification.Name.init(rawValue: "gameUpdated"), object: nil)
         })
-        firebaseManager.getBet(forPlayerUID: (opponentPlayer?.uid)!, gameKey: gameUID!, completion: { (bet) in
+        firebaseManager.getBet(forPlayerUID: opponentPlayer.uid, gameKey: gameUID, completion: { (bet) in
             self.opponentBet = bet
             self.notificationCeneter.post(name: NSNotification.Name.init(rawValue: "gameUpdated"), object: nil)
         })
-        firebaseManager.getMove(forPlayerIUD: (localPlayer?.uid)!, gameKey: gameUID!, completion: { (move) in
+        firebaseManager.getMove(forPlayerIUD: localPlayer.uid, gameKey: gameUID, completion: { (move) in
             self.localMove = move
             self.notificationCeneter.post(name: NSNotification.Name.init(rawValue: "gameUpdated"), object: nil)
         })
-        firebaseManager.getMove(forPlayerIUD: (opponentPlayer?.uid)!, gameKey: gameUID!, completion: { (move) in
+        firebaseManager.getMove(forPlayerIUD: opponentPlayer.uid, gameKey: gameUID, completion: { (move) in
             self.opponentMove = move
             self.notificationCeneter.post(name: NSNotification.Name.init(rawValue: "gameUpdated"), object: nil)
         })
-    }
-        
-    func setupPlayers(localPlayer: Player, opponentPlayer: Player) {
-        self.localPlayer = localPlayer
-        self.opponentPlayer = opponentPlayer
-        fetchBetsAndMoves()
     }
 
     private func setupCoins() {
@@ -85,13 +81,13 @@ class HeadsOrTailsGame {
                 status += "T"
             }
         }
-        firebaseManager.updateStatus(status: status, gameUID: gameUID!)
+        firebaseManager.updateStatus(status: status, gameUID: gameUID)
         
     }
     
     func addMove(_ move: Move, for player: Player) {
         if finishedSettingUp {
-            firebaseManager.addMove(move, for: player, gameUID: gameUID!)
+            firebaseManager.addMove(move, for: player, gameUID: gameUID)
         }
     }
 

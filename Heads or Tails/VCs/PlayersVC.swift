@@ -162,7 +162,7 @@ extension PlayersVC: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         playersTableView.deselectRow(at: indexPath, animated: true)
         
-        firebaseManager.getGameKeyWith(playerUID: firebaseManager.uid, playerUId: players[indexPath.row].uid) { [weak self] (gameKey) in
+        firebaseManager.getGameKeyWith(playerUID: firebaseManager.uid, playerUID: players[indexPath.row].uid) { [weak self] (gameKey) in
             guard let strongSelf = self else { return }
             
             if gameKey == nil {
@@ -170,7 +170,7 @@ extension PlayersVC: UITableViewDelegate {
                 let gameKey = strongSelf.firebaseManager.createGame(oppenentUID: strongSelf.players[indexPath.row].uid, initialBet: 0)
                 strongSelf.firebaseManager.getPlayerInfoFor(uid: strongSelf.firebaseManager.uid, completion: { (localPlayer) in
                     let dict = ["localPlayer" : localPlayer, "opponentPlayer" : strongSelf.players[indexPath.row], "gameKey" : gameKey] as [String: Any]
-                
+                    
                     strongSelf.notificationCenter.post(name: .updateGameVCDetails, object: nil, userInfo: dict)
                 })
             } else {
