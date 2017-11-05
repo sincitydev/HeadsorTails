@@ -27,7 +27,8 @@ class HeadsOrTailsGame {
                 localPlayerHasMoveForRound = false
                 notificationCenter.post(name: .increaseRound, object: nil, userInfo: ["round": newValue])
             }
-            
+        }
+        didSet {
             if localMove?.count == 5 && opponentMove?.count == 5 {
                 var localScore = 0
                 var opponentScore = 0
@@ -129,7 +130,7 @@ class HeadsOrTailsGame {
             }
         }
         
-        firebaseManager.updateStatus(status: status, gameUID: gameUID)
+//        firebaseManager.updateStatus(status: status, gameUID: gameUID)
     }
     
     func addMove(_ move: Move, for player: Player) {

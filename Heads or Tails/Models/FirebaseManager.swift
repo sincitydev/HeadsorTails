@@ -158,7 +158,7 @@ class FirebaseManager {
 
     func createGame(oppenentUID: String, initialBet: Int) -> String {
         guard let userUID = Auth.auth().currentUser?.uid else { return "MISSING USER UID" }
-        let gamePlayers = [userUID: ["bet": initialBet], oppenentUID: ["bet": initialBet], "status": "needs key", "round": 0] as [String : Any]
+        let gamePlayers = [userUID: ["bet": initialBet], oppenentUID: ["bet": initialBet]] as [String : Any]
         let autoId = Literals.games.childByAutoId().key
         Literals.games.child(autoId).setValue(gamePlayers)
         return autoId
