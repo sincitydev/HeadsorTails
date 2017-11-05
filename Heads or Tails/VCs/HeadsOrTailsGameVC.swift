@@ -39,9 +39,6 @@ class HeadsOrTailsGameVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
         addObservers()
     }
     
@@ -61,6 +58,7 @@ class HeadsOrTailsGameVC: UIViewController {
     }
     
     @objc func updateWithGameDetails(_ notification: Notification) {
+        consolePrint(#function)
         if let info = notification.userInfo as? [String : Any],
             let localPlayer = info["localPlayer"] as? Player,
             let opponentPlayer = info["opponentPlayer"] as? Player,
@@ -77,7 +75,7 @@ class HeadsOrTailsGameVC: UIViewController {
             gameManager = HeadsOrTailsGame(gameID: gameUID, localPlayer: localPlayer, opponent: opponentPlayer)
             gameManager!.gameUID = gameUID
 
-            localTailImageView.isUserInteractionEnabled = true
+            localHeadImageView.isUserInteractionEnabled = true
             localTailImageView.isUserInteractionEnabled = true
             
             // Check if bet has been made

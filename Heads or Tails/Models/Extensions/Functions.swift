@@ -8,26 +8,38 @@
 
 import Foundation
 
-func consolePrint(_ items: Any...) {
+func consolePrint(_ items: Any) {
     print("\n")
     
-    for item in items {
-        if let string = item as? String {
-            print(string)
-        }
-        
-        if let dict = item as? [AnyHashable: Any] {
-            if dict.isEmpty {
-                print("[]")
-            }
-        }
-        
-        if let array = item as? [Any] {
-            if array.isEmpty {
-                print("[]")
-            }
-        }
+    for _ in 0...10 {
+        print("l\n")
     }
     
-    print("\n")
+    print(items)
+    
+    for _ in 0...10 {
+        print("\n")
+    }
+    
+    
+    
+//    for item in items {
+//        if let string = item as? String {
+//            print(string)
+//        }
+//        
+//        if let dict = item as? [AnyHashable: Any] {
+//            if dict.isEmpty {
+//                print("[]")
+//            }
+//        }
+//        
+//        if let array = item as? [Any] {
+//            if array.isEmpty {
+//                print("[]")
+//            }
+//        }
+//    }
+//    
+//    print("\n")
 }

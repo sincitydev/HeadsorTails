@@ -14,6 +14,7 @@ class PlayersVC: UIViewController {
     @IBOutlet weak var viewAllPlayersSwitch: UISwitch!
     
     fileprivate var players: [Player] = []
+    fileprivate var opponentPlayerUIDs: [String] = []
     fileprivate var firebaseManager = FirebaseManager.instance
     fileprivate var notificationCenter = NotificationCenter.default
     
@@ -99,8 +100,12 @@ class PlayersVC: UIViewController {
             
             strongSelf.players = fetchedPlayers
             
-            strongSelf.playersTableView.reloadData()
-            strongSelf.playersTableView.refreshControl?.endRefreshing()
+            strongSelf.firebaseManager.getOpponentsFor(currentPlayerUID: Auth.auth().currentUser!.uid, completion: { (opponentPlayerUIDs) in
+                
+                strongSelf.opponentPlayerUIDs = opponentPlayerUIDs
+                strongSelf.playersTableView.reloadData()
+                strongSelf.playersTableView.refreshControl?.endRefreshing()
+            })
         }
     }
     
@@ -144,6 +149,8 @@ extension PlayersVC: UITableViewDataSource {
             cell.usernameLabel.text = player.username
             cell.coins.text = String(player.coins)
             cell.onlineView.backgroundColor = players[indexPath.row].online ? #colorLiteral(red: 0.3411764706, green: 0.6235294118, blue: 0.168627451, alpha: 1) : .clear
+            cell.inGameView.isHidden = opponentPlayerUIDs.contains(player.uid) ? false : true
+            
             
             return cell
         } else {
@@ -168,7 +175,7 @@ extension PlayersVC: UITableViewDelegate {
             if gameKey == nil {
                 // Create game key
         
-                let opponentUsername = self?.players[indexPath.row].username ?? "Unnamed"
+                let opponentUsername = strongSelf.players[indexPath.row].username
                 let leftButtonData = ButtonData(title: "Yes", color: .green, action: {
                     let gameKey = strongSelf.firebaseManager.createGame(oppenentUID: strongSelf.players[indexPath.row].uid, initialBet: 0)
                     strongSelf.firebaseManager.getPlayerInfoFor(uid: strongSelf.firebaseManager.uid, completion: { (localPlayer) in
@@ -176,23 +183,26 @@ extension PlayersVC: UITableViewDelegate {
                         
                         strongSelf.notificationCenter.post(name: .updateGameVCDetails, object: nil, userInfo: dict)
                     })
-                    
-                    self?.performSegue(withIdentifier: UIStoryboard.gameVCSegue, sender: nil)
+                    strongSelf.opponentPlayerUIDs.append(strongSelf.players[indexPath.row].uid)
+                    strongSelf.opponentPlayerUIDs.append(strongSelf.players[indexPath.row].uid)
+                    strongSelf.playersTableView.reloadData()
+                    strongSelf.performSegue(withIdentifier: UIStoryboard.gameVCSegue, sender: nil)
                 })
                 let rightButtonData = ButtonData(title: "No", color: .red, action: nil)
                 let modalPopup = InformationVC(message: "Would you like to create a game with \(opponentUsername)", image: #imageLiteral(resourceName: "flipping"), leftButtonData: leftButtonData, rightButtonData: rightButtonData)
             
-                self?.present(modalPopup, animated: true, completion: nil)
+                strongSelf.present(modalPopup, animated: true, completion: nil)
             
                 
             } else {
+                print(#function)
                 strongSelf.firebaseManager.getPlayerInfoFor(uid: strongSelf.firebaseManager.uid, completion: { (localPlayer) in
                     let dict = ["localPlayer" : localPlayer, "opponentPlayer" : strongSelf.players[indexPath.row], "gameKey" : gameKey!] as [String: Any]
                     
                     strongSelf.notificationCenter.post(name: .updateGameVCDetails, object: nil, userInfo: dict)
-                    
-                    self?.performSegue(withIdentifier: UIStoryboard.gameVCSegue, sender: nil)
                 })
+                
+                strongSelf.performSegue(withIdentifier: UIStoryboard.gameVCSegue, sender: nil)
             }
         }
     }
