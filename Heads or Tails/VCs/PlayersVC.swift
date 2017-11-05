@@ -14,10 +14,11 @@ class PlayersVC: UIViewController {
     @IBOutlet weak var viewAllPlayersSwitch: UISwitch!
     
     fileprivate var players: [Player] = []
-    fileprivate var playerCellHeight: CGFloat = 75
-    fileprivate var emptyPlayerCellHeight: CGFloat = 380
     fileprivate var firebaseManager = FirebaseManager.instance
     fileprivate var notificationCenter = NotificationCenter.default
+    
+    fileprivate var playerCellHeight: CGFloat = 75
+    fileprivate var emptyPlayerCellHeight: CGFloat = 380
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -54,6 +55,8 @@ class PlayersVC: UIViewController {
         
         refreshControl.addTarget(self, action: #selector(refreshPlayers), for: .valueChanged)
         playersTableView.refreshControl = refreshControl
+        playersTableView.delegate = self
+        playersTableView.dataSource = self
     }
     
 //    private func fetchPlayers()
@@ -72,32 +75,32 @@ class PlayersVC: UIViewController {
 //        }
 //    }
     
-    @IBAction func searchUsersAction(_ sender: Any) {
+    @IBAction func searchUsersAction(_ sender: UIBarButtonItem) {
         performSegue(withIdentifier: "SearchUsersVC", sender: self)
     }
     
     @objc private func refreshPlayers() {
-        firebaseManager.getPlayers { (returnedPlayers) in
-            self.players = []
+        firebaseManager.getPlayers { [weak self] (returnedPlayers) in
+            guard let strongSelf = self else { return }
             
-            if self.viewAllPlayersSwitch.isOn {
-                self.navigationItem.title = "Online Players"
-            } else {
-                self.navigationItem.title = "All Players"
-            }
+            var fetchedPlayers: [Player] = []
+            
+            strongSelf.navigationItem.title = strongSelf.viewAllPlayersSwitch.isOn ? "Online Players" : "All Players"
             
             returnedPlayers.forEach({ (player) in
-                if self.viewAllPlayersSwitch.isOn {
+                if strongSelf.viewAllPlayersSwitch.isOn {
                     if player.online == true {
-                        self.players.append(player)
+                        fetchedPlayers.append(player)
                     }
                 } else {
-                    self.players.append(player)
+                    fetchedPlayers.append(player)
                 }
             })
             
-            self.playersTableView.reloadData()
-            self.playersTableView.refreshControl?.endRefreshing()
+            strongSelf.players = fetchedPlayers
+            
+            strongSelf.playersTableView.reloadData()
+            strongSelf.playersTableView.refreshControl?.endRefreshing()
         }
     }
     
@@ -111,7 +114,6 @@ class PlayersVC: UIViewController {
         
         present(informationVC, animated: true, completion: nil)
     }
-    
     
     deinit {
         print("PlayersVC has been deallocated :)")
@@ -139,17 +141,12 @@ extension PlayersVC: UITableViewDataSource {
             let cell = tableView.dequeueReusableCell(withIdentifier: PlayerCell.identifier, for: indexPath) as! PlayerCell
             let player = players[indexPath.row]
             
-            if players[indexPath.row].online == true {
-                cell.onlineView.backgroundColor = #colorLiteral(red: 0.3411764801, green: 0.6235294342, blue: 0.1686274558, alpha: 1)
-            } else {
-                cell.onlineView.backgroundColor = UIColor.clear
-            }
             cell.usernameLabel.text = player.username
             cell.coins.text = String(player.coins)
+            cell.onlineView.backgroundColor = players[indexPath.row].online ? #colorLiteral(red: 0.3411764706, green: 0.6235294118, blue: 0.168627451, alpha: 1) : .clear
             
             return cell
-        }
-        else {
+        } else {
             let cell = tableView.dequeueReusableCell(withIdentifier: EmptyPlayerCell.identifier, for: indexPath) as! EmptyPlayerCell
         
             return cell
@@ -159,33 +156,44 @@ extension PlayersVC: UITableViewDataSource {
 
 extension PlayersVC: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if indexPath.section == 0 {
-            return playerCellHeight
-        }
-        else {
-            return emptyPlayerCellHeight
-        }
+        return indexPath.section == 0 ? playerCellHeight : emptyPlayerCellHeight
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         playersTableView.deselectRow(at: indexPath, animated: true)
-        firebaseManager.getGameKeyWith(playerUID: (Auth.auth().currentUser?.uid)!, playerUId: players[indexPath.row].uid) { [weak self] (gameKey) in
+        
+        firebaseManager.getGameKeyWith(playerUID: firebaseManager.uid, playerUID: players[indexPath.row].uid) { [weak self] (gameKey) in
+            guard let strongSelf = self else { return }
+            
             if gameKey == nil {
                 // Create game key
-                let gameKey = self?.firebaseManager.createGame(oppenentUID: (self?.players[indexPath.row].uid)!, initialBet: 0)
-                self?.firebaseManager.getPlayerInfoFor(uid: (Auth.auth().currentUser?.uid)!, completion: { (localPlayer) in
-                    let dict = ["localPlayer" : localPlayer as Any, "opponentPlayer" : self?.players[indexPath.row] as Any, "gameKey" : gameKey! as Any] as [String: Any]
-                
-                    self?.notificationCenter.post(name: NSNotification.Name.init(rawValue: "Update GameVC Details"), object: nil, userInfo: dict)
+        
+                let opponentUsername = self?.players[indexPath.row].username ?? "Unnamed"
+                let leftButtonData = ButtonData(title: "Yes", color: .green, action: {
+                    let gameKey = strongSelf.firebaseManager.createGame(oppenentUID: strongSelf.players[indexPath.row].uid, initialBet: 0)
+                    strongSelf.firebaseManager.getPlayerInfoFor(uid: strongSelf.firebaseManager.uid, completion: { (localPlayer) in
+                        let dict = ["localPlayer" : localPlayer, "opponentPlayer" : strongSelf.players[indexPath.row], "gameKey" : gameKey] as [String: Any]
+                        
+                        strongSelf.notificationCenter.post(name: .updateGameVCDetails, object: nil, userInfo: dict)
+                    })
+                    
+                    self?.performSegue(withIdentifier: UIStoryboard.gameVCSegue, sender: nil)
                 })
+                let rightButtonData = ButtonData(title: "No", color: .red, action: nil)
+                let modalPopup = InformationVC(message: "Would you like to create a game with \(opponentUsername)", image: #imageLiteral(resourceName: "flipping"), leftButtonData: leftButtonData, rightButtonData: rightButtonData)
+            
+                self?.present(modalPopup, animated: true, completion: nil)
+            
+                
             } else {
-           
-                self?.firebaseManager.getPlayerInfoFor(uid: (Auth.auth().currentUser?.uid)!, completion: { (localPlayer) in
-                    let dict = ["localPlayer" : localPlayer as Any, "opponentPlayer" : self?.players[indexPath.row] as Any, "gameKey" : gameKey! as Any] as [String: Any]
-                    self?.notificationCenter.post(name: NSNotification.Name.init(rawValue: "Update GameVC Details"), object: nil, userInfo: dict)
+                strongSelf.firebaseManager.getPlayerInfoFor(uid: strongSelf.firebaseManager.uid, completion: { (localPlayer) in
+                    let dict = ["localPlayer" : localPlayer, "opponentPlayer" : strongSelf.players[indexPath.row], "gameKey" : gameKey!] as [String: Any]
+                    
+                    strongSelf.notificationCenter.post(name: .updateGameVCDetails, object: nil, userInfo: dict)
+                    
+                    self?.performSegue(withIdentifier: UIStoryboard.gameVCSegue, sender: nil)
                 })
             }
-            self?.performSegue(withIdentifier: "gameVCSegue", sender: nil)
         }
     }
 }

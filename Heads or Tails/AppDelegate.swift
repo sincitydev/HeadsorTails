@@ -46,7 +46,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             rootVC = navVC
         }
         else {
-            firebaseManager.postOnlineStatus(false)
             let navVC = UIStoryboard.auth.instantiateInitialViewController() as! UINavigationController
             
             rootVC = navVC

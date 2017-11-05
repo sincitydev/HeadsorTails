@@ -32,19 +32,32 @@ struct Literals {
 fileprivate let DB_Base = Database.database().reference()
 
 class FirebaseManager {
+    // MARK: - Properties
     static let instance = FirebaseManager()
+    
+    var uid: String {
+        guard let currentUser = Auth.auth().currentUser else {
+            return ""
+        }
+        
+        return currentUser.uid
+    }
     
     let notificationCenter = NotificationCenter.default
     
+    // MARK: - Authentication methods
     func login(email: String, password: String, authCallBack: AuthResultCallback?) {
         Auth.auth().signIn(withEmail: email, password: password, completion: authCallBack)
     }
     
     func logout(completion: (AuthError?) -> Void) {
+        guard let _ = Auth.auth().currentUser else {
+            completion(.couldntLogout)
+            return
+        }
+        
         do {
-            let currentUserUID = Auth.auth().currentUser?.uid
-            
-            Literals.users.child(currentUserUID!).updateChildValues(["online": false])
+            postOnlineStatus(false)
             
             try Auth.auth().signOut()
             notificationCenter.post(name: .authenticationDidChange, object: nil)
@@ -61,6 +74,8 @@ class FirebaseManager {
                 completion(nil)
                 return
             }
+            
+            // Make this way more readable!
             
             if playerInfos.contains(where: { (uid, userData) -> Bool in
                 if let userInfo = userData as? [String: Any],
@@ -83,24 +98,27 @@ class FirebaseManager {
         Literals.users.child(player.uid).updateChildValues(playerData)
     }
     
+    
     func getPlayers(completion: @escaping (_ playersArray: [Player]) -> ()) {
-        var playerArray = [Player]()
-        
         Literals.users.observeSingleEvent(of: .value, with: { (snapshot) in
-            guard let snapshot = snapshot.children.allObjects as? [DataSnapshot] else { return }
+            var playerArray = [Player]()
             
-            for snap in snapshot {
-                if snap.key != Auth.auth().currentUser?.uid {
-                    guard let username = snap.childSnapshot(forPath: "username").value as? String,
-                        let coins = snap.childSnapshot(forPath: "coins").value as? Int,
-                        let online = snap.childSnapshot(forPath: "online").value as? Bool else { return }
-                    
-                    let player = Player(uid: snap.key, username: username, coins: coins, online: online)
-                    playerArray.append(player)
+            if let users = snapshot.value as? [String: Any] {
+                for user in users {
+                    if user.key != Auth.auth().currentUser?.uid {
+                        if let userInfo = user.value as? [String: Any],
+                            let player = Player(uid: user.key, userInfo) {
+                            playerArray.append(player)
+                        }
+                    }
+                }
+                DispatchQueue.main.async {
+                    completion(playerArray)
                 }
             }
-            DispatchQueue.main.async {
-                completion(playerArray)
+            else {
+                // Later on down the line create an error to pass back
+                consolePrint("Oh no!")
             }
         })
     }
@@ -147,7 +165,7 @@ class FirebaseManager {
     }
 
     // function that returns the key for a specific game that contains the two players
-    func getGameKeyWith(playerUID player1: String, playerUId player2: String, completion: @escaping (_ gameKey: String?)->()) {
+    func getGameKeyWith(playerUID player1: String, playerUID player2: String, completion: @escaping (_ gameKey: String?)->()) {
         var gameKey: String? = nil
         Literals.games.observeSingleEvent(of: .value, with: { (gamesSnapshot) in
             guard let gamesSnapshot = gamesSnapshot.value as? [String: Any] else {
@@ -220,21 +238,6 @@ class FirebaseManager {
         Literals.users.child(currentUserUID).updateChildValues(["online": onlineStatus])
     }
     
-    // TODO - Get Games for players (uid)
-    func getGames() {
-        
-    }
-    
-    // TODO - Get current currency
-    func getCurrency(forPlayerUID player: String) {
-        
-    }
-    
-    // TODO - Update currecy for uid
-    func updateCurrency(forPlayerUID player: String) {
-        
-    }
-    
     func addMove(_ move: Move, for player: Player, gameUID: String) {
         Literals.games.child(gameUID).observeSingleEvent(of: .value, with: { (gameSnapshot) in
             guard let gameSnapshot = gameSnapshot.value as? [String: Any] else { return }
@@ -242,6 +245,7 @@ class FirebaseManager {
             guard var moves = playerInfo["move"] as? String else {
                 Literals.games.child(gameUID).child(player.uid).updateChildValues(["move": move.rawValue])
                 return }
+            
             moves += move.rawValue
             Literals.games.child(gameUID).child(player.uid).updateChildValues(["move": moves])
             
