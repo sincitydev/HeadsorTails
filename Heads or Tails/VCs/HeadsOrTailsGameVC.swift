@@ -31,7 +31,7 @@ class HeadsOrTailsGameVC: UIViewController {
     @IBOutlet weak var statusLabel: UILabel!
     
     // MARK: - Properties
-    var gameManager: HeadsOrTailsGame!
+    var gameManager: HeadsOrTailsGame?
     let notificationCenter = NotificationCenter.default
     let firebaseManager = FirebaseManager.instance
     
@@ -55,6 +55,9 @@ class HeadsOrTailsGameVC: UIViewController {
         
         localHeadImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(headImageViewSelected(_:))))
         localTailImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tailImageViewSelected(_:))))
+        
+        localHeadImageView.isUserInteractionEnabled = false
+        localTailImageView.isUserInteractionEnabled = false
     }
     
     @objc func updateWithGameDetails(_ notification: Notification) {
@@ -72,8 +75,11 @@ class HeadsOrTailsGameVC: UIViewController {
 
             // Update game model
             gameManager = HeadsOrTailsGame(gameID: gameUID, localPlayer: localPlayer, opponent: opponentPlayer)
-            gameManager.gameUID = gameUID
+            gameManager!.gameUID = gameUID
 
+            localTailImageView.isUserInteractionEnabled = true
+            localTailImageView.isUserInteractionEnabled = true
+            
             // Check if bet has been made
             firebaseManager.getBet(forPlayerUID: localPlayer.uid, gameKey: gameUID, completion: { [weak self] (bet) in
                 if bet == 0 {
@@ -86,28 +92,31 @@ class HeadsOrTailsGameVC: UIViewController {
     
     @objc func headImageViewSelected(_ sender: Any) {
         toggleAlpha(for: .heads)
-        gameManager.addMove(.heads, for: gameManager.localPlayer)
+        gameManager?.addMove(.heads, for: gameManager!.localPlayer)
     }
     
     @objc func tailImageViewSelected(_ sender: Any) {
         toggleAlpha(for: .tails)
-        gameManager.addMove(.tails, for: gameManager.localPlayer)
+        gameManager?.addMove(.tails, for: gameManager!.localPlayer)
     }
     
     // MARK: - IBActions
     @IBAction func bettingSliderChanged(_ sender: UISlider) {
         let betAmount = Int(sender.value.rounded())
-        let coinsAfterBet = gameManager.localPlayer.coins - betAmount
-        
-        bettingCoinsLabel.text = String(betAmount)
-        localCoinsLabel.text = "\(coinsAfterBet)"
+        if gameManager != nil {
+            let coinsAfterBet = gameManager!.localPlayer.coins - betAmount
+            
+            bettingCoinsLabel.text = String(betAmount)
+            localCoinsLabel.text = "\(coinsAfterBet)"
+        }
     }
     
     @IBAction func confirmBetButtonPressed(_ sender: Any) {
         guard let bet = Int(bettingCoinsLabel.text!) else { return }
-        
-        firebaseManager.updateBet(forPlayerUID: gameManager.localPlayer.uid, gameKey: gameManager.gameUID, bet: bet)
-        toggleBetRelatedViews(hide: true)
+        if gameManager != nil {
+            firebaseManager.updateBet(forPlayerUID: gameManager!.localPlayer.uid, gameKey: gameManager!.gameUID, bet: bet)
+            toggleBetRelatedViews(hide: true)
+        }
     }
     
     @IBAction func backButtonPressed(_ sender: Any) {

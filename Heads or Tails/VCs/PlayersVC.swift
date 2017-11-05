@@ -167,21 +167,33 @@ extension PlayersVC: UITableViewDelegate {
             
             if gameKey == nil {
                 // Create game key
-                let gameKey = strongSelf.firebaseManager.createGame(oppenentUID: strongSelf.players[indexPath.row].uid, initialBet: 0)
-                strongSelf.firebaseManager.getPlayerInfoFor(uid: strongSelf.firebaseManager.uid, completion: { (localPlayer) in
-                    let dict = ["localPlayer" : localPlayer, "opponentPlayer" : strongSelf.players[indexPath.row], "gameKey" : gameKey] as [String: Any]
+        
+                let opponentUsername = self?.players[indexPath.row].username ?? "Unnamed"
+                let leftButtonData = ButtonData(title: "Yes", color: .green, action: {
+                    let gameKey = strongSelf.firebaseManager.createGame(oppenentUID: strongSelf.players[indexPath.row].uid, initialBet: 0)
+                    strongSelf.firebaseManager.getPlayerInfoFor(uid: strongSelf.firebaseManager.uid, completion: { (localPlayer) in
+                        let dict = ["localPlayer" : localPlayer, "opponentPlayer" : strongSelf.players[indexPath.row], "gameKey" : gameKey] as [String: Any]
+                        
+                        strongSelf.notificationCenter.post(name: .updateGameVCDetails, object: nil, userInfo: dict)
+                    })
                     
-                    strongSelf.notificationCenter.post(name: .updateGameVCDetails, object: nil, userInfo: dict)
+                    self?.performSegue(withIdentifier: UIStoryboard.gameVCSegue, sender: nil)
                 })
+                let rightButtonData = ButtonData(title: "No", color: .red, action: nil)
+                let modalPopup = InformationVC(message: "Would you like to create a game with \(opponentUsername)", image: #imageLiteral(resourceName: "flipping"), leftButtonData: leftButtonData, rightButtonData: rightButtonData)
+            
+                self?.present(modalPopup, animated: true, completion: nil)
+            
+                
             } else {
                 strongSelf.firebaseManager.getPlayerInfoFor(uid: strongSelf.firebaseManager.uid, completion: { (localPlayer) in
                     let dict = ["localPlayer" : localPlayer, "opponentPlayer" : strongSelf.players[indexPath.row], "gameKey" : gameKey!] as [String: Any]
                     
                     strongSelf.notificationCenter.post(name: .updateGameVCDetails, object: nil, userInfo: dict)
+                    
+                    self?.performSegue(withIdentifier: UIStoryboard.gameVCSegue, sender: nil)
                 })
             }
-            
-            self?.performSegue(withIdentifier: UIStoryboard.gameVCSegue, sender: nil)
         }
     }
 }
