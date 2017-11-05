@@ -28,7 +28,7 @@ class HeadsOrTailsGame {
                 notificationCenter.post(name: .increaseRound, object: nil, userInfo: ["round": newValue])
             }
             
-            if newValue == 6 {
+            if localMove?.count == 5 && opponentMove?.count == 5 {
                 var localScore = 0
                 var opponentScore = 0
                 
@@ -52,6 +52,8 @@ class HeadsOrTailsGame {
                     let char = String(char)
                     opponentMoveArray.append(char)
                 }
+                
+                print(statusArray,localMoveArray, opponentMoveArray)
                 
                 // calculating scores
                 for i in 0..<5 {

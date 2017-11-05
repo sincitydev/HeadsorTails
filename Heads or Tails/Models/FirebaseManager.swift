@@ -258,6 +258,15 @@ class FirebaseManager {
         })
     }
     
+    func getGame(for gameKey: String, completion: @escaping ([String: Any]) -> Void) {
+        Literals.games.observe(.value, with: { (snapshot) in
+            if let snapshotData = snapshot.value as? [String: Any],
+                let gameDetails = snapshotData[gameKey] as? [String: Any] {
+                completion(gameDetails)
+            }
+        })
+    }
+    
     func postOnlineStatus(_ onlineStatus: Bool) {
         guard let currentUserUID = Auth.auth().currentUser?.uid else { return }
         Literals.users.child(currentUserUID).updateChildValues(["online": onlineStatus])

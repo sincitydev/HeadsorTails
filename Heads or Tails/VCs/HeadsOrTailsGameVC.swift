@@ -173,6 +173,14 @@ class HeadsOrTailsGameVC: UIViewController {
         toggleBetRelatedViews(show: false)
     }
     
+    @IBAction func pokePressed() {
+        guard let gameManager = gameManager else { return }
+        
+        firebaseManager.getGame(for: gameManager.gameUID) { [weak self] (gameDetails) in
+            self?.updateGameModel(with: gameDetails)
+        }
+    }
+    
     @IBAction func backButtonPressed(_ sender: Any) {
         self.dismiss(animated: true, completion: nil)
     }
