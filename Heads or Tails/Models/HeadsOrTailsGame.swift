@@ -40,7 +40,6 @@ class HeadsOrTailsGame {
         self.localPlayer = localPlayer
         self.opponentPlayer = opponent
         firebaseManager.listen(on: gameUID) { [weak self] (gameDetails) in
-            print("\n\n Game did update")
             self?.round = gameDetails["round"] as? Int ?? 0
             self?.status = gameDetails["status"] as? String ?? ""
             
@@ -62,7 +61,6 @@ class HeadsOrTailsGame {
     }
     
     func addMove(_ move: Move, for player: Player) {
-        print("Adding moves, count = \(localMove.count), for round \(round)")
         if localMove.count < round && round != 6 {
             firebaseManager.addMove(move, for: player, gameUID: gameUID)
         }
