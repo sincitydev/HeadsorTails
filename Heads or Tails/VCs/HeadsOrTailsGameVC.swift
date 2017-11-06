@@ -31,15 +31,7 @@ class HeadsOrTailsGameVC: UIViewController {
     @IBOutlet weak var statusLabel: UILabel!
     
     // MARK: - Properties
-    var gameManager: HeadsOrTailsGame? {
-        didSet {
-            guard let gameManager = gameManager else { return }
-            
-            firebaseManager.listen(on: gameManager.gameUID) { [weak self] (gameDetails) in
-                self?.updateGameModel(with: gameDetails)
-            }
-        }
-    }
+    var gameManager: HeadsOrTailsGame?
     let notificationCenter = NotificationCenter.default
     let firebaseManager = FirebaseManager.instance
     
@@ -50,7 +42,7 @@ class HeadsOrTailsGameVC: UIViewController {
         setupViews()
         
         notificationCenter.addObserver(self, selector: #selector(updateWithGameDetails(_:)), name: .updateGameVCDetails, object: nil)
-        notificationCenter.addObserver(self, selector: #selector(increaseRound(_:)), name: .increaseRound, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(gameDidUpdate(_:)), name: .gameDidUpdate, object: nil)
     }
     
     // MARK: - Methods
@@ -60,8 +52,37 @@ class HeadsOrTailsGameVC: UIViewController {
         localHeadImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(headImageViewSelected(_:))))
         localTailImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tailImageViewSelected(_:))))
         
-        localHeadImageView.isUserInteractionEnabled = false
-        localTailImageView.isUserInteractionEnabled = false
+        localHeadImageView.isUserInteractionEnabled = true
+        localTailImageView.isUserInteractionEnabled = true
+    }
+    
+    @objc func gameDidUpdate(_ notication: Notification) {
+        statusLabel.text = gameManager!.getGameDescription()
+        if gameManager!.localMove.count < gameManager!.round {
+            if gameManager!.localMove.count != 5 {
+                resetCoinsAlpha()
+            }
+        }
+        
+        // opponent makes a move first
+        if gameManager!.opponentMove.count > 0 {
+            let move = gameManager!.opponentMove.last!
+            switch move {
+                case "H":
+                    self.opponentHeadImageView.alpha = 1
+                    self.opponentTailImageView.alpha = 0.1
+                case "T":
+                    self.opponentHeadImageView.alpha = 0.1
+                    self.opponentTailImageView.alpha = 1
+                default:
+                    break
+            }
+        }
+        
+        if gameManager!.getGameDescription() == "Waiting on opponent to move" {
+            self.opponentHeadImageView.alpha = 1
+            self.opponentTailImageView.alpha = 1
+        }
     }
     
     @objc func updateWithGameDetails(_ notification: Notification) {
@@ -77,79 +98,40 @@ class HeadsOrTailsGameVC: UIViewController {
             opponentCoinsLabel.text = String(opponentPlayer.coins)
             bettingSlider.maximumValue = Float(localPlayer.coins)
             
-            
-
             // Update game model
             gameManager = HeadsOrTailsGame(gameID: gameUID, localPlayer: localPlayer, opponent: opponentPlayer)
-            gameManager!.gameUID = gameUID
-
-            localHeadImageView.isUserInteractionEnabled = true
-            localTailImageView.isUserInteractionEnabled = true
-            
+      
             // Check if bet has been made
             firebaseManager.getBet(forPlayerUID: localPlayer.uid, gameKey: gameUID, completion: { [weak self] (bet) in
                 if bet == 0 {
                     self?.toggleBetRelatedViews(show: true)
+                    self?.localHeadImageView.isUserInteractionEnabled = false
+                    self?.localTailImageView.isUserInteractionEnabled = false
                 }
             })
 
         }
     }
     
-    private func updateGameModel(with gameDetails: [String: Any]) {
-        // Update status and round
-        if let status = gameDetails["status"] as? String,
-            let round = gameDetails["round"] as? Int {
-            gameManager?.status = status
-            gameManager?.round = round
-        }
-        
-        // Update local players model
-        if let localDetails = gameDetails[gameManager!.localPlayer.uid] as? [String: Any],
-            let localBet = localDetails["bet"] as? Int {
-            gameManager?.localBet = localBet
-            
-            if let localMoves = localDetails["move"] as? String {
-                gameManager?.localMove = localMoves
-            }
-        }
-        
-        // Update opponent players model
-        if let opponentDetails = gameDetails[gameManager!.opponentPlayer.uid] as? [String: Any],
-            let opponentBet = opponentDetails["bet"] as? Int {
-            gameManager?.opponentBet = opponentBet
-            
-            if let oppoenentMoves = opponentDetails["move"] as? String {
-                gameManager?.opponentMove = oppoenentMoves
-            }
-        }
-        
-        statusLabel.text = gameManager?.getGameDescription()
-    }
-    
-    @objc func increaseRound(_ notification: Notification) {
-        guard let gameManager = gameManager else { return }
-        guard let round = notification.userInfo?["round"] as? Int else { return }
-        
-        firebaseManager.updateRound(for: gameManager.gameUID, with: round)
-        resetCoinsAlpha()
-    }
-    
     @objc func headImageViewSelected(_ sender: Any) {
-        guard let gameManager = gameManager else { return }
-        
-        if !gameManager.localPlayerHasMoveForRound {
-            toggleCoin(for: .heads)
-            gameManager.addMove(.heads, for: gameManager.localPlayer)
+        if gameManager != nil {
+            if gameManager!.localMove.count < gameManager!.round {
+                if gameManager!.round != 6 {
+                    toggleCoin(for: .heads)
+                    gameManager!.addMove(.heads, for: gameManager!.localPlayer)
+                }
+            }
         }
     }
     
     @objc func tailImageViewSelected(_ sender: Any) {
-        guard let gameManager = gameManager else { return }
-        
-        if !gameManager.localPlayerHasMoveForRound {
-            toggleCoin(for: .tails)
-            gameManager.addMove(.tails, for: gameManager.localPlayer)
+        if gameManager != nil {
+            if gameManager!.localMove.count < gameManager!.round {
+                if gameManager!.round != 6{
+                    toggleCoin(for: .tails)
+                    gameManager!.addMove(.tails, for: gameManager!.localPlayer)
+                }
+            }
         }
     }
     
@@ -171,9 +153,17 @@ class HeadsOrTailsGameVC: UIViewController {
         
         firebaseManager.updateBet(forPlayerUID: gameManager.localPlayer.uid, gameKey: gameManager.gameUID, bet: bet)
         toggleBetRelatedViews(show: false)
+        
+        localHeadImageView.isUserInteractionEnabled = true
+        localTailImageView.isUserInteractionEnabled = true
     }
-    
+   
     @IBAction func backButtonPressed(_ sender: Any) {
+        if gameManager != nil {
+            if gameManager!.round == 6 {
+                firebaseManager.updateRound(for: gameManager!.gameUID, with: 404)
+            }
+        }
         self.dismiss(animated: true, completion: nil)
     }
     

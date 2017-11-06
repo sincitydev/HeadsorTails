@@ -36,6 +36,10 @@ class PlayersVC: UIViewController {
         firebaseManager.postOnlineStatus(true)
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        refreshPlayers()
+    }
+    
     override func viewWillDisappear(_ animated: Bool) {
         firebaseManager.postOnlineStatus(false)
     }

@@ -18,50 +18,19 @@ class HeadsOrTailsGame {
     // Players
     var localPlayer: Player!
     var opponentPlayer: Player!
+    var gameUID: String!
     
     // Game status
     var status = ""
-    var round = 0 {
-        willSet {
-            if round < newValue {
-                localPlayerHasMoveForRound = false
-                notificationCenter.post(name: .increaseRound, object: nil, userInfo: ["round": newValue])
-            }
-            
-            if newValue == 6 {
-                // Decide winner
-            }
-        }
-    }
-    var localPlayerHasMoveForRound = false
+    var round = 0
     
     // Player bets
-    var localBet = 0 {
-        willSet {
-            if localBet < newValue && opponentBet != 0 {
-                round += 1
-            }
-        }
-    }
+    var localBet = 0
     var opponentBet = 0
     
     // Player moves
-    var localMove: String? {
-        willSet {
-            if let newValue = newValue, let opponentMove = opponentMove {
-                if localBet > 0 && opponentBet > 0 && newValue.count == round && opponentMove.count == round {
-                    round += 1
-                }
-            }
-        }
-    }
-    var opponentMove: String?
-    
-    var gameUID: String {
-        didSet {
-            setupCoins()
-        }
-    }
+    var localMove = ""
+    var opponentMove = ""
     
     let firebaseManager = FirebaseManager.instance
     let notificationCenter = NotificationCenter.default
@@ -70,25 +39,31 @@ class HeadsOrTailsGame {
         self.gameUID = gameID
         self.localPlayer = localPlayer
         self.opponentPlayer = opponent
-    }
-
-    private func setupCoins() {
-        for _ in 1...5 {
-            let randomNumber = arc4random_uniform(2)
+        firebaseManager.listen(on: gameUID) { [weak self] (gameDetails) in
+            self?.round = gameDetails["round"] as? Int ?? 0
+            self?.status = gameDetails["status"] as? String ?? ""
             
-            if randomNumber == 0 {
-                status += "H"
-            } else {
-                status += "T"
+            guard let localDetails = gameDetails[(self?.localPlayer.uid)!] as? [String: Any] else { return }
+            guard let opponentDetails = gameDetails[(self?.opponentPlayer.uid)!] as? [String: Any] else { return }
+            
+            self?.localBet = (localDetails["bet"] as? Int)!
+            self?.opponentBet = (opponentDetails["bet"] as? Int)!
+            
+            if let localMove = localDetails["move"] as? String {
+                self?.localMove = localMove
             }
+            
+            if let opponentMove = opponentDetails["move"] as? String {
+                self?.opponentMove = opponentMove
+            }
+            self?.notificationCenter.post(name: NSNotification.Name.gameDidUpdate, object: nil)
         }
-        
-        firebaseManager.updateStatus(status: status, gameUID: gameUID)
     }
     
     func addMove(_ move: Move, for player: Player) {
-        localPlayerHasMoveForRound = true
-        firebaseManager.addMove(move, for: player, gameUID: gameUID)
+        if localMove.count < round && round != 6 {
+            firebaseManager.addMove(move, for: player, gameUID: gameUID)
+        }
     }
 
     func getGameDescription() -> String {
@@ -96,11 +71,47 @@ class HeadsOrTailsGame {
             return "Enter your bet"
         } else if opponentBet == 0 {
             return "Waiting for opponent to bet"
-        } else if localMove == nil {
+        } else if round == 6 {
+            var localScore = 0
+            var opponentScore = 0
+            var localMovesArray = [String]()
+            var opponentMovesArray = [String]()
+            var statusArray = [String]()
+            
+            for char in localMove {
+                localMovesArray.append(String(char))
+            }
+            
+            for char in opponentMove {
+                opponentMovesArray.append(String(char))
+            }
+            
+            for char in status {
+                statusArray.append(String(char))
+            }
+            
+            for i in 0...4 {
+                if statusArray[i] == localMovesArray[i] {
+                    localScore += 1
+                }
+                if statusArray[i] == opponentMovesArray[i] {
+                    opponentScore += 1
+                }
+            }
+        
+            if localScore == opponentScore {
+                return "Draw!!!"
+            } else if localScore > opponentScore {
+                return "You Win!"
+            } else {
+                return "You Lost..."
+            }
+        
+        } else if localMove == "" {
             return "Select your coin"
-        } else if opponentMove == nil {
+        } else if opponentMove == "" {
             return "Waiting on opponent to move"
-        } else if (localMove?.count ?? 0) < round {
+        } else if localMove.count < round {
             return "Select your coin"
         } else {
             return "Waiting on opponent to move"
@@ -114,10 +125,14 @@ class HeadsOrTailsGame {
         print("---Round: \(round)")
         print("---Local player: \(localPlayer.username)")
         print("******Bet: \(localBet)")
-        print("******Moves: \(localMove ?? "")")
+        print("******Moves: \(localMove)")
         print("---Opponent player: \(opponentPlayer.username)")
         print("******Bet: \(opponentBet)")
-        print("******Moves: \(opponentMove ?? "")")
+        print("******Moves: \(opponentMove)")
         print("\n")
+    }
+    
+    deinit {
+        notificationCenter.removeObserver(self)
     }
 }
