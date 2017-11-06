@@ -18,97 +18,19 @@ class HeadsOrTailsGame {
     // Players
     var localPlayer: Player!
     var opponentPlayer: Player!
+    var gameUID: String!
     
     // Game status
     var status = ""
-    var round = 0 {
-        willSet {
-            if round < newValue {
-                localPlayerHasMoveForRound = false
-                notificationCenter.post(name: .increaseRound, object: nil, userInfo: ["round": newValue])
-            }
-        }
-        didSet {
-            if localMove?.count == 5 && opponentMove?.count == 5 {
-                var localScore = 0
-                var opponentScore = 0
-                
-                var statusArray = [String]()
-                var localMoveArray = [String]()
-                var opponentMoveArray = [String]()
-                
-                
-                // Creating the arrays of characters
-                for char in status {
-                    let char = String(char)
-                    statusArray.append(char)
-                }
-                
-                for char in localMove! {
-                    let char = String(char)
-                    localMoveArray.append(char)
-                }
-                
-                for char in opponentMove! {
-                    let char = String(char)
-                    opponentMoveArray.append(char)
-                }
-                
-                print(statusArray,localMoveArray, opponentMoveArray)
-                
-                // calculating scores
-                for i in 0..<5 {
-                    if statusArray[i] == localMoveArray[i] {
-                        localScore += 1
-                    }
-                    if statusArray[i] == opponentMoveArray[i] {
-                        opponentScore += 1
-                    }
-                }
-                
-                // determine winner
-                if localScore == opponentScore {
-                    // draw
-                    print("Draw")
-                } else if localScore > opponentScore {
-                    // win
-                    print("Won")
-                } else if localScore < opponentScore {
-                    // lose
-                    print("Lost")
-                }
-            }
-        }
-    }
-    var localPlayerHasMoveForRound = false
+    var round = 0
     
     // Player bets
-    var localBet = 0 {
-        willSet {
-            if localBet < newValue && opponentBet != 0 {
-                round += 1
-            }
-        }
-    }
+    var localBet = 0
     var opponentBet = 0
     
     // Player moves
-    var localMove: String? {
-        willSet {
-            if let newValue = newValue, let opponentMove = opponentMove {
-                if localBet > 0 && opponentBet > 0 && newValue.count == round && opponentMove.count == round {
-                    round += 1
-                }
-            }
-        }
-    }
-    var opponentMove: String?
-    
-    var gameUID: String {
-        didSet {
-            setupCoins()
-        }
-    }
+    var localMove = ""
+    var opponentMove = ""
     
     let firebaseManager = FirebaseManager.instance
     let notificationCenter = NotificationCenter.default
@@ -117,25 +39,35 @@ class HeadsOrTailsGame {
         self.gameUID = gameID
         self.localPlayer = localPlayer
         self.opponentPlayer = opponent
-    }
-
-    private func setupCoins() {
-        for _ in 1...5 {
-            let randomNumber = arc4random_uniform(2)
+        firebaseManager.listen(on: gameUID) { [weak self] (gameDetails) in
+            print("\n\n Game did update")
+            self?.round = gameDetails["round"] as? Int ?? 0
+            self?.status = gameDetails["status"] as? String ?? ""
             
-            if randomNumber == 0 {
-                status += "H"
-            } else {
-                status += "T"
+            guard let localDetails = gameDetails[(self?.localPlayer.uid)!] as? [String: Any] else { return }
+            guard let opponentDetails = gameDetails[(self?.opponentPlayer.uid)!] as? [String: Any] else { return }
+            
+            self?.localBet = (localDetails["bet"] as? Int)!
+            self?.opponentBet = (opponentDetails["bet"] as? Int)!
+            
+            if let localMove = localDetails["move"] as? String {
+                self?.localMove = localMove
             }
-        }
+            
+            if let opponentMove = opponentDetails["move"] as? String {
+                self?.opponentMove = opponentMove
+            }
+            self?.notificationCenter.post(name: NSNotification.Name.gameDidUpdate, object: nil)
         
-//        firebaseManager.updateStatus(status: status, gameUID: gameUID)
+            print(self!.round, self!.status, self!.localMove, self!.opponentMove, "\n\n\n")
+        }
     }
     
     func addMove(_ move: Move, for player: Player) {
-        localPlayerHasMoveForRound = true
-        firebaseManager.addMove(move, for: player, gameUID: gameUID)
+        print("Adding moves, count = \(localMove.count), for round \(round)")
+        if localMove.count < round {
+            firebaseManager.addMove(move, for: player, gameUID: gameUID)
+        }
     }
 
     func getGameDescription() -> String {
@@ -143,11 +75,11 @@ class HeadsOrTailsGame {
             return "Enter your bet"
         } else if opponentBet == 0 {
             return "Waiting for opponent to bet"
-        } else if localMove == nil {
+        } else if localMove == "" {
             return "Select your coin"
-        } else if opponentMove == nil {
+        } else if opponentMove == "" {
             return "Waiting on opponent to move"
-        } else if (localMove?.count ?? 0) < round {
+        } else if localMove.count < round {
             return "Select your coin"
         } else {
             return "Waiting on opponent to move"
@@ -161,10 +93,10 @@ class HeadsOrTailsGame {
         print("---Round: \(round)")
         print("---Local player: \(localPlayer.username)")
         print("******Bet: \(localBet)")
-        print("******Moves: \(localMove ?? "")")
+        print("******Moves: \(localMove)")
         print("---Opponent player: \(opponentPlayer.username)")
         print("******Bet: \(opponentBet)")
-        print("******Moves: \(opponentMove ?? "")")
+        print("******Moves: \(opponentMove)")
         print("\n")
     }
 }

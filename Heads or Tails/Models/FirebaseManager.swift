@@ -250,10 +250,9 @@ class FirebaseManager {
     }
     
     func listen(on gameKey: String, completion: @escaping ([String: Any]) -> Void) {
-        Literals.games.observe(.value, with: { (snapshot) in
-            if let snapshotData = snapshot.value as? [String: Any],
-                let gameDetails = snapshotData[gameKey] as? [String: Any] {
-                completion(gameDetails)
+        Literals.games.child(gameKey).observe(.value, with: { (snapshot) in
+            if let snapshotData = snapshot.value as? [String: Any] {
+                completion(snapshotData)
             }
         })
     }
