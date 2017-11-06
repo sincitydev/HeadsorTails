@@ -58,14 +58,12 @@ class HeadsOrTailsGame {
                 self?.opponentMove = opponentMove
             }
             self?.notificationCenter.post(name: NSNotification.Name.gameDidUpdate, object: nil)
-        
-            print(self!.round, self!.status, self!.localMove, self!.opponentMove, "\n\n\n")
         }
     }
     
     func addMove(_ move: Move, for player: Player) {
         print("Adding moves, count = \(localMove.count), for round \(round)")
-        if localMove.count < round {
+        if localMove.count < round && round != 6 {
             firebaseManager.addMove(move, for: player, gameUID: gameUID)
         }
     }
@@ -75,6 +73,42 @@ class HeadsOrTailsGame {
             return "Enter your bet"
         } else if opponentBet == 0 {
             return "Waiting for opponent to bet"
+        } else if round == 6 {
+            var localScore = 0
+            var opponentScore = 0
+            var localMovesArray = [String]()
+            var opponentMovesArray = [String]()
+            var statusArray = [String]()
+            
+            for char in localMove {
+                localMovesArray.append(String(char))
+            }
+            
+            for char in opponentMove {
+                opponentMovesArray.append(String(char))
+            }
+            
+            for char in status {
+                statusArray.append(String(char))
+            }
+            
+            for i in 0...4 {
+                if statusArray[i] == localMovesArray[i] {
+                    localScore += 1
+                }
+                if statusArray[i] == opponentMovesArray[i] {
+                    opponentScore += 1
+                }
+            }
+        
+            if localScore == opponentScore {
+                return "Draw!!!"
+            } else if localScore > opponentScore {
+                return "You Win!"
+            } else {
+                return "You Lost..."
+            }
+        
         } else if localMove == "" {
             return "Select your coin"
         } else if opponentMove == "" {
@@ -98,5 +132,9 @@ class HeadsOrTailsGame {
         print("******Bet: \(opponentBet)")
         print("******Moves: \(opponentMove)")
         print("\n")
+    }
+    
+    deinit {
+        notificationCenter.removeObserver(self)
     }
 }

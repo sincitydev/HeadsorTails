@@ -58,7 +58,31 @@ class HeadsOrTailsGameVC: UIViewController {
     
     @objc func gameDidUpdate(_ notication: Notification) {
         statusLabel.text = gameManager!.getGameDescription()
-        resetCoinsAlpha()
+        if gameManager!.localMove.count < gameManager!.round {
+            if gameManager!.localMove.count != 5 {
+                resetCoinsAlpha()
+            }
+        }
+        
+        // opponent makes a move first
+        if gameManager!.opponentMove.count > 0 {
+            let move = gameManager!.opponentMove.last!
+            switch move {
+                case "H":
+                    self.opponentHeadImageView.alpha = 1
+                    self.opponentTailImageView.alpha = 0.1
+                case "T":
+                    self.opponentHeadImageView.alpha = 0.1
+                    self.opponentTailImageView.alpha = 1
+                default:
+                    break
+            }
+        }
+        
+        if gameManager!.getGameDescription() == "Waiting on opponent to move" {
+            self.opponentHeadImageView.alpha = 1
+            self.opponentTailImageView.alpha = 1
+        }
     }
     
     @objc func updateWithGameDetails(_ notification: Notification) {
@@ -92,8 +116,10 @@ class HeadsOrTailsGameVC: UIViewController {
     @objc func headImageViewSelected(_ sender: Any) {
         if gameManager != nil {
             if gameManager!.localMove.count < gameManager!.round {
-                toggleCoin(for: .heads)
-                gameManager!.addMove(.heads, for: gameManager!.localPlayer)
+                if gameManager!.round != 6 {
+                    toggleCoin(for: .heads)
+                    gameManager!.addMove(.heads, for: gameManager!.localPlayer)
+                }
             }
         }
     }
@@ -101,8 +127,10 @@ class HeadsOrTailsGameVC: UIViewController {
     @objc func tailImageViewSelected(_ sender: Any) {
         if gameManager != nil {
             if gameManager!.localMove.count < gameManager!.round {
-                toggleCoin(for: .tails)
-                gameManager!.addMove(.tails, for: gameManager!.localPlayer)
+                if gameManager!.round != 6{
+                    toggleCoin(for: .tails)
+                    gameManager!.addMove(.tails, for: gameManager!.localPlayer)
+                }
             }
         }
     }
@@ -131,6 +159,11 @@ class HeadsOrTailsGameVC: UIViewController {
     }
    
     @IBAction func backButtonPressed(_ sender: Any) {
+        if gameManager != nil {
+            if gameManager!.round == 6 {
+                firebaseManager.updateRound(for: gameManager!.gameUID, with: 404)
+            }
+        }
         self.dismiss(animated: true, completion: nil)
     }
     
