@@ -13,6 +13,9 @@ DerivedData/
 !default.perspectivev3
 xcuserdata/
 
+## Firebase Cloud Functions
+/Cloud\ Functions/functions/node_modules
+
 ## Other
 *.moved-aside
 *.xccheckout
