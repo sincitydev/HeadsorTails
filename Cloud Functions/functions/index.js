@@ -13,6 +13,7 @@ exports.gameDidUpdate = functions.database.ref('/games/{gameKey}')
  .onUpdate(event => {
    var gameDetails = event.data.val()
 
+
    var firstPlayerUID = ""
    var firstPlayerMoves = ""
    var firstPlayerBet = 0
@@ -24,8 +25,11 @@ exports.gameDidUpdate = functions.database.ref('/games/{gameKey}')
    var round = gameDetails["round"]
    var status = gameDetails["status"]
 
+   var root = admin.database().ref()
+   var count = 0
 
    for(var key in gameDetails) {
+      count = count + 1
      if (firstPlayerMoves == "") {
         firstPlayerUID = key
         firstPlayerMoves = gameDetails[key]["move"]
@@ -35,6 +39,10 @@ exports.gameDidUpdate = functions.database.ref('/games/{gameKey}')
        secondPlayerMoves = gameDetails[key]["move"]
        secondPlayerBet = gameDetails[key]["bet"]
      }
+   }
+
+   if (count == 2) {
+      return root.child(`games/${event.params.gameKey}`).remove()
    }
 
    // starting the game
@@ -55,8 +63,6 @@ exports.gameDidUpdate = functions.database.ref('/games/{gameKey}')
 
      var firstPlayerScore = score(status, firstPlayerMoves)
      var secondPlayerScore = score(status, secondPlayerMoves)
-
-     var root = admin.database().ref()
 
      return root.child(`users/${firstPlayerUID}/coins`).once('value').then(snap => {
         firstPlayerCoins = snap.val()
