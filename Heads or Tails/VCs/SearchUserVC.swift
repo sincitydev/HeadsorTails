@@ -45,9 +45,7 @@ class SearchUserVC: UIViewController {
             tableview.reloadData()
         }
     }
-
-
-
+    
     @IBAction func backButtonAction(_ sender: Any) {
         dismiss(animated: true, completion: nil)
     }
@@ -71,6 +69,10 @@ extension SearchUserVC: UITableViewDelegate, UITableViewDataSource {
             cell.onlineView.backgroundColor = UIColor.clear
         }
         return cell
+    }
+    
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        userSearchTextField.resignFirstResponder()
     }
 }
 

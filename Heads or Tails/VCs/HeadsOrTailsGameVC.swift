@@ -127,7 +127,7 @@ class HeadsOrTailsGameVC: UIViewController {
     @objc func tailImageViewSelected(_ sender: Any) {
         if gameManager != nil {
             if gameManager!.localMove.count < gameManager!.round {
-                if gameManager!.round != 6{
+                if gameManager!.round != 6 {
                     toggleCoin(for: .tails)
                     gameManager!.addMove(.tails, for: gameManager!.localPlayer)
                 }
