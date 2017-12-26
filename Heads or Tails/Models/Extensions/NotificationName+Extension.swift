@@ -8,7 +8,9 @@
 
 import Foundation
 
-extension Notification.Name
-{
+extension Notification.Name {
     static let authenticationDidChange = Notification.Name.init("authenticationDidChange")
+    static let updateGameVCDetails = Notification.Name.init("updateGameVCDetails")
+    static let gameDidUpdate = Notification.Name.init("gameDidUpdate")
+    static let increaseRound = Notification.Name.init("increaseRound")
 }

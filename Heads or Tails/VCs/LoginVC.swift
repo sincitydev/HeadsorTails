@@ -10,11 +10,7 @@ import UIKit
 import Firebase
 import FirebaseAuth
 
-// TODO: Looks like theres a similar code between the loginVC and signupVC
-//       Is there anyway I can not repeat that same code in both VCs?
-
-class LoginVC: UIViewController
-{
+class LoginVC: UIViewController, AuthHelper {
     @IBOutlet weak var errorMessageLabel: UILabel!
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
@@ -22,66 +18,35 @@ class LoginVC: UIViewController
     private var firebaseManager = FirebaseManager()
     private let notificationCenter = NotificationCenter.default
     
-    var validInput: Bool
-    {
-        let email = emailTextField.text ?? ""
-        let password = passwordTextField.text ?? ""
-        
-        if email.isEmpty || password.isEmpty
-        {
-            return false
-        }
-        else
-        {
-            return true
-        }
-    }
-    
-    override func viewDidLoad()
-    {
+    override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
     }
     
-    private func setupViews()
-    {        
+    private func setupViews() {        
         errorMessageLabel.alpha = 0
     }
     
-    @IBAction func login()
-    {
+    @IBAction func login() {
         let email = emailTextField.text ?? ""
         let password = passwordTextField.text ?? ""
         
-        
-        if validInput
-        {
+        if validInput(email: email, password: password) {
             firebaseManager.login(email: email, password: password) { [weak self] (user, error) in
-                if let error = error, let authError = AuthErrorCode(rawValue: error._code)
-                {
-                    self?.showLoginError(authError.description)
+                if let error = error, let authError = AuthErrorCode(rawValue: error._code) {
+                    self?.showLoginError(self?.errorMessageLabel, with: authError.description)
                 }
-                else
-                {
+                else {
                     self?.notificationCenter.post(name: .authenticationDidChange, object: nil)
                 }
             }
         }
-        else
-        {
-            showLoginError("Invalid input")
+        else {
+            self.showLoginError(errorMessageLabel, with: "Invalid input")
         }
     }
     
-    private func showLoginError(_ message: String)
-    {
-        errorMessageLabel.text = message
-        errorMessageLabel.fadeIn(duration: 0.2)
-    }
-    
-    private func hideLoginError()
-    {
-        errorMessageLabel.text = ""
-        errorMessageLabel.fadeOut(duration: 0.2)
+    deinit {
+        print("LoginVC has been deallocated :)")
     }
 }

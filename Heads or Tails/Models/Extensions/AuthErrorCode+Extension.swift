@@ -9,12 +9,9 @@
 import Foundation
 import FirebaseAuth
 
-extension AuthErrorCode
-{
-    var description: String
-    {
-        switch self
-        {
+extension AuthErrorCode {
+    var description: String {
+        switch self {
         case .invalidCustomToken:
             return "Invalid custom token"
         case .customTokenMismatch:
