@@ -102,14 +102,13 @@ class HeadsOrTailsGameVC: UIViewController {
             gameManager = HeadsOrTailsGame(gameID: gameUID, localPlayer: localPlayer, opponent: opponentPlayer)
       
             // Check if bet has been made
-            firebaseManager.getBet(forPlayerUID: localPlayer.uid, gameKey: gameUID, completion: { [weak self] (bet) in
+            firebaseManager.fetchBet(player: localPlayer.uid, gameKey: gameUID) { [weak self] (bet, databaseError) in
                 if bet == 0 {
                     self?.toggleBetRelatedViews(show: true)
                     self?.localHeadImageView.isUserInteractionEnabled = false
                     self?.localTailImageView.isUserInteractionEnabled = false
                 }
-            })
-
+            }
         }
     }
     
@@ -151,7 +150,7 @@ class HeadsOrTailsGameVC: UIViewController {
         guard bet > 0 else { return }
         guard let gameManager = gameManager else { return }
         
-        firebaseManager.updateBet(forPlayerUID: gameManager.localPlayer.uid, gameKey: gameManager.gameUID, bet: bet)
+        firebaseManager.updateBet(playerUID: gameManager.localPlayer.uid, gameKey: gameManager.gameUID, bet: bet)
         toggleBetRelatedViews(show: false)
         
         localHeadImageView.isUserInteractionEnabled = true

@@ -39,7 +39,8 @@ class HeadsOrTailsGame {
         self.gameUID = gameID
         self.localPlayer = localPlayer
         self.opponentPlayer = opponent
-        firebaseManager.listen(on: gameUID) { [weak self] (gameDetails) in
+        firebaseManager.createGameListener(gameKey: gameUID) { [weak self] (gameDetails, databaseError) in
+            guard let gameDetails = gameDetails else { return }
             print("\n\n Game did update")
             self?.round = gameDetails["round"] as? Int ?? 0
             self?.status = gameDetails["status"] as? String ?? ""

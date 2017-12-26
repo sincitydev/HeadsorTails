@@ -49,7 +49,7 @@ class SignupVC: UIViewController, UITextFieldDelegate, AuthHelper {
                     
                     let player = Player(uid: user.uid, username: username, coins: 100, online: true)
                     
-                    self?.firebaseManager.saveNewUser(player)
+                    self?.firebaseManager.saveNewPlayer(player)
                     self?.notificationCenter.post(name: .authenticationDidChange, object: nil)
                     
                 }
@@ -75,7 +75,7 @@ extension SignupVC: UITextViewDelegate {
         firebaseManager.checkUsername(usernameTextField.text ?? "") { [weak self] (authUsernameError) in
             if let authUsernameError = authUsernameError {
                 self?.validUsername = false
-                self?.showLoginError(self?.errorMessageLabel, with: authUsernameError.description)
+                self?.showLoginError(self?.errorMessageLabel, with: authUsernameError.localizedDescription)
             }
             else {
                 self?.validUsername = true

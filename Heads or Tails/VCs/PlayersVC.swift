@@ -48,7 +48,7 @@ class PlayersVC: UIViewController {
     
 //    override func viewDidAppear(_ animated: Bool) {
 //        super.viewDidAppear(animated)
-//        firebaseManager.getGameKeyWith(playerUID: (Auth.auth().currentUser?.uid)!, playerUId: "opponentsUID") { (gameKey) in
+//        firebaseManager.fetchGame(playerUID: (Auth.auth().currentUser?.uid)!, playerUId: "opponentsUID") { (gameKey) in
 //            if gameKey != nil {
 //                self.firebaseManager.updateBet(forPlayerUID: "opponentsUID", gameKey: gameKey!, bet: 1000)
 //            }
@@ -85,7 +85,7 @@ class PlayersVC: UIViewController {
     }
     
     @objc private func refreshPlayers() {
-        firebaseManager.getPlayers { [weak self] (returnedPlayers) in
+        firebaseManager.createPlayersListener { [weak self] (returnedPlayers, error) in
             guard let strongSelf = self else { return }
             
             var fetchedPlayers: [Player] = []
@@ -104,7 +104,7 @@ class PlayersVC: UIViewController {
             
             strongSelf.players = fetchedPlayers
             
-            strongSelf.firebaseManager.getOpponentsFor(currentPlayerUID: Auth.auth().currentUser!.uid, completion: { (opponentPlayerUIDs) in
+            strongSelf.firebaseManager.fetchOpponents(playerUID: Auth.auth().currentUser!.uid, completion: { (opponentPlayerUIDs, databaseError) in
                 
                 strongSelf.opponentPlayerUIDs = opponentPlayerUIDs
                 strongSelf.playersTableView.reloadData()
@@ -173,7 +173,7 @@ extension PlayersVC: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         playersTableView.deselectRow(at: indexPath, animated: true)
         
-        firebaseManager.getGameKeyWith(playerUID: firebaseManager.uid, playerUID: players[indexPath.row].uid) { [weak self] (gameKey) in
+        firebaseManager.fetchGame(playerUID: firebaseManager.uid, playerUID: players[indexPath.row].uid) { [weak self] (gameKey, databaseError) in
             guard let strongSelf = self else { return }
             
             if gameKey == nil {
@@ -182,8 +182,9 @@ extension PlayersVC: UITableViewDelegate {
                 let opponentUsername = strongSelf.players[indexPath.row].username
                 let leftButtonData = ButtonData(title: "Yes", color: Palette.blue, action: {
                     let gameKey = strongSelf.firebaseManager.createGame(oppenentUID: strongSelf.players[indexPath.row].uid, initialBet: 0)
-                    strongSelf.firebaseManager.getPlayerInfoFor(uid: strongSelf.firebaseManager.uid, completion: { (localPlayer) in
-                        let dict = ["localPlayer" : localPlayer, "opponentPlayer" : strongSelf.players[indexPath.row], "gameKey" : gameKey] as [String: Any]
+                    strongSelf.firebaseManager.fetchPlayerInfo(uid: strongSelf.firebaseManager.uid, completion: { (localPlayer, databaseError) in
+                        guard let localPlayer = localPlayer else { return }
+                        let dict = ["localPlayer" : localPlayer, "opponentPlayer" : strongSelf.players[indexPath.row], "gameKey" : gameKey ?? ""] as [String: Any]
                         
                         strongSelf.notificationCenter.post(name: .updateGameVCDetails, object: nil, userInfo: dict)
                     })
@@ -199,7 +200,8 @@ extension PlayersVC: UITableViewDelegate {
             
                 
             } else {
-                strongSelf.firebaseManager.getPlayerInfoFor(uid: strongSelf.firebaseManager.uid, completion: { (localPlayer) in
+                strongSelf.firebaseManager.fetchPlayerInfo(uid: strongSelf.firebaseManager.uid, completion: { (localPlayer, databaseError) in
+                    guard let localPlayer = localPlayer else { return }
                     let dict = ["localPlayer" : localPlayer, "opponentPlayer" : strongSelf.players[indexPath.row], "gameKey" : gameKey!] as [String: Any]
                     
                     strongSelf.notificationCenter.post(name: .updateGameVCDetails, object: nil, userInfo: dict)

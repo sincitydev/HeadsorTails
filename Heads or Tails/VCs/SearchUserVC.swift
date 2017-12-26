@@ -24,7 +24,7 @@ class SearchUserVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         userSearchTextField.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
-        firebaseManager.getPlayers { (returnedPlayers) in
+        firebaseManager.fetchPlayers { (returnedPlayers, databaseError) in
             self.returnedUsers = returnedPlayers
             self.usersSearched = returnedPlayers
             self.tableview.reloadData()
