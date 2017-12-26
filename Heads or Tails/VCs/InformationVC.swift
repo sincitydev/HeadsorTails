@@ -52,7 +52,7 @@ class InformationVC: UIViewController {
     
     private func setupStackView() {
         var buttons: [UIView] = []
-        let buttonFont = UIFont.systemFont(ofSize: 18, weight: UIFontWeightSemibold)
+        let buttonFont = UIFont.systemFont(ofSize: 18, weight: UIFont.Weight.semibold)
         
         if let leftButtonData = leftButtonData {
             let leftButton = UIButton(type: .system)
