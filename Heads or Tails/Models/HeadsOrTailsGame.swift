@@ -19,22 +19,22 @@ class HeadsOrTailsGame {
     var localPlayer: Player!
     var opponentPlayer: Player!
     var gameUID: String!
-    
+
     // Game status
     var status = ""
     var round = 0
-    
+
     // Player bets
     var localBet = 0
     var opponentBet = 0
-    
+
     // Player moves
     var localMove = ""
     var opponentMove = ""
-    
+
     let firebaseManager = FirebaseManager.instance
     let notificationCenter = NotificationCenter.default
-    
+
     init(gameID: String, localPlayer: Player, opponent: Player) {
         self.gameUID = gameID
         self.localPlayer = localPlayer
@@ -44,26 +44,25 @@ class HeadsOrTailsGame {
             print("\n\n Game did update")
             self?.round = gameDetails["round"] as? Int ?? 0
             self?.status = gameDetails["status"] as? String ?? ""
-            
+
             guard let localDetails = gameDetails[(self?.localPlayer.uid)!] as? [String: Any] else { return }
             guard let opponentDetails = gameDetails[(self?.opponentPlayer.uid)!] as? [String: Any] else { return }
-            
+
             self?.localBet = (localDetails["bet"] as? Int)!
             self?.opponentBet = (opponentDetails["bet"] as? Int)!
-            
+
             if let localMove = localDetails["move"] as? String {
                 self?.localMove = localMove
             }
-            
+
             if let opponentMove = opponentDetails["move"] as? String {
                 self?.opponentMove = opponentMove
             }
             self?.notificationCenter.post(name: NSNotification.Name.gameDidUpdate, object: nil)
         }
     }
-    
+
     func addMove(_ move: Move, for player: Player) {
-        print("Adding moves, count = \(localMove.count), for round \(round)")
         if localMove.count < round && round != 6 {
             firebaseManager.addMove(move, for: player, gameUID: gameUID)
         }
@@ -80,19 +79,19 @@ class HeadsOrTailsGame {
             var localMovesArray = [String]()
             var opponentMovesArray = [String]()
             var statusArray = [String]()
-            
+
             for char in localMove {
                 localMovesArray.append(String(char))
             }
-            
+
             for char in opponentMove {
                 opponentMovesArray.append(String(char))
             }
-            
+
             for char in status {
                 statusArray.append(String(char))
             }
-            
+
             for i in 0...4 {
                 if statusArray[i] == localMovesArray[i] {
                     localScore += 1
@@ -101,7 +100,7 @@ class HeadsOrTailsGame {
                     opponentScore += 1
                 }
             }
-        
+
             if localScore == opponentScore {
                 return "Draw!!!"
             } else if localScore > opponentScore {
@@ -109,7 +108,7 @@ class HeadsOrTailsGame {
             } else {
                 return "You Lost..."
             }
-        
+
         } else if localMove == "" {
             return "Select your coin"
         } else if opponentMove == "" {
@@ -120,7 +119,7 @@ class HeadsOrTailsGame {
             return "Waiting on opponent to move"
         }
     }
-    
+
     func printState() {
         print("\n")
         print("Game between \(localPlayer.username) & \(opponentPlayer.username)")
@@ -134,7 +133,7 @@ class HeadsOrTailsGame {
         print("******Moves: \(opponentMove)")
         print("\n")
     }
-    
+
     deinit {
         notificationCenter.removeObserver(self)
     }

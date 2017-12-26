@@ -158,11 +158,6 @@ class HeadsOrTailsGameVC: UIViewController {
     }
    
     @IBAction func backButtonPressed(_ sender: Any) {
-        if gameManager != nil {
-            if gameManager!.round == 6 {
-                firebaseManager.updateRound(for: gameManager!.gameUID, with: 404)
-            }
-        }
         self.dismiss(animated: true, completion: nil)
     }
     
