@@ -9,8 +9,7 @@
 import UIKit
 import Foundation
 
-struct Palette
-{
+struct Palette {
     static let blue = UIColor(red:0.29, green:0.56, blue:0.89, alpha:1.0) // HEX: 4A90E2
     static let white = UIColor.white // HEX: 0000
     static let teal = UIColor(red:0.31, green:0.89, blue:0.76, alpha:1.0) // HEX: 50E3C2

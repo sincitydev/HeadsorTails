@@ -10,100 +10,76 @@ import UIKit
 import Firebase
 import FirebaseAuth
 
-class SignupVC: UIViewController, UITextFieldDelegate {
+class SignupVC: UIViewController, UITextFieldDelegate, AuthHelper {
 
     @IBOutlet weak var errorMessageLabel: UILabel!
     @IBOutlet weak var usernameTextField: UITextField!
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
     
-    private let firebaseManager = FirebaseManager.shared
+    
+    var validUsername = false
+    fileprivate let firebaseManager = FirebaseManager.instance
     private let notificationCenter = NotificationCenter.default
     
-    var validInput: Bool
-    {
-        let username = usernameTextField.text ?? ""
-        let email = emailTextField.text ?? ""
-        let password = passwordTextField.text ?? ""
-        
-        if email.isEmpty || password.isEmpty || username.isEmpty
-        {
-            return false
-        }
-        else
-        {
-            return true
-        }
-    }
-    
-    override func viewDidLoad()
-    {
+    override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
-        usernameTextField.delegate = self
     }
     
-    private func setupViews()
-    {
+    private func setupViews() {
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "Back", style: .plain, target: nil, action: nil)
-        
+        usernameTextField.delegate = self
         errorMessageLabel.alpha = 0
     }
     
-    @IBAction func signup()
-    {
+    @IBAction func signup() {
         let username = usernameTextField.text ?? ""
         let email = emailTextField.text ?? ""
         let password = passwordTextField.text ?? ""
         
-        if validInput
-        {
+        if validInput(username: username, email: email, password: password, validUsername: validUsername) {
             Auth.auth().createUser(withEmail: email, password: password) { [weak self] (user, error) in
                 
-                if let error = error, let authError = AuthErrorCode(rawValue: error._code)
-                {
-                    self?.showLoginError(authError.description)
+                if let error = error, let authError = AuthErrorCode(rawValue: error._code) {
+                    self?.showLoginError(self?.errorMessageLabel, with: authError.description)
                 }
-                else
-                {
+                else {
                     guard let user = user else { return }
                     
-                    let player = Player(uid: user.uid, username: username, coins: 100)
+                    let player = Player(uid: user.uid, username: username, coins: 100, online: true)
                     
-                    self?.firebaseManager.saveNewPlayer(player)
+                    self?.firebaseManager.saveNewUser(player)
                     self?.notificationCenter.post(name: .authenticationDidChange, object: nil)
                     
                 }
             }
         }
-        else
-        {
-            showLoginError("Invalid input")
+        else {
+            if validUsername == false {
+                showLoginError(self.errorMessageLabel, with: "Username already in use")
+            }
+            else {
+                showLoginError(self.errorMessageLabel, with: "Invalid input")
+            }
         }
     }
     
-    private func showLoginError(_ message: String)
-    {
-        errorMessageLabel.text = message
-        errorMessageLabel.fadeIn(duration: 0.2)
+    deinit {
+        print("SignupVC has been deallocated :)")
     }
-    
-    private func hideLoginError()
-    {
-        errorMessageLabel.text = ""
-        errorMessageLabel.fadeOut(duration: 0.2)
-    }
-    
-    func textFieldDidEndEditing(_ textField: UITextField, reason: UITextFieldDidEndEditingReason)
-    {
+}
+
+extension SignupVC: UITextViewDelegate {
+    func textFieldDidEndEditing(_ textField: UITextField, reason: UITextFieldDidEndEditingReason) {
         firebaseManager.checkUsername(usernameTextField.text ?? "") { [weak self] (authUsernameError) in
-            if let authUsernameError = authUsernameError
-            {
-                self?.showLoginError(authUsernameError.description)
+            if let authUsernameError = authUsernameError {
+                self?.validUsername = false
+                self?.showLoginError(self?.errorMessageLabel, with: authUsernameError.description)
             }
-            else
-            {
-                self?.hideLoginError()
+            else {
+                self?.validUsername = true
+                self?.hideLoginError(self?.errorMessageLabel)
             }
         }
     }

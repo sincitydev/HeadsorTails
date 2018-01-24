@@ -8,17 +8,15 @@
 
 import UIKit
 
-class PlayerCell: UITableViewCell
-{
+class PlayerCell: UITableViewCell {
     @IBOutlet weak var usernameLabel: UILabel!
     @IBOutlet weak var coins: UILabel!
+    @IBOutlet weak var onlineView: UIView!
+    @IBOutlet weak var inGameView: UIView!
     
     static let identifier = "playerCell"
     
-    override func awakeFromNib()
-    {
+    override func awakeFromNib() {
         super.awakeFromNib()
     }
-    
-    
 }
