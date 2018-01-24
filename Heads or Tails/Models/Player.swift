@@ -23,22 +23,10 @@ class Player {
 }
 
 extension Player {
-    convenience init?(_ firebaseJSON: [String: Any]) {
-        if let uid = firebaseJSON["uid"] as? String,
-            let username = firebaseJSON["username"] as? String,
-            let coins = firebaseJSON["coins"] as? Int,
-            let online = firebaseJSON["online"] as? Bool {
-            self.init(uid: uid, username: username, coins: coins, online: online)
-        }
-        else {
-            return nil
-        }
-    }
-    
-    convenience init?(uid: String,_ firebaseJSON: [String: Any]) {
-        if let username = firebaseJSON["username"] as? String,
-            let coins = firebaseJSON["coins"] as? Int,
-            let online = firebaseJSON["online"] as? Bool {
+    convenience init?(uid: String, _ firebaseJSON: [String: Any]) {
+        if let username = firebaseJSON[DatabaseKeys.username.rawValue] as? String,
+            let coins = firebaseJSON[DatabaseKeys.coins.rawValue] as? Int,
+            let online = firebaseJSON[DatabaseKeys.online.rawValue] as? Bool {
             self.init(uid: uid, username: username, coins: coins, online: online)
         }
         else {
